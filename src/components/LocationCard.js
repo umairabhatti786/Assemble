@@ -24,6 +24,7 @@ const LocationCard = ({ item }) => {
 
   return (
     <TouchableOpacity
+    activeOpacity={0.6}
       onPress={handleMapPress}
       style={{
         flexDirection: "row",
@@ -43,9 +44,9 @@ const LocationCard = ({ item }) => {
         }}
       >
         <View>
-          <LocationIcon style={{ height: 25, width: 25 }} />
+          <LocationIcon style={{ height: 22, width: 22 }} />
         </View>
-        <View style={{ marginHorizontal: 10 }}>
+        <View style={{ marginHorizontal: 10,width:"85%" }}>
           <CustomText
             label={
               item.event_location?.venue_name
@@ -97,7 +98,7 @@ const LocationCard = ({ item }) => {
         </View>
       </View>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <ForwardIcon style={{ height: 25, width: 25 }} />
+        <ForwardIcon style={{ height: 20, width: 20 }} />
       </View>
     </TouchableOpacity>
   );

@@ -120,13 +120,16 @@ const DetailsScreen = ({ navigation, route }) => {
   const Header = () => {
     return (
       <View style={styles.headerContainer}>
-        <View style={[styles.iconContainer, { marginHorizontal: 8 }]}>
+        <TouchableOpacity 
+        activeOpacity={0.6}
+           onPress={handleGoBack}
+            style={[styles.iconContainer, { marginHorizontal: 8 }]}>
           <BackIcon
-            onPress={handleGoBack}
+            // onPress={handleGoBack}
             style={styles.icon}
             fill={colors.black}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.textContainer}>
           <CustomText
             color={"transparent"}

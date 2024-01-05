@@ -75,9 +75,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.loyalty"
+    namespace "com.assemble"
     defaultConfig {
-        applicationId "com.loyalty"
+        applicationId "com.assemble"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

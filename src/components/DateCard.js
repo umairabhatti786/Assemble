@@ -75,6 +75,7 @@ const DateCard = ({ item }) => {
   return (
     <TouchableOpacity
       onPress={addEventToCalendar}
+      activeOpacity={0.6}
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
@@ -93,14 +94,14 @@ const DateCard = ({ item }) => {
         }}
       >
         <View>
-          <CalanderIcon style={{ height: 25, width: 25 }} fill={"#cfb34e"} />
+          <CalanderIcon style={{ height: 20, width: 20 }} fill={"#cfb34e"} />
         </View>
-        <View style={{ marginHorizontal: 10 }}>
+        <View style={{ marginHorizontal: 10 ,width:"85%"}}>
           <CustomText
             label={formatDate(item.event_date) + " , " + item.event_time}
             color={"#1C1916"}
             fontFamily={SFCompact.light}
-            fontSize={17}
+            fontSize={16}
           />
         </View>
       </View>
@@ -111,7 +112,7 @@ const DateCard = ({ item }) => {
           alignItems: "center",
         }}
       >
-        <ForwardIcon style={{ height: 25, width: 25 }} />
+        <ForwardIcon style={{ height: 20, width: 20 }} />
       </View>
     </TouchableOpacity>
   );

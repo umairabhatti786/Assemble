@@ -2,12 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>API_KEY</key>
+	<string>AIzaSyB-KsaN0xavVz_goI6TJ-rTd43B8Oz4glc</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Assemble</string>
-		<key>API_KEY</key>
-	<string>AIzaSyB-KsaN0xavVz_goI6TJ-rTd43B8Oz4glc</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.1012381532710-na6d222vcucgarp9vtd59nshtnl418ak</string>
+				<string>com.googleusercontent.apps.153444834280-lfs7alll1ltv8ehhr4j7d9uv9c509to1</string>
 			</array>
 		</dict>
 	</array>
@@ -62,7 +62,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Your message to user when the camera is accessed for the first time</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Your message to user when the microsphone is accessed for the first time</string>
 	<key>NSPhotoLibraryUsageDescription</key>

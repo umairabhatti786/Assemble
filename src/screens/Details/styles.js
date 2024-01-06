@@ -48,7 +48,7 @@ export const styles = ScaledSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  icon: { height: 35, width: 35 },
+  icon: { height: 27, width: 27 },
   tagsContainer: {
     flexDirection: "row",
     marginTop: 20,

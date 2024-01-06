@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* AssembleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* AssembleTests.m */; };
-		04963D2D2B2C79F500ACA4E0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04963D2C2B2C79F500ACA4E0 /* GoogleService-Info.plist */; };
+		045A615C2B486694008178FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 045A615B2B486693008178FB /* GoogleService-Info.plist */; };
 		0E97B2A7DF8D4676A52C5E2C /* SF-Compact-Rounded-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 929A48CE86014E52A0F3ADA7 /* SF-Compact-Rounded-Light.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -69,60 +69,60 @@
 		00E356EE1AD99517003FC87E /* AssembleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AssembleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* AssembleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssembleTests.m; sourceTree = "<group>"; };
-		01C8371478E340B79154E72A /* SF-Compact-Text-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Medium.ttf"; path = "../assets/fonts/SF-Compact-Text-Medium.ttf"; sourceTree = "<group>"; };
-		0393E03166AA4E1287F9E97E /* SF-Compact-Text-Ultralight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Ultralight.ttf"; path = "../assets/fonts/SF-Compact-Text-Ultralight.ttf"; sourceTree = "<group>"; };
+		01C8371478E340B79154E72A /* SF-Compact-Text-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Medium.ttf"; path = "../assets/fonts/SF-Compact-Text-Medium.ttf"; sourceTree = "<group>"; };
+		0393E03166AA4E1287F9E97E /* SF-Compact-Text-Ultralight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Ultralight.ttf"; path = "../assets/fonts/SF-Compact-Text-Ultralight.ttf"; sourceTree = "<group>"; };
 		044A92BA2B2AF8060059743B /* Assemble.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Assemble.entitlements; path = Assemble/Assemble.entitlements; sourceTree = "<group>"; };
-		04963D2C2B2C79F500ACA4E0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		1299511680E545DFBCAD142A /* SF-Compact-Text-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Semibold.ttf"; path = "../assets/fonts/SF-Compact-Text-Semibold.ttf"; sourceTree = "<group>"; };
+		045A615B2B486693008178FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1299511680E545DFBCAD142A /* SF-Compact-Text-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Semibold.ttf"; path = "../assets/fonts/SF-Compact-Text-Semibold.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Assemble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assemble.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Assemble/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Assemble/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Assemble/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Assemble/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Assemble/main.m; sourceTree = "<group>"; };
-		1FB7952E709348259F74767B /* SF-Compact-Text-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Bold.ttf"; path = "../assets/fonts/SF-Compact-Text-Bold.ttf"; sourceTree = "<group>"; };
-		28466481216649C9AB8AE709 /* SF-Compact-Rounded-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Black.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Black.ttf"; sourceTree = "<group>"; };
+		1FB7952E709348259F74767B /* SF-Compact-Text-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Bold.ttf"; path = "../assets/fonts/SF-Compact-Text-Bold.ttf"; sourceTree = "<group>"; };
+		28466481216649C9AB8AE709 /* SF-Compact-Rounded-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Black.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Black.ttf"; sourceTree = "<group>"; };
 		2C4312022579C40613F099F9 /* Pods-Assemble.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assemble.debug.xcconfig"; path = "Target Support Files/Pods-Assemble/Pods-Assemble.debug.xcconfig"; sourceTree = "<group>"; };
-		3BE6CE31ABEA4D61BA7ADE45 /* SF-Compact-Text-HeavyItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-HeavyItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-HeavyItalic.ttf"; sourceTree = "<group>"; };
-		582ED730E73F4D54BE12EBFA /* SF-Compact-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Italic.ttf"; path = "../assets/fonts/SF-Compact-Italic.ttf"; sourceTree = "<group>"; };
-		5B8A5FEF184A4601967C9FCB /* SF-Compact-Text-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-BlackItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-BlackItalic.ttf"; sourceTree = "<group>"; };
-		5D3B55113179418A92EB98DC /* SF-Compact-Rounded-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Thin.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Thin.ttf"; sourceTree = "<group>"; };
-		5E4204AE56D74EECA31FE759 /* SF-Compact-Rounded-Ultralight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Ultralight.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Ultralight.ttf"; sourceTree = "<group>"; };
+		3BE6CE31ABEA4D61BA7ADE45 /* SF-Compact-Text-HeavyItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-HeavyItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-HeavyItalic.ttf"; sourceTree = "<group>"; };
+		582ED730E73F4D54BE12EBFA /* SF-Compact-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Italic.ttf"; path = "../assets/fonts/SF-Compact-Italic.ttf"; sourceTree = "<group>"; };
+		5B8A5FEF184A4601967C9FCB /* SF-Compact-Text-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-BlackItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-BlackItalic.ttf"; sourceTree = "<group>"; };
+		5D3B55113179418A92EB98DC /* SF-Compact-Rounded-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Thin.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Thin.ttf"; sourceTree = "<group>"; };
+		5E4204AE56D74EECA31FE759 /* SF-Compact-Rounded-Ultralight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Ultralight.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Ultralight.ttf"; sourceTree = "<group>"; };
 		672B21E8EEFA6EFE37C2B26C /* Pods-Assemble.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assemble.release.xcconfig"; path = "Target Support Files/Pods-Assemble/Pods-Assemble.release.xcconfig"; sourceTree = "<group>"; };
-		7B8626BF78354B1DBE288408 /* SF-Compact-Display-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Semibold.ttf"; path = "../assets/fonts/SF-Compact-Display-Semibold.ttf"; sourceTree = "<group>"; };
+		7B8626BF78354B1DBE288408 /* SF-Compact-Display-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Semibold.ttf"; path = "../assets/fonts/SF-Compact-Display-Semibold.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Assemble/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8A69B94C37F24948B4CEFF44 /* SF-Compact-Text-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Light.ttf"; path = "../assets/fonts/SF-Compact-Text-Light.ttf"; sourceTree = "<group>"; };
-		8D38401FB32948DA9B6BE57E /* SF-Compact-Display-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Regular.ttf"; path = "../assets/fonts/SF-Compact-Display-Regular.ttf"; sourceTree = "<group>"; };
-		90662D4D871043C9A71D1123 /* SF-Compact-Display-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Medium.ttf"; path = "../assets/fonts/SF-Compact-Display-Medium.ttf"; sourceTree = "<group>"; };
-		929A48CE86014E52A0F3ADA7 /* SF-Compact-Rounded-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Light.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Light.ttf"; sourceTree = "<group>"; };
-		92B8C85ADAA5465BA3D8269F /* SF-Compact-Display-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Black.ttf"; path = "../assets/fonts/SF-Compact-Display-Black.ttf"; sourceTree = "<group>"; };
-		9463E029700147D7A5EAC411 /* SF-Compact-Display-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Bold.ttf"; path = "../assets/fonts/SF-Compact-Display-Bold.ttf"; sourceTree = "<group>"; };
-		9950186C40AE453B97418978 /* SF-Compact-Text-SemiboldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-SemiboldItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-SemiboldItalic.ttf"; sourceTree = "<group>"; };
-		A5B1C43AFCD8451EB3F43EE7 /* SF-Compact-Text-UltralightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-UltralightItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-UltralightItalic.ttf"; sourceTree = "<group>"; };
-		AFD52939085242589B21D1F4 /* SF-Compact-Display-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Light.ttf"; path = "../assets/fonts/SF-Compact-Display-Light.ttf"; sourceTree = "<group>"; };
-		B2E66D1737EF4A7EA4059679 /* SF-Compact-Text-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-MediumItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-MediumItalic.ttf"; sourceTree = "<group>"; };
-		B3AF6CB900F44ACA9009883E /* SF-Compact-Rounded-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Semibold.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Semibold.ttf"; sourceTree = "<group>"; };
-		B447799E39D04FE591F4DFB4 /* SF-Compact-Rounded-Heavy.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Heavy.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Heavy.ttf"; sourceTree = "<group>"; };
-		B4894989B3614B58A6016A07 /* SF-Compact.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact.ttf"; path = "../assets/fonts/SF-Compact.ttf"; sourceTree = "<group>"; };
+		8A69B94C37F24948B4CEFF44 /* SF-Compact-Text-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Light.ttf"; path = "../assets/fonts/SF-Compact-Text-Light.ttf"; sourceTree = "<group>"; };
+		8D38401FB32948DA9B6BE57E /* SF-Compact-Display-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Regular.ttf"; path = "../assets/fonts/SF-Compact-Display-Regular.ttf"; sourceTree = "<group>"; };
+		90662D4D871043C9A71D1123 /* SF-Compact-Display-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Medium.ttf"; path = "../assets/fonts/SF-Compact-Display-Medium.ttf"; sourceTree = "<group>"; };
+		929A48CE86014E52A0F3ADA7 /* SF-Compact-Rounded-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Light.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Light.ttf"; sourceTree = "<group>"; };
+		92B8C85ADAA5465BA3D8269F /* SF-Compact-Display-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Black.ttf"; path = "../assets/fonts/SF-Compact-Display-Black.ttf"; sourceTree = "<group>"; };
+		9463E029700147D7A5EAC411 /* SF-Compact-Display-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Bold.ttf"; path = "../assets/fonts/SF-Compact-Display-Bold.ttf"; sourceTree = "<group>"; };
+		9950186C40AE453B97418978 /* SF-Compact-Text-SemiboldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-SemiboldItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-SemiboldItalic.ttf"; sourceTree = "<group>"; };
+		A5B1C43AFCD8451EB3F43EE7 /* SF-Compact-Text-UltralightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-UltralightItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-UltralightItalic.ttf"; sourceTree = "<group>"; };
+		AFD52939085242589B21D1F4 /* SF-Compact-Display-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Light.ttf"; path = "../assets/fonts/SF-Compact-Display-Light.ttf"; sourceTree = "<group>"; };
+		B2E66D1737EF4A7EA4059679 /* SF-Compact-Text-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-MediumItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-MediumItalic.ttf"; sourceTree = "<group>"; };
+		B3AF6CB900F44ACA9009883E /* SF-Compact-Rounded-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Semibold.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Semibold.ttf"; sourceTree = "<group>"; };
+		B447799E39D04FE591F4DFB4 /* SF-Compact-Rounded-Heavy.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Heavy.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Heavy.ttf"; sourceTree = "<group>"; };
+		B4894989B3614B58A6016A07 /* SF-Compact.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact.ttf"; path = "../assets/fonts/SF-Compact.ttf"; sourceTree = "<group>"; };
 		BBC7090FD55EC5F1E295457D /* Pods-Assemble-AssembleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assemble-AssembleTests.debug.xcconfig"; path = "Target Support Files/Pods-Assemble-AssembleTests/Pods-Assemble-AssembleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BCCD9C9040E0CF7A7171F5E0 /* Pods-Assemble-AssembleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assemble-AssembleTests.release.xcconfig"; path = "Target Support Files/Pods-Assemble-AssembleTests/Pods-Assemble-AssembleTests.release.xcconfig"; sourceTree = "<group>"; };
-		BF36C09DED3A47BC8CB03D9B /* SF-Compact-Display-Heavy.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Heavy.ttf"; path = "../assets/fonts/SF-Compact-Display-Heavy.ttf"; sourceTree = "<group>"; };
+		BF36C09DED3A47BC8CB03D9B /* SF-Compact-Display-Heavy.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Heavy.ttf"; path = "../assets/fonts/SF-Compact-Display-Heavy.ttf"; sourceTree = "<group>"; };
 		C24900F6AF198056508B9935 /* libPods-Assemble-AssembleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Assemble-AssembleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA1A36699DCB4070A8E6B9AF /* SF-Compact-Rounded-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Medium.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Medium.ttf"; sourceTree = "<group>"; };
-		D1F144E7540F420DA15FE0D0 /* SF-Compact-Display-Ultralight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Ultralight.ttf"; path = "../assets/fonts/SF-Compact-Display-Ultralight.ttf"; sourceTree = "<group>"; };
-		D352A2D2F4FA46C4AC49702F /* SF-Compact-Text-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-BoldItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-BoldItalic.ttf"; sourceTree = "<group>"; };
-		DD1429399BF244BBAA01EA1E /* SF-Compact-Text-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Regular.ttf"; path = "../assets/fonts/SF-Compact-Text-Regular.ttf"; sourceTree = "<group>"; };
-		DE573F90C21D4415AE5513FE /* SF-Compact-Text-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-LightItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-LightItalic.ttf"; sourceTree = "<group>"; };
-		DF40939ABAF548749A10C85F /* SF-Compact-Rounded-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Regular.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Regular.ttf"; sourceTree = "<group>"; };
-		E3081CD67E4D4FF7BF23683D /* SF-Compact-Text-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Black.ttf"; path = "../assets/fonts/SF-Compact-Text-Black.ttf"; sourceTree = "<group>"; };
-		E39BD7BAAD434439A0B78507 /* SF-Compact-Text-Heavy.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Heavy.ttf"; path = "../assets/fonts/SF-Compact-Text-Heavy.ttf"; sourceTree = "<group>"; };
-		E81F0A494EFD4FCE827DA0F6 /* SF-Compact-Display-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Thin.ttf"; path = "../assets/fonts/SF-Compact-Display-Thin.ttf"; sourceTree = "<group>"; };
+		CA1A36699DCB4070A8E6B9AF /* SF-Compact-Rounded-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Medium.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Medium.ttf"; sourceTree = "<group>"; };
+		D1F144E7540F420DA15FE0D0 /* SF-Compact-Display-Ultralight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Ultralight.ttf"; path = "../assets/fonts/SF-Compact-Display-Ultralight.ttf"; sourceTree = "<group>"; };
+		D352A2D2F4FA46C4AC49702F /* SF-Compact-Text-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-BoldItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-BoldItalic.ttf"; sourceTree = "<group>"; };
+		DD1429399BF244BBAA01EA1E /* SF-Compact-Text-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Regular.ttf"; path = "../assets/fonts/SF-Compact-Text-Regular.ttf"; sourceTree = "<group>"; };
+		DE573F90C21D4415AE5513FE /* SF-Compact-Text-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-LightItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-LightItalic.ttf"; sourceTree = "<group>"; };
+		DF40939ABAF548749A10C85F /* SF-Compact-Rounded-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Regular.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Regular.ttf"; sourceTree = "<group>"; };
+		E3081CD67E4D4FF7BF23683D /* SF-Compact-Text-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Black.ttf"; path = "../assets/fonts/SF-Compact-Text-Black.ttf"; sourceTree = "<group>"; };
+		E39BD7BAAD434439A0B78507 /* SF-Compact-Text-Heavy.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Heavy.ttf"; path = "../assets/fonts/SF-Compact-Text-Heavy.ttf"; sourceTree = "<group>"; };
+		E81F0A494EFD4FCE827DA0F6 /* SF-Compact-Display-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Display-Thin.ttf"; path = "../assets/fonts/SF-Compact-Display-Thin.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EFF99E484C204096884D03CC /* SF-Compact-Text-RegularItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-RegularItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-RegularItalic.ttf"; sourceTree = "<group>"; };
-		F2547BEE26C44BCBA855E3E2 /* SF-Compact-Text-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Thin.ttf"; path = "../assets/fonts/SF-Compact-Text-Thin.ttf"; sourceTree = "<group>"; };
+		EFF99E484C204096884D03CC /* SF-Compact-Text-RegularItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-RegularItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-RegularItalic.ttf"; sourceTree = "<group>"; };
+		F2547BEE26C44BCBA855E3E2 /* SF-Compact-Text-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-Thin.ttf"; path = "../assets/fonts/SF-Compact-Text-Thin.ttf"; sourceTree = "<group>"; };
 		F55AC02BD4E4B894384AB23E /* libPods-Assemble.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Assemble.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FB1C70FE94C94BBCB20B3269 /* SF-Compact-Text-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-ThinItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-ThinItalic.ttf"; sourceTree = "<group>"; };
-		FB5A4A53EAF84D7AAA02AF78 /* SF-Compact-Rounded-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Bold.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Bold.ttf"; sourceTree = "<group>"; };
+		FB1C70FE94C94BBCB20B3269 /* SF-Compact-Text-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Text-ThinItalic.ttf"; path = "../assets/fonts/SF-Compact-Text-ThinItalic.ttf"; sourceTree = "<group>"; };
+		FB5A4A53EAF84D7AAA02AF78 /* SF-Compact-Rounded-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Compact-Rounded-Bold.ttf"; path = "../assets/fonts/SF-Compact-Rounded-Bold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,9 +167,9 @@
 			children = (
 				044A92BA2B2AF8060059743B /* Assemble.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				045A615B2B486693008178FB /* GoogleService-Info.plist */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				04963D2C2B2C79F500ACA4E0 /* GoogleService-Info.plist */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -295,6 +295,7 @@
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
 			name = AssembleTests;
+			productName = AssembleTests;
 			productReference = 00E356EE1AD99517003FC87E /* AssembleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -372,7 +373,6 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				04963D2D2B2C79F500ACA4E0 /* GoogleService-Info.plist in Resources */,
 				6657F8213B6940D39280FF40 /* SF-Compact-Display-Black.ttf in Resources */,
 				DCDB8624D6B64ED3A69F8640 /* SF-Compact-Display-Bold.ttf in Resources */,
 				7958703838B24ABBBDB62EAC /* SF-Compact-Display-Heavy.ttf in Resources */,
@@ -410,6 +410,7 @@
 				59D0D437130E4FC19CD2E0AC /* SF-Compact-Text-ThinItalic.ttf in Resources */,
 				58A9A7F7B606408E86D90D47 /* SF-Compact-Text-Ultralight.ttf in Resources */,
 				DCBBC31CE6A344DEA7CD3DE4 /* SF-Compact-Text-UltralightItalic.ttf in Resources */,
+				045A615C2B486694008178FB /* GoogleService-Info.plist in Resources */,
 				AC969C2E19A141D7A1C77B78 /* SF-Compact.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -681,7 +682,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Assemble/Assemble.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = LXXHV6NAX4;
+				DEVELOPMENT_TEAM = QKF5MUR6KK;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Assemble/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Assemble;
@@ -695,7 +696,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.loyalty.app;
+				PRODUCT_BUNDLE_IDENTIFIER = assemble;
 				PRODUCT_NAME = Assemble;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -711,7 +712,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Assemble/Assemble.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = LXXHV6NAX4;
+				DEVELOPMENT_TEAM = QKF5MUR6KK;
 				INFOPLIST_FILE = Assemble/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Assemble;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -724,7 +725,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.loyalty.app;
+				PRODUCT_BUNDLE_IDENTIFIER = assemble;
 				PRODUCT_NAME = Assemble;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -816,7 +817,8 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
-					"-Wl -ld_classic ",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -903,7 +905,8 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
-					"-Wl -ld_classic ",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;

@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import { scale, ScaledSheet, verticalScale } from "react-native-size-matters";
 import { colors } from "../../utils/colors";
 import sizeHelper from "../../assets/helpers/sizeHelper";
@@ -10,7 +10,9 @@ export const styles = ScaledSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    // backgroundColor:"red",
     zIndex: 9999999999,
+  marginTop:Platform.OS=="ios"?40:0,
 
     marginHorizontal: 10,
     marginVertical: 20,
@@ -22,7 +24,7 @@ export const styles = ScaledSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  icon: { height: 40, width: 40 },
+  icon: { height: 27, width: 27 },
   iconImage: { height: 50, width: 50 },
   card: { height: 100, width: 80 },
   textContainer: {

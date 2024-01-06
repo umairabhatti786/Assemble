@@ -10,9 +10,15 @@ import {
   FlatList,
   Dimensions,
 } from "react-native";
-
+import FastImage from "react-native-fast-image";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useLayoutEffect,
+} from "react";
 import commonStyles, { PH10 } from "../../utils/CommonStyles";
 import { images } from "../../assets/images";
 import { styles } from "./styles";
@@ -33,16 +39,23 @@ import { useFocusEffect } from "@react-navigation/native";
 import Card from "../../components/Card";
 import { SFCompact } from "../../utils/Fonts";
 import Loading from "../../components/Loading";
-import { Get_All_Events } from "../../api/Requests";
+import { Get_All_Events, SignUp_Request } from "../../api/Requests";
 import Button from "../../components/Button";
 import BottomCard from "../../components/BottomCard";
+import BottomEvents from "../../components/BottomEvents";
+import Animated, {
+  useSharedValue,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useAnimatedProps,
+} from "react-native-reanimated";
+
 const HomeScreen = ({ navigation }) => {
+  const AnimatFlatList = Animated.FlatList;
+
   const mapRef = useRef(null);
   const modalizeRef = useRef(null);
   const flatListRef = useRef(null);
-  const carouselRef = useRef(null);
-  const screenWidth = Dimensions.get("window").width;
-  const screenHeight = Dimensions.get("window").height;
 
   const [addFavorites, setAddFavorites] = useState(false);
   const [events, setEvents] = useState([]);
@@ -51,13 +64,47 @@ const HomeScreen = ({ navigation }) => {
   const [hideModelize, setHideModelize] = useState(false);
   const [prsseLocation, setPrsseLocation] = useState(true);
   const [selectedEventIndex, setSelectedEventIndex] = useState(0);
+  const [userScroll, setUserScroll] = useState(true);
+  const lastContentOffset = useSharedValue(0);
+  const isScrolling = useSharedValue(false);
 
+  const itemCount = eventss.length; // total number of items in your list
+  const itemWidth = sizeHelper.screenWidth > 450 ? 550 : 380;
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      // Your logic during scrolling
+      if (lastContentOffset.value > event.contentOffset.x) {
+        // Scrolling to the right
+      } else if (lastContentOffset.value < event.contentOffset.x) {
+        // Scrolling to the left
+      }
+      lastContentOffset.value = event.contentOffset.x;
+    },
+    onBeginDrag: () => {
+      isScrolling.value = true;
+    },
+    onEndDrag: (event) => {
+      isScrolling.value = false;
+
+      // Calculate the current index based on the scroll position
+      const currentIndex = Math.floor(event.contentOffset.x / itemWidth);
+
+      // Make sure the currentIndex is within bounds
+      const clampedIndex = Math.max(0, Math.min(currentIndex, itemCount - 1));
+
+      // Pass the clampedIndex to your update functions
+      updateMapCenter(clampedIndex);
+      setSelectedEventIndex(clampedIndex);
+    },
+  });
+
+  const getItemLayout = (data, index) => ({
+    length: 100, // Assuming item height is 100, adjust accordingly
+    offset: 100 * index,
+    index,
+  });
   const onHandlePress = () => {
     navigation.navigate("settings");
-  };
-  const openModal = () => {
-    modalizeRef.current?.open();
-    setHideModelize(false);
   };
 
   const closeModal = () => {
@@ -74,6 +121,8 @@ const HomeScreen = ({ navigation }) => {
     setLoading(true);
     try {
       let response = await Get_All_Events();
+      // let ressss = await SignUp_Request();
+
       if (Array.isArray(response.events) && response.events.length > 0) {
         const modifiedEvents = response.events.map((event) => {
           event.event_title = truncateText(event.event_title, 3);
@@ -110,34 +159,9 @@ const HomeScreen = ({ navigation }) => {
         }
 
         setEvents(sections);
+      } else {
+        setEvents(null);
       }
-
-      // if (Array.isArray(response.events) && response.events.length > 0) {
-      //   setEventss(response.events);
-
-      //   const currentDate = new Date();
-      //   const upcomingEvents = [];
-      //   const todayEvents = [];
-
-      //   response.events.forEach((event) => {
-      //     const eventDate = new Date(event.event_date);
-      //     if (eventDate.toDateString() === currentDate.toDateString()) {
-      //       todayEvents.push(event);
-      //     } else {
-      //       upcomingEvents.push(event);
-      //     }
-      //   });
-
-      //   const sections = [];
-      //   if (todayEvents.length > 0) {
-      //     sections.push({ title: "Today", data: todayEvents });
-      //   }
-      //   if (upcomingEvents.length > 0) {
-      //     sections.push({ title: "Upcoming Events", data: upcomingEvents });
-      //   }
-
-      //   setEvents(sections);
-      // }
     } catch (error) {
       console.error(error);
     } finally {
@@ -146,10 +170,8 @@ const HomeScreen = ({ navigation }) => {
   };
   function truncateText(text, maxWords) {
     const words = text.split(" ");
-
     if (words.length > maxWords) {
       const truncatedText = words.slice(0, maxWords).join(" ") + "...";
-
       return truncatedText;
     } else {
       return text;
@@ -226,7 +248,7 @@ const HomeScreen = ({ navigation }) => {
           </View>
           <View style={{ marginVertical: 10 }}>
             <CustomText
-              label={"Send it our way and we will \n add to  the list"}
+              label={"Send it our way and we will \nadd to  the list"}
               color={colors.black}
               fontSize={13}
               alignSelf="center"
@@ -253,58 +275,95 @@ const HomeScreen = ({ navigation }) => {
     );
   };
 
-  const CustomMarkerComponent = ({ event }) => (
+  const CustomMarkerComponent = React.memo(({ event }) => (
     <TouchableOpacity
+      activeOpacity={0.6}
       style={{
         justifyContent: "center",
         alignItems: "center",
-        zIndex: 99999999999,
+        height: 100,
+        width: 100,
+        zIndex: 999999,
       }}
     >
       {hideModelize ? (
         <>
-          <Image
+          <FastImage
             source={images.goldenLocation}
-            style={{ height: 80, width: 80 }}
+            style={{ height: 60, width: 60 }}
             resizeMode="contain"
           />
         </>
       ) : (
-        <Image
+        <FastImage
           source={images.goldenLocation}
-          style={{ height: 80, width: 80 }}
+          style={{ height: 60, width: 60 }}
           resizeMode="contain"
         />
       )}
     </TouchableOpacity>
-  );
+  ));
 
   const updateMapCenter = (index) => {
     // Update the map center based on the latitude and longitude of the selected event
-    const selectedEvent = eventss[index];
-    if (selectedEvent && selectedEvent.event_location) {
-      const { latitude, longitude } = selectedEvent.event_location;
-      mapRef.current.animateToRegion(
-        {
-          latitude,
-          longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        },
-        3000
-      );
+
+    try {
+      const selectedEvent = eventss[index];
+      if (selectedEvent && selectedEvent.event_location) {
+        const { latitude, longitude } = selectedEvent.event_location;
+        mapRef.current.animateToRegion(
+          {
+            latitude,
+            longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          },
+
+          3000
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
-  const onScroll = (x) => {
-    const xPos =
-      x.nativeEvent?.contentOffset?.x < 0 ? 0 : x.nativeEvent?.contentOffset?.x;
-    const current = Math.floor(xPos / 260);
-    updateMapCenter(current);
-    setSelectedEventIndex(current);
+  const onScroll = (event) => {
+    if (hideModelize && userScroll) {
+      let width = sizeHelper.screenWidth > 450 ? 550 : 380;
+      const xPos =
+        event.nativeEvent?.contentOffset?.x < 0
+          ? 0
+          : event.nativeEvent?.contentOffset?.x;
+      const current = Math.floor(xPos / width);
+      updateMapCenter(current);
+      setSelectedEventIndex(current);
+    }
   };
-  const onPressMarker = () => {
-    setHideModelize(true);
+
+  const onPressMarker = (event, index) => {
+    try {
+      setHideModelize(true);
+      setTimeout(() => {
+        scrollToIndex(index);
+      }, 500);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const scrollToIndex = (index) => {
+    setUserScroll(false);
+    flatListRef.current?.scrollToIndex({
+      index,
+      animated: false,
+    });
+    updateMapCenter(index);
+    setSelectedEventIndex(index);
+    setTimeout(() => {
+      setUserScroll(true);
+    }, 5000);
+    // Set back to true after scrolling
+  };
+
   return (
     <>
       {loading ? (
@@ -314,7 +373,6 @@ const HomeScreen = ({ navigation }) => {
           <Header />
           <View style={styles.container}>
             <MapView
-              onMarkerPress={() => onPressMarker()}
               // provider={PROVIDER_GOOGLE}
               ref={mapRef}
               style={[
@@ -322,17 +380,17 @@ const HomeScreen = ({ navigation }) => {
                 { height: !hideModelize ? "50%" : "100%", width: "100%" },
               ]}
               initialRegion={{
-                latitude: 32.7157,
-                longitude: -117.1611,
+                latitude: 31.5204,
+                longitude: 74.3587,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
-              // onRegionChangeComplete={(region) => setRegion(region)}
             >
               {!loading &&
                 eventss.length > 0 &&
-                eventss.map((event) => (
+                eventss.map((event, index) => (
                   <Marker
+                    onPress={() => onPressMarker(event, index)}
                     key={event._id}
                     coordinate={{
                       latitude: event.event_location.latitude,
@@ -341,7 +399,6 @@ const HomeScreen = ({ navigation }) => {
                     title={eventss.event_title}
                     description={eventss.event_description}
                   >
-                    {/* You can customize the Marker by providing a custom component */}
                     <CustomMarkerComponent event={event} />
                   </Marker>
                 ))}
@@ -356,14 +413,14 @@ const HomeScreen = ({ navigation }) => {
                 }}
                 ref={modalizeRef}
                 alwaysOpen={sizeHelper.screenWidth > 450 ? 550 : 490}
-                useNativeDriver={true}
+                useNativeDriver
                 modalHeight={700}
                 handlePosition="inside"
                 panGestureComponentProps={{ enabled: true }}
               >
                 <View style={styles.content}>
                   <CustomText
-                    label="Events in San Diego"
+                    label={"Events in San Diego"}
                     color={colors.black}
                     fontSize={16}
                     alignSelf="center"
@@ -382,6 +439,15 @@ const HomeScreen = ({ navigation }) => {
             )}
 
             {hideModelize && (
+              // <BottomEvents
+              //   modalizeRef={modalizeRef}
+              //   setHideModelize={setHideModelize}
+              //   flatListRef={flatListRef}
+              //   eventss={eventss}
+              //   renderItemBottom={renderItemBottom}
+              //   onScroll={onScroll}
+              //   selectedEventIndex={selectedEventIndex}
+              // />
               <View style={styles.bottomView}>
                 <View style={styles.bottomContnet}>
                   <View style={styles.iconsContainer}>

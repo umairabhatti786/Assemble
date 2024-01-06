@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import { enableLatestRenderer } from "react-native-maps";
-enableLatestRenderer();
+// enableLatestRenderer();
 import { View, Text, LogBox, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { Provider } from "react-redux";

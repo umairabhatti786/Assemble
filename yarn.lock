@@ -2138,7 +2138,7 @@
   dependencies:
     "@babel/types" "^7.20.7"
 
-"@types/geojson@^7946.0.10":
+"@types/geojson@^7946.0.13":
   version "7946.0.13"
   resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.13.tgz#e6e77ea9ecf36564980a861e24e62a095988775e"
   integrity sha512-bmrNrgKMOhM3WsafmbGmC+6dsF2Z308vLFsQ3a/bT8X8Sv5clVYpPars/UPq+sAaJP+5OoLAYgwbkS5QEJdLUQ==
@@ -3378,9 +3378,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.601:
-  version "1.4.621"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.621.tgz#ccd523ed94373548dd913e0aa63601afac9d24f3"
-  integrity sha512-MGJM6S0MuF/wTzM9NoItWXN56J1kolrHS/vzl/KlhXAbVkogTy0wzKYliQDJgNypxSCFjxdRhHYS3bffyYUGEw==
+  version "1.4.622"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.622.tgz#925d8b2264abbcbe264a9a6290d97b9e5a1af205"
+  integrity sha512-GZ47DEy0Gm2Z8RVG092CkFvX7SdotG57c4YZOe8W8qD4rOmk3plgeNmiLVRHP/Liqj1wRiY3uUUod9vb9hnxZA==
 
 emittery@^0.13.1:
   version "0.13.1"
@@ -6360,11 +6360,11 @@ react-native-linear-gradient@^2.8.3:
   integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
 
 react-native-maps@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.9.0.tgz#34ee900ce617edb7dc68eb6cad1126d1e69e9d1e"
-  integrity sha512-ZTMjwEP//M4e+3DA9vzL1tcEZpfHGw5FnejuEpauO8HK5542Der2Ux9mZEXZa5I5q3+B0wJKUzvUPRZxeImUHg==
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.9.1.tgz#b7a3968d5463b2232c4fd9df84a1d387232ccf5f"
+  integrity sha512-bYdwvru5L3bwHo9a/tPpMQnI6eRN6BNjMTxjiDbd6t01mUA0+8e7nCSfgHEm9s3Zq7X2xHf6gjgk2bOXj5Z3IQ==
   dependencies:
-    "@types/geojson" "^7946.0.10"
+    "@types/geojson" "^7946.0.13"
 
 react-native-modal@^13.0.1:
   version "13.0.1"

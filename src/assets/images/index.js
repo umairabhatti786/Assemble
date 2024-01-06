@@ -8,4 +8,5 @@ export const images = {
   card: require("../images/card.png"),
   details: require("../images/details.png"),
   goldenLocation: require("../images/goldenLocation.png"),
+  blackLocation: require("../images/blackLocation.png"),
 };

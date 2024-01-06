@@ -4,6 +4,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   SafeAreaView,
+  Platform,
 } from "react-native";
 import React from "react";
 import commonStyles, { PH10 } from "../../utils/CommonStyles";
@@ -45,26 +46,29 @@ const LoginScreen = ({ navigation }) => {
             </View>
           </ImageBackground>
           <View style={styles.container}>
-            <TouchableOpacity style={styles.touches} onPress={onPressGoogle}>
-              <View style={styles.innerView}>
-                <Image
-                  source={images.GoogleLogo}
-                  style={{ height: 50, width: 50 }}
-                />
-              </View>
-              <View>
-                <View>
-                  <CustomText
-                    color={"#B2B2B2"}
-                    fontSize={12}
-                    alignSelf="center"
-                    textAlign="center"
-                    label="Continue with Google"
-                    fontFamily={SFCompact.regular}
+            {Platform.OS === "ios" ? null : (
+              <TouchableOpacity style={styles.touches} onPress={onPressGoogle}>
+                <View style={styles.innerView}>
+                  <Image
+                    source={images.GoogleLogo}
+                    style={{ height: 50, width: 50 }}
                   />
                 </View>
-              </View>
-            </TouchableOpacity>
+                <View>
+                  <View>
+                    <CustomText
+                      color={"#B2B2B2"}
+                      fontSize={12}
+                      alignSelf="center"
+                      textAlign="center"
+                      label="Continue with Google"
+                      fontFamily={SFCompact.regular}
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity style={styles.touches} onPress={onPressApple}>
               <View style={styles.innerView}>
                 <IPhoneIcon style={{ height: 40, width: 40 }} />

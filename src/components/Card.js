@@ -7,7 +7,7 @@ import { FillHeartIcon, UnFillHeartIcon } from "../assets/SVG/svg";
 import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
 import FastImage from "react-native-fast-image";
-const Card = ({ item, navigation }) => {
+const Card = React.memo(({ item, navigation }) => {
   const formatDate = (dateString) => {
     const options = { weekday: "short", month: "short", day: "numeric" };
     const formattedDate = new Date(dateString).toLocaleDateString(
@@ -135,7 +135,7 @@ const Card = ({ item, navigation }) => {
       </View>
     </TouchableOpacity>
   );
-};
+});
 const styles = StyleSheet.create({
   cardMain: { marginHorizontal: 10 },
   cardContainer: {

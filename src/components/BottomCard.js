@@ -8,7 +8,7 @@ import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
 import sizeHelper from "../assets/helpers/sizeHelper";
 import FastImage from "react-native-fast-image";
-const BottomCard = ({ item, navigation }) => {
+const BottomCard = React.memo(({ item, navigation }) => {
   const formatDate = (dateString) => {
     const options = { weekday: "short", month: "short", day: "numeric" };
     const formattedDate = new Date(dateString).toLocaleDateString(
@@ -121,7 +121,7 @@ const BottomCard = ({ item, navigation }) => {
       </View>
     </TouchableOpacity>
   );
-};
+});
 const styles = StyleSheet.create({
   cardMain: {
     marginHorizontal: 10,

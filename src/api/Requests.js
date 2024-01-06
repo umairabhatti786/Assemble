@@ -102,7 +102,7 @@ const delete_user_Account = async (token, userId) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    const response = await inst.delete(`auth/delete/${userId}`);
+    const response = await inst.delete(`users/delete-account/${userId}`);
 
     return response.data;
   } catch (error) {
@@ -114,4 +114,10 @@ const delete_user_Account = async (token, userId) => {
   }
 };
 
-export { Get_All_Events, Get_Single_Event, User_Login, SignUp_Request };
+export {
+  Get_All_Events,
+  Get_Single_Event,
+  User_Login,
+  SignUp_Request,
+  delete_user_Account,
+};

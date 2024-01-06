@@ -10,7 +10,9 @@ import {
   Share,
   Alert,
   Linking,
+  Platform,
 } from "react-native";
+import RNCalendarEvents from "react-native-calendar-events";
 import React, { useEffect, useRef, useState } from "react";
 import commonStyles, { PH10 } from "../../utils/CommonStyles";
 import { images } from "../../assets/images";
@@ -117,13 +119,55 @@ const DetailsScreen = ({ navigation, route }) => {
       return text;
     }
   }
+  const addEventToCalendar = async () => {
+    try {
+      const hasPermission = await requestCalendarPermission();
+
+      if (hasPermission) {
+        const eventId = await RNCalendarEvents.saveEvent("New Event", {
+          startDate: "2024-01-05T09:00:00.000Z",
+          recurrenceRule: {
+            frequency: "weekly",
+            occurrence: 52,
+            interval: 2,
+            endDate: "2024-01-08T09:00:00.000Z",
+          },
+        });
+        Alert.alert(
+          "Event Added",
+          "The event has been added to your calendar. To view the event, open your calendar app.",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                const calendarAppUrl =
+                  Platform.OS === "ios"
+                    ? "calshow:"
+                    : "content://com.android.calendar/time/";
+
+                Linking.openURL(calendarAppUrl);
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+
+        console.log("Event added successfully. Event ID:", eventId);
+      } else {
+        console.log("Calendar permission not granted");
+      }
+    } catch (error) {
+      console.error("Error adding event to calendar:", error);
+    }
+  };
   const Header = () => {
     return (
       <View style={styles.headerContainer}>
-        <TouchableOpacity 
-        activeOpacity={0.6}
-           onPress={handleGoBack}
-            style={[styles.iconContainer, { marginHorizontal: 8 }]}>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={handleGoBack}
+          style={[styles.iconContainer, { marginHorizontal: 8 }]}
+        >
           <BackIcon
             // onPress={handleGoBack}
             style={styles.icon}

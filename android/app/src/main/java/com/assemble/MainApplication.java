@@ -1,4 +1,4 @@
-package com.loyalty;
+package com.assemble;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

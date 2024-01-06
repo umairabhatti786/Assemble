@@ -5,7 +5,6 @@ import { colors } from "../utils/colors";
 import { CalanderIcon, ForwardIcon } from "../assets/SVG/svg";
 import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
-import { request, PERMISSIONS, check, RESULTS } from "react-native-permissions";
 import RNCalendarEvents from "react-native-calendar-events";
 const DateCard = ({ item }) => {
   const formatDate = (dateString) => {
@@ -96,7 +95,7 @@ const DateCard = ({ item }) => {
         <View>
           <CalanderIcon style={{ height: 20, width: 20 }} fill={"#cfb34e"} />
         </View>
-        <View style={{ marginHorizontal: 10 ,width:"85%"}}>
+        <View style={{ marginHorizontal: 10, width: "85%" }}>
           <CustomText
             label={formatDate(item.event_date) + " , " + item.event_time}
             color={"#1C1916"}

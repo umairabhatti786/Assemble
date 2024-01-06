@@ -31,7 +31,7 @@ const Card = React.memo(({ item, navigation }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("details", { eventId: item._id });
+        navigation.navigate("Details", { eventId: item._id });
       }}
       style={styles.cardMain}
     >

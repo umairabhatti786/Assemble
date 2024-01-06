@@ -12,19 +12,22 @@ export const styles = ScaledSheet.create({
     justifyContent: "space-between",
     // backgroundColor:"red",
     zIndex: 9999999999,
-  marginTop:Platform.OS=="ios"?40:0,
+    marginTop: Platform.OS == "ios" ? 40 : 10,
 
     marginHorizontal: 10,
     marginVertical: 20,
   },
   iconContainer: {
     backgroundColor: "white",
-    padding: 5,
-    borderRadius: 100,
+    padding: 10,
+    borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
   },
-  icon: { height: 27, width: 27 },
+  icon: {
+    height: sizeHelper.screenWidth > 450 ? 35 : 30,
+    width: sizeHelper.screenWidth > 450 ? 35 : 30,
+  },
   iconImage: { height: 50, width: 50 },
   card: { height: 100, width: 80 },
   textContainer: {
@@ -106,11 +109,11 @@ export const styles = ScaledSheet.create({
   },
   iconsContainer: {
     backgroundColor: "transparent",
-    padding: sizeHelper.screenWidth > 450 ? 5 : 5,
+    padding: 5,
   },
   bottomIcon: {
-    height: sizeHelper.screenWidth > 450 ? 50 : 40,
-    width: sizeHelper.screenWidth > 450 ? 50 : 40,
+    height: sizeHelper.screenWidth > 450 ? 35 : 30,
+    width: sizeHelper.screenWidth > 450 ? 35 : 30,
     borderRadius: 100,
   },
 });

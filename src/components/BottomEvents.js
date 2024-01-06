@@ -12,22 +12,8 @@ const BottomEvents = ({
   renderItemBottom,
   onScroll,
   selectedEventIndex,
+  getItemLayout,
 }) => {
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      flatListRef.current?.scrollToIndex({
-        index: selectedEventIndex,
-        animated: false,
-      });
-    }, 0);
-
-    return () => clearTimeout(timeoutId);
-  }, [selectedEventIndex]);
-  const getItemLayout = (data, index) => ({
-    length: 100, // Assuming item height is 100, adjust accordingly
-    offset: 100 * index,
-    index,
-  });
   return (
     <View style={styles.bottomView}>
       <View style={styles.bottomContnet}>

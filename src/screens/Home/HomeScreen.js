@@ -11,6 +11,7 @@ import {
   Dimensions,
 } from "react-native";
 import FastImage from "react-native-fast-image";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import React, {
   useEffect,
@@ -43,16 +44,14 @@ import { Get_All_Events, SignUp_Request } from "../../api/Requests";
 import Button from "../../components/Button";
 import BottomCard from "../../components/BottomCard";
 import BottomEvents from "../../components/BottomEvents";
-import Animated, {
-  useSharedValue,
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useAnimatedProps,
-} from "react-native-reanimated";
+// import Animated, {
+//   useSharedValue,
+//   useAnimatedScrollHandler,
+//   useAnimatedStyle,
+//   useAnimatedProps,
+// } from "react-native-reanimated";
 
 const HomeScreen = ({ navigation }) => {
-  const AnimatFlatList = Animated.FlatList;
-
   const mapRef = useRef(null);
   const modalizeRef = useRef(null);
   const flatListRef = useRef(null);
@@ -65,38 +64,37 @@ const HomeScreen = ({ navigation }) => {
   const [prsseLocation, setPrsseLocation] = useState(true);
   const [selectedEventIndex, setSelectedEventIndex] = useState(0);
   const [userScroll, setUserScroll] = useState(true);
-  const lastContentOffset = useSharedValue(0);
-  const isScrolling = useSharedValue(false);
+  // const lastContentOffset = useSharedValue(0);
+  // const isScrolling = useSharedValue(false);
 
-  const itemCount = eventss.length; // total number of items in your list
-  const itemWidth = sizeHelper.screenWidth > 450 ? 550 : 380;
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      // Your logic during scrolling
-      if (lastContentOffset.value > event.contentOffset.x) {
-        // Scrolling to the right
-      } else if (lastContentOffset.value < event.contentOffset.x) {
-        // Scrolling to the left
-      }
-      lastContentOffset.value = event.contentOffset.x;
-    },
-    onBeginDrag: () => {
-      isScrolling.value = true;
-    },
-    onEndDrag: (event) => {
-      isScrolling.value = false;
+  // const scrollHandler = useAnimatedScrollHandler({
+  //   onScroll: (event) => {
+  //     // Your logic during scrolling
+  //     if (lastContentOffset.value > event.contentOffset.x) {
+  //       // Scrolling to the right
+  //     } else if (lastContentOffset.value < event.contentOffset.x) {
+  //       // Scrolling to the left
+  //     }
+  //     lastContentOffset.value = event.contentOffset.x;
+  //   },
+  //   onBeginDrag: () => {
+  //     isScrolling.value = true;
+  //   },
+  //   onEndDrag: (event) => {
+  //     isScrolling.value = false;
+  //     const itemCount = eventss.length; // total number of items in your list
+  //     const itemWidth = sizeHelper.screenWidth > 450 ? 550 : 380;
+  //     // Calculate the current index based on the scroll position
+  //     const currentIndex = Math.floor(event.contentOffset.x / itemWidth);
 
-      // Calculate the current index based on the scroll position
-      const currentIndex = Math.floor(event.contentOffset.x / itemWidth);
+  //     // Make sure the currentIndex is within bounds
+  //     const clampedIndex = Math.max(0, Math.min(currentIndex, itemCount - 1));
 
-      // Make sure the currentIndex is within bounds
-      const clampedIndex = Math.max(0, Math.min(currentIndex, itemCount - 1));
-
-      // Pass the clampedIndex to your update functions
-      updateMapCenter(clampedIndex);
-      setSelectedEventIndex(clampedIndex);
-    },
-  });
+  //     // Pass the clampedIndex to your update functions
+  //     updateMapCenter(clampedIndex);
+  //     setSelectedEventIndex(clampedIndex);
+  //   },
+  // });
 
   const getItemLayout = (data, index) => ({
     length: 100, // Assuming item height is 100, adjust accordingly
@@ -104,7 +102,7 @@ const HomeScreen = ({ navigation }) => {
     index,
   });
   const onHandlePress = () => {
-    navigation.navigate("settings");
+    navigation.navigate("Settings");
   };
 
   const closeModal = () => {
@@ -121,8 +119,8 @@ const HomeScreen = ({ navigation }) => {
     setLoading(true);
     try {
       let response = await Get_All_Events();
-      // let ressss = await SignUp_Request();
-
+      let ressss = await AsyncStorage.getItem("@token");
+      console.log("ressss", ressss);
       if (Array.isArray(response.events) && response.events.length > 0) {
         const modifiedEvents = response.events.map((event) => {
           event.event_title = truncateText(event.event_title, 3);
@@ -275,7 +273,7 @@ const HomeScreen = ({ navigation }) => {
     );
   };
 
-  const CustomMarkerComponent = React.memo(({ event }) => (
+  const CustomMarkerComponent = React.memo(({ event, index }) => (
     <TouchableOpacity
       activeOpacity={0.6}
       style={{
@@ -286,17 +284,15 @@ const HomeScreen = ({ navigation }) => {
         zIndex: 999999,
       }}
     >
-      {hideModelize ? (
-        <>
-          <FastImage
-            source={images.goldenLocation}
-            style={{ height: 60, width: 60 }}
-            resizeMode="contain"
-          />
-        </>
+      {index === selectedEventIndex ? (
+        <FastImage
+          source={images.blackLocation} // Use the black location image
+          style={{ height: 60, width: 60 }}
+          resizeMode="contain"
+        />
       ) : (
         <FastImage
-          source={images.goldenLocation}
+          source={images.goldenLocation} // Use the golden location image
           style={{ height: 60, width: 60 }}
           resizeMode="contain"
         />
@@ -399,7 +395,7 @@ const HomeScreen = ({ navigation }) => {
                     title={eventss.event_title}
                     description={eventss.event_description}
                   >
-                    <CustomMarkerComponent event={event} />
+                    <CustomMarkerComponent event={event} index={index} />
                   </Marker>
                 ))}
             </MapView>
@@ -439,59 +435,61 @@ const HomeScreen = ({ navigation }) => {
             )}
 
             {hideModelize && (
-              // <BottomEvents
-              //   modalizeRef={modalizeRef}
-              //   setHideModelize={setHideModelize}
-              //   flatListRef={flatListRef}
-              //   eventss={eventss}
-              //   renderItemBottom={renderItemBottom}
-              //   onScroll={onScroll}
-              //   selectedEventIndex={selectedEventIndex}
-              // />
-              <View style={styles.bottomView}>
-                <View style={styles.bottomContnet}>
-                  <View style={styles.iconsContainer}>
-                    <OptionsIcon
-                      onPress={() => {
-                        modalizeRef.current?.open();
-                        setHideModelize(false);
-                      }}
-                      style={styles.bottomIcon}
-                      fill={"transparent"}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      backgroundColor: "#f5f0f0",
-                      padding: 5,
-                      borderRadius: 100,
-                    }}
-                  >
-                    <OptionsIcon
-                      onPress={() => {
-                        modalizeRef.current?.open();
-                        setHideModelize(false);
-                      }}
-                      style={styles.bottomIcon}
-                      fill={colors.black}
-                    />
-                  </View>
-                </View>
+              <BottomEvents
+                modalizeRef={modalizeRef}
+                setHideModelize={setHideModelize}
+                flatListRef={flatListRef}
+                eventss={eventss}
+                renderItemBottom={renderItemBottom}
+                onScroll={onScroll}
+                selectedEventIndex={selectedEventIndex}
+                getItemLayout={getItemLayout}
+              />
+              // <View style={styles.bottomView}>
+              //   <View style={styles.bottomContnet}>
+              //     <View style={styles.iconsContainer}>
+              //       <OptionsIcon
+              //         onPress={() => {
+              //           modalizeRef.current?.open();
+              //           setHideModelize(false);
+              //         }}
+              //         style={styles.bottomIcon}
+              //         fill={"transparent"}
+              //       />
+              //     </View>
+              //     <View
+              //       style={{
+              //         backgroundColor: "#f5f0f0",
+              //         padding: 5,
+              //         borderRadius: 100,
+              //       }}
+              //     >
+              //       <OptionsIcon
+              //         onPress={() => {
+              //           modalizeRef.current?.open();
+              //           setHideModelize(false);
+              //         }}
+              //         style={styles.bottomIcon}
+              //         fill={colors.black}
+              //       />
+              //     </View>
+              //   </View>
 
-                <View>
-                  <FlatList
-                    ref={flatListRef}
-                    data={eventss}
-                    keyExtractor={(item, index) => item?._id.toString()}
-                    renderItem={renderItemBottom}
-                    horizontal={true}
-                    onScroll={onScroll}
-                    viewabilityConfig={{
-                      itemVisiblePercentThreshold: 50,
-                    }}
-                  />
-                </View>
-              </View>
+              //   <View>
+              //     <FlatList
+              //       ref={flatListRef}
+              //       data={eventss}
+              //       keyExtractor={(item, index) => item?._id.toString()}
+              //       renderItem={renderItemBottom}
+              //       horizontal={true}
+              //       onScroll={onScroll}
+              //       getItemLayout={getItemLayout}
+              //       viewabilityConfig={{
+              //         itemVisiblePercentThreshold: 50,
+              //       }}
+              //     />
+              //   </View>
+              // </View>
             )}
           </View>
         </>

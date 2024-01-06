@@ -29,7 +29,7 @@ const BottomCard = React.memo(({ item, navigation }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("details", { eventId: item._id });
+        navigation.navigate("Details", { eventId: item._id });
       }}
       style={styles.cardMain}
     >
@@ -75,40 +75,6 @@ const BottomCard = React.memo(({ item, navigation }) => {
                   </View>
                 </ImageBackground>
               ))}
-            {/* {item.event_tags && (
-              <ImageBackground
-                style={styles.tagBody}
-                source={images.smallBox}
-                imageStyle={{ borderRadius: 50 }}
-              >
-                <View style={{ padding: 5 }}>
-                  <Text style={styles.tagName}>{item.event_tags}</Text>
-                </View>
-              </ImageBackground>
-            )}
-
-            {item.tag2 && (
-              <ImageBackground
-                style={styles.tagBody}
-                source={images.smallBox}
-                imageStyle={{ borderRadius: 50 }}
-              >
-                <View style={{ padding: 5 }}>
-                  <Text style={styles.tagName}>{item.tag2}</Text>
-                </View>
-              </ImageBackground>
-            )}
-            {item.tag3 && (
-              <ImageBackground
-                style={styles.tagBody}
-                source={images.smallBox}
-                imageStyle={{ borderRadius: 50 }}
-              >
-                <View style={{ padding: 5 }}>
-                  <Text style={styles.tagName}>{item.tag3}</Text>
-                </View>
-              </ImageBackground>
-            )} */}
           </View>
         </View>
         <TouchableOpacity style={styles.heartContainer}>
@@ -127,7 +93,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     alignContent: "center",
     justifyContent: "center",
-    width: sizeHelper.screenWidth > 450 ? 550 : 380,
+    width: sizeHelper.screenWidth > 450 ? 550 : 400,
     marginBottom: 30,
   },
   cardContainer: {
@@ -141,7 +107,10 @@ const styles = StyleSheet.create({
   },
   imageContainer: { width: "20%" },
   img: { height: 100, width: 80 },
-  centerContainer: { width: "70%" },
+  centerContainer: {
+    width: "70%",
+    marginHorizontal: sizeHelper.screenWidth < 450 && 5,
+  },
   name: {
     fontSize: 16,
     //   fontWeight: '700',

@@ -1,4 +1,4 @@
-package com.loyalty;
+package com.assemble;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

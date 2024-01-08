@@ -3,12 +3,16 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { ImageBackground } from "react-native";
 import { colors } from "../utils/colors";
 import { images } from "../assets/images";
-import { FillHeartIcon, UnFillHeartIcon } from "../assets/SVG/svg";
+import {
+  CustomHeartIcon,
+  FillHeartIcon,
+  UnFillHeartIcon,
+} from "../assets/SVG/svg";
 import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
 import sizeHelper from "../assets/helpers/sizeHelper";
 import FastImage from "react-native-fast-image";
-const BottomCard = React.memo(({ item, navigation }) => {
+const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
   const formatDate = (dateString) => {
     const options = { weekday: "short", month: "short", day: "numeric" };
     const formattedDate = new Date(dateString).toLocaleDateString(
@@ -77,12 +81,14 @@ const BottomCard = React.memo(({ item, navigation }) => {
               ))}
           </View>
         </View>
-        <TouchableOpacity style={styles.heartContainer}>
-          {item.favEvent.isFav === true ? (
-            <FillHeartIcon style={styles.fillIcon} />
-          ) : (
-            <UnFillHeartIcon style={styles.fillIcon} fill="#cfb34e" />
-          )}
+        <TouchableOpacity
+          onPress={() => onAddFav(item)}
+          style={styles.heartContainer}
+        >
+          <CustomHeartIcon
+            style={styles.fillIcon}
+            fill={item.favEvent.isFav ? " #D53835" : "#cfb34e"}
+          />
         </TouchableOpacity>
       </View>
     </TouchableOpacity>

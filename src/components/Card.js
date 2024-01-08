@@ -3,11 +3,11 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { ImageBackground } from "react-native";
 import { colors } from "../utils/colors";
 import { images } from "../assets/images";
-import { FillHeartIcon, UnFillHeartIcon } from "../assets/SVG/svg";
+import { CustomHeartIcon } from "../assets/SVG/svg";
 import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
 import FastImage from "react-native-fast-image";
-const Card = React.memo(({ item, navigation }) => {
+const Card = React.memo(({ item, navigation, onAddFav }) => {
   const formatDate = (dateString) => {
     const options = { weekday: "short", month: "short", day: "numeric" };
     const formattedDate = new Date(dateString).toLocaleDateString(
@@ -27,7 +27,7 @@ const Card = React.memo(({ item, navigation }) => {
       return text;
     }
   }
-
+  console.log(item._id);
   return (
     <TouchableOpacity
       onPress={() => {
@@ -77,60 +77,16 @@ const Card = React.memo(({ item, navigation }) => {
                   </View>
                 </ImageBackground>
               ))}
-
-            {/* {item.event_tags[1] && (
-              <ImageBackground
-                style={styles.tagBody}
-                source={images.smallBox}
-                imageStyle={{ borderRadius: 50 }}
-              >
-                <View style={{ padding: 5 }}>
-                  <Text style={styles.tagName}>{item.event_tags[1]}</Text>
-                </View>
-              </ImageBackground>
-            )}
-
-            {item.event_tags[2] && (
-              <ImageBackground
-                style={styles.tagBody}
-                source={images.smallBox}
-                imageStyle={{ borderRadius: 50 }}
-              >
-                <View style={{ padding: 5 }}>
-                  <Text style={styles.tagName}>{item.event_tags[2]}</Text>
-                </View>
-              </ImageBackground>
-            )}
-            {item.event_tags[3] && (
-              <ImageBackground
-                style={styles.tagBody}
-                source={images.smallBox}
-                imageStyle={{ borderRadius: 50 }}
-              >
-                <View style={{ padding: 5 }}>
-                  <Text style={styles.tagName}>{item.event_tags[3]}</Text>
-                </View>
-              </ImageBackground>
-            )}
-            {item.event_tags[4] && (
-              <ImageBackground
-                style={styles.tagBody}
-                source={images.smallBox}
-                imageStyle={{ borderRadius: 50 }}
-              >
-                <View style={{ padding: 5 }}>
-                  <Text style={styles.tagName}>{item.event_tags[4]}</Text>
-                </View>
-              </ImageBackground>
-            )} */}
           </View>
         </View>
-        <TouchableOpacity style={styles.heartContainer}>
-          {item.favEvent.isFav === true ? (
-            <FillHeartIcon style={styles.fillIcon} />
-          ) : (
-            <UnFillHeartIcon style={styles.fillIcon} fill="#cfb34e" />
-          )}
+        <TouchableOpacity
+          onPress={() => onAddFav(item)}
+          style={styles.heartContainer}
+        >
+          <CustomHeartIcon
+            style={styles.fillIcon}
+            fill={item.favEvent.isFav ? " #D53835" : "#cfb34e"}
+          />
         </TouchableOpacity>
       </View>
     </TouchableOpacity>

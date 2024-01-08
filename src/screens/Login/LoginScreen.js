@@ -14,7 +14,7 @@ import {
   AppleButton,
   appleAuth,
 } from "@invertase/react-native-apple-authentication";
-
+import Toast from "react-native-root-toast";
 import { IPhoneIcon } from "../../assets/SVG/svg";
 import { styles } from "./styles";
 import sizeHelper from "../../assets/helpers/sizeHelper";
@@ -37,7 +37,11 @@ const LoginScreen = ({ navigation }) => {
     console.log("ressss", ressss);
 
     if (ressss !== null) {
-      navigation.navigate("Home");
+      setIsLoading(true);
+      setTimeout(() => {
+        navigation.navigate("Home");
+        setIsLoading(false);
+      }, 1000);
     } else {
       GoogleSignin.configure();
       (await GoogleSignin.isSignedIn()) && (await GoogleSignin.signOut());
@@ -59,17 +63,23 @@ const LoginScreen = ({ navigation }) => {
           const response = await SignUp_Request(data);
 
           if (response?.message === "OAuth user created successfully") {
-            setIsLoading(false);
-
             await AsyncStorage.setItem("@token", response?.user?.sso_token);
+            await AsyncStorage.setItem(
+              "LOGIN_TYPE",
+              response?.user?.login_type
+            );
+            Toast.show("Login successful");
+            setIsLoading(false);
             navigation.navigate("Home");
           } else if (
             response.message ===
             "User with this email and login_type (Google) already exists"
           ) {
             await AsyncStorage.setItem("@token", response?.sso_token);
+            await AsyncStorage.setItem("LOGIN_TYPE", response?.login_type);
             console.log("error", response);
             setIsLoading(false);
+            Toast.show("Login successful");
             navigation.navigate("Home");
           }
 
@@ -99,7 +109,11 @@ const LoginScreen = ({ navigation }) => {
     console.log("ressss", ressss);
 
     if (ressss !== null) {
-      navigation.navigate("Home");
+      setIsLoading(true);
+      setTimeout(() => {
+        navigation.navigate("Home");
+        setIsLoading(false);
+      }, 1000);
     } else {
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
@@ -125,13 +139,22 @@ const LoginScreen = ({ navigation }) => {
         };
 
         const response = await SignUp_Request(data);
-        if (response?.sso_token) {
+        if (response?.message === "OAuth user created successfully") {
+          await AsyncStorage.setItem("@token", response?.user?.sso_token);
+          await AsyncStorage.setItem("LOGIN_TYPE", response?.user?.login_type);
+          Toast.show("Login successful");
           setIsLoading(false);
-
-          await AsyncStorage.setItem("@token", response.sso_token);
           navigation.navigate("Home");
-        } else {
+        } else if (
+          response.message ===
+          "User with this email and login_type (Google) already exists"
+        ) {
+          await AsyncStorage.setItem("@token", response?.sso_token);
+          await AsyncStorage.setItem("LOGIN_TYPE", response?.login_type);
           console.log("error", response);
+          setIsLoading(false);
+          Toast.show("Login successful");
+          navigation.navigate("Home");
         }
       }
     }

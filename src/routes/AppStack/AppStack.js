@@ -5,7 +5,8 @@ import HomeScreen from "../../screens/Home/HomeScreen";
 import SettingsScreen from "../../screens/Settings/SettingsScreen";
 import DetailsScreen from "../../screens/Details/DetailsScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Loading from "../../components/Loading";
+
+import AllFavEvents from "../../screens/AllFavEvents/AllFavEvents";
 
 const AppStack = () => {
   const Stack = createStackNavigator();
@@ -16,6 +17,7 @@ const AppStack = () => {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Screen name="AllFavEvents" component={AllFavEvents} />
     </Stack.Navigator>
   );
 };

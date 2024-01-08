@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useRef, useState } from "react";
 import { CommonActions } from "@react-navigation/native";
 import commonStyles, { PH10 } from "../../utils/CommonStyles";
@@ -20,7 +21,9 @@ import Button from "../../components/Button";
 import { SFCompact } from "../../utils/Fonts";
 import { CrossIcon } from "../../assets/SVG/svg";
 import Loading from "../../components/Loading";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { Delete_Request } from "../../api/Requests";
+import Toast from "react-native-root-toast";
 const SettingsScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
@@ -40,6 +43,57 @@ const SettingsScreen = ({ navigation }) => {
         });
     } catch (error) {
       setLoading(false);
+    }
+  };
+  // const onDeleteAccount = async () => {
+  //   setLoading(true);
+  //   try {
+  //     let token = await AsyncStorage.getItem("@token");
+  //     let loginType = await AsyncStorage.getItem("LOGIN_TYPE");
+  //     let body = {
+  //       sso_token: token,
+  //       login_type: loginType,
+  //     };
+  //     console.log(loginType, token, body);
+  //     const response = await Delete_Account(body);
+  //     console.log(response);
+  //     setLoading(false);
+  //     // navigation.dispatch(
+  //     //   CommonActions.reset({
+  //     //     index: 0,
+  //     //     routes: [{ name: "Login" }],
+  //     //   })
+  //     // );
+  //     // await AsyncStorage.getAllKeys()
+  //     //   .then((keys) => AsyncStorage.multiRemove(keys))
+  //     //   .then(() => {
+  //     //     Toast.show('Account deleted successfully');
+  //     //     navigation.navigation('Login')
+  //     //     setLoading(false);
+  //     //   });
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoading(false);
+  //   }
+  // };
+  const onDeleteAccount = async () => {
+    setLoading(true);
+    try {
+      let token = await AsyncStorage.getItem("@token");
+      let loginType = await AsyncStorage.getItem("LOGIN_TYPE");
+      let queryParams = {
+        sso_token: token,
+        login_type: loginType,
+      };
+      console.log(loginType, token, queryParams);
+      const response = await Delete_Request(queryParams);
+      console.log(response);
+      setLoading(false);
+      // Handle success and navigation logic here
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      // Handle error logic here
     }
   };
   const handleGoBack = () => {
@@ -119,7 +173,7 @@ const SettingsScreen = ({ navigation }) => {
                     borderRadius={100}
                     margin={20}
                     fontFamily={SFCompact.semiBold}
-                    // onPress={SubmitLogin}
+                    onPress={onDeleteAccount}
                   />
                 </>
                 <>

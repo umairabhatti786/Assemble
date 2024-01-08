@@ -1,38 +1,19 @@
+import React, { useRef, useState } from "react";
 import {
   View,
   ImageBackground,
-  SafeAreaView,
-  Text,
   SectionList,
-  Image,
   TouchableOpacity,
   Linking,
-  FlatList,
-  Dimensions,
 } from "react-native";
 import FastImage from "react-native-fast-image";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useLayoutEffect,
-} from "react";
-import commonStyles, { PH10 } from "../../utils/CommonStyles";
+
 import { images } from "../../assets/images";
 import { styles } from "./styles";
 import sizeHelper from "../../assets/helpers/sizeHelper";
-import {
-  FillHeartIcon,
-  HeartIcon,
-  ImageIcon,
-  LocationGoldenIcon,
-  OptionsIcon,
-  ProfileIcon,
-  UnFillHeartIcon,
-} from "../../assets/SVG/svg";
+import { FillHeartIcon, ProfileIcon } from "../../assets/SVG/svg";
 import CustomText from "../../components/CustomText";
 import { colors } from "../../utils/colors";
 import { Modalize } from "react-native-modalize";
@@ -40,17 +21,15 @@ import { useFocusEffect } from "@react-navigation/native";
 import Card from "../../components/Card";
 import { SFCompact } from "../../utils/Fonts";
 import Loading from "../../components/Loading";
-import { Get_All_Events, SignUp_Request } from "../../api/Requests";
+import {
+  Get_All_Events,
+  Like_Single_Event,
+  UnLike_Single_Event,
+} from "../../api/Requests";
 import Button from "../../components/Button";
 import BottomCard from "../../components/BottomCard";
 import BottomEvents from "../../components/BottomEvents";
-// import Animated, {
-//   useSharedValue,
-//   useAnimatedScrollHandler,
-//   useAnimatedStyle,
-//   useAnimatedProps,
-// } from "react-native-reanimated";
-
+import Toast from "react-native-root-toast";
 const HomeScreen = ({ navigation }) => {
   const mapRef = useRef(null);
   const modalizeRef = useRef(null);
@@ -95,7 +74,44 @@ const HomeScreen = ({ navigation }) => {
   //     setSelectedEventIndex(clampedIndex);
   //   },
   // });
-
+  const onAddFav = async (item) => {
+    setLoading(true);
+    let ressss = await AsyncStorage.getItem("@token");
+    const eventID = item._id;
+    let body = {
+      sso_token: ressss,
+    };
+    try {
+      if (item.favEvent.isFav === false) {
+        const response = await Like_Single_Event(eventID, body);
+        console.log("Fav response =====>", response);
+        if (response) {
+          setTimeout(() => {
+            Toast.show("Events Added in Favorites");
+            fetchAllEvents();
+            setLoading(false);
+          }, 1000);
+        } else {
+          setLoading(false);
+        }
+      } else {
+        const response = await UnLike_Single_Event(eventID, body);
+        console.log("Remove Fav response =====>", response);
+        if (response) {
+          setTimeout(() => {
+            Toast.show("Events Remove From Favorites");
+            fetchAllEvents();
+            setLoading(false);
+          }, 1000);
+        } else {
+          setLoading(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
   const getItemLayout = (data, index) => ({
     length: 100, // Assuming item height is 100, adjust accordingly
     offset: 100 * index,
@@ -105,9 +121,8 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate("Settings");
   };
 
-  const closeModal = () => {
-    modalizeRef.current?.close();
-    setHideModelize(true);
+  const onNavigateToFav = () => {
+    navigation.navigate("AllFavEvents");
   };
   useFocusEffect(
     React.useCallback(() => {
@@ -119,44 +134,47 @@ const HomeScreen = ({ navigation }) => {
     setLoading(true);
     try {
       let response = await Get_All_Events();
-      let ressss = await AsyncStorage.getItem("@token");
-      console.log("ressss", ressss);
+
       if (Array.isArray(response.events) && response.events.length > 0) {
         const modifiedEvents = response.events.map((event) => {
           event.event_title = truncateText(event.event_title, 3);
-
           event.event_location.neighborhood = truncateText(
             event.event_location.neighborhood,
             3
           );
-
           return event;
         });
+
+        // Sort events by date, with the newest events first
+        modifiedEvents.sort(
+          (a, b) => new Date(b.event_date) - new Date(a.event_date)
+        );
 
         setEventss(modifiedEvents);
 
         const currentDate = new Date();
-        const upcomingEvents = [];
-        const todayEvents = [];
+        const eventSections = [];
 
         modifiedEvents.forEach((event) => {
           const eventDate = new Date(event.event_date);
-          if (eventDate.toDateString() === currentDate.toDateString()) {
-            todayEvents.push(event);
-          } else {
-            upcomingEvents.push(event);
+          const isToday =
+            eventDate.toDateString() === currentDate.toDateString();
+
+          const sectionTitle = isToday
+            ? "Upcoming Events"
+            : `${eventDate.toDateString()}`;
+
+          // Create the section if it doesn't exist
+          let section = eventSections.find((sec) => sec.title === sectionTitle);
+          if (!section) {
+            section = { title: sectionTitle, data: [] };
+            eventSections.push(section);
           }
+
+          section.data.push(event);
         });
 
-        const sections = [];
-        if (todayEvents.length > 0) {
-          sections.push({ title: "Today", data: todayEvents });
-        }
-        if (upcomingEvents.length > 0) {
-          sections.push({ title: "Upcoming Events", data: upcomingEvents });
-        }
-
-        setEvents(sections);
+        setEvents(eventSections);
       } else {
         setEvents(null);
       }
@@ -196,7 +214,7 @@ const HomeScreen = ({ navigation }) => {
           />
         </View>
         <View style={styles.iconContainer}>
-          <HeartIcon onPress={closeModal} style={styles.icon} />
+          <FillHeartIcon onPress={onNavigateToFav} style={styles.icon} />
         </View>
       </View>
     );
@@ -208,10 +226,10 @@ const HomeScreen = ({ navigation }) => {
     </View>
   );
   const renderItem = ({ section, item }) => (
-    <Card item={item} navigation={navigation} />
+    <Card item={item} navigation={navigation} onAddFav={onAddFav} />
   );
   const renderItemBottom = ({ section, item }) => (
-    <BottomCard item={item} navigation={navigation} />
+    <BottomCard item={item} navigation={navigation} onAddFav={onAddFav} />
   );
   const footerComponent = () => {
     return (

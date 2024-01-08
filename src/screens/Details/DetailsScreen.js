@@ -94,6 +94,8 @@ const DetailsScreen = ({ navigation, route }) => {
           response.event.event_image === undefined
             ? images.details
             : response.event.event_image;
+        response.event.ticket_link = typeof response.event.ticket_link;
+        console.log(response.event.ticket_link.length > 0);
 
         // Check if event title length > 10
 
@@ -203,7 +205,13 @@ const DetailsScreen = ({ navigation, route }) => {
       </View>
     );
   };
-
+  const onPress = () => {
+    if (eventDetail.ticket_link === "") {
+      addEventToCalendar();
+    } else {
+      openExternalLink();
+    }
+  };
   return (
     <SafeAreaView style={commonStyles.main}>
       {loading ? (
@@ -298,7 +306,11 @@ const DetailsScreen = ({ navigation, route }) => {
             </View>
             <View style={{ marginVertical: 10 }}>
               <Button
-                text={"GET TICKETS"}
+                text={
+                  eventDetail.ticket_link === ""
+                    ? "Add to calendar"
+                    : "GET TICKETS"
+                }
                 color={colors.white}
                 fontSize={17}
                 height={65}
@@ -307,7 +319,7 @@ const DetailsScreen = ({ navigation, route }) => {
                 borderRadius={100}
                 margin={20}
                 fontFamily={SFCompact.semiBold}
-                onPress={openExternalLink}
+                onPress={onPress}
               />
             </View>
           </View>

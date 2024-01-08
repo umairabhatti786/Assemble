@@ -22,6 +22,27 @@ const SignUp_Request = async (data) => {
     }
   }
 };
+const Delete_Request = async (data) => {
+  try {
+    const inst = axios.create({
+      baseURL: Url,
+      headers: {
+        // "Content-Type": "application/json",
+      },
+    });
+    const response = await inst.delete("oauth/delete", data);
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    if (error.response) {
+      console.log("post error", error.response);
+      throw new Error(error.response.data.message);
+    } else {
+      throw new Error("Invalide Error!");
+    }
+  }
+};
 
 const Get_All_Events = async (body) => {
   try {
@@ -52,6 +73,44 @@ const Get_Single_Event = async (eventID) => {
       // },
     });
     const response = await inst.get(`events/getevent/${eventID}`);
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return new Error(JSON.stringify(error.response.data.message));
+    } else {
+      throw new Error("Invalid Error!");
+    }
+  }
+};
+const Like_Single_Event = async (eventID, body) => {
+  try {
+    const inst = axios.create({
+      baseURL: Url,
+      // headers: {
+      //   Authorization: `Bearer ${token}`,
+      // },
+    });
+    const response = await inst.post(`events/addfavorite/${eventID}`, body);
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      return new Error(JSON.stringify(error.response.data.message));
+    } else {
+      throw new Error("Invalid Error!");
+    }
+  }
+};
+const UnLike_Single_Event = async (eventID, body) => {
+  try {
+    const inst = axios.create({
+      baseURL: Url,
+      // headers: {
+      //   Authorization: `Bearer ${token}`,
+      // },
+    });
+    const response = await inst.post(`events/removefavorite/${eventID}`, body);
 
     return response.data;
   } catch (error) {
@@ -120,4 +179,7 @@ export {
   User_Login,
   SignUp_Request,
   delete_user_Account,
+  Like_Single_Event,
+  UnLike_Single_Event,
+  Delete_Request,
 };

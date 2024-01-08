@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -10,11 +10,31 @@ import {
 } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { images } from "../assets/images";
-
+import FastImage from "react-native-fast-image";
 const MapComponent = ({ latitude, longitude, address }) => {
   const mapRef = useRef(null);
   const GOOGLE_MAPS_APIKEY = "AIzaSyDeYRRtmStCSHXQBJxZa4t9uB_WXNO55H0";
+  useEffect(() => {
+    updateMapCenter();
+  }, [latitude, longitude]);
+  const updateMapCenter = () => {
+    // Update the map center based on the latitude and longitude of the selected event
 
+    try {
+      mapRef.current.animateToRegion(
+        {
+          latitude,
+          longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        },
+
+        3000
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleMapPress = () => {
     const scheme = Platform.select({
       ios: "maps://0,0?q=",
@@ -29,62 +49,61 @@ const MapComponent = ({ latitude, longitude, address }) => {
 
     Linking.openURL(url);
   };
-  const CustomMarkerComponent = ({ event, onPress }) => (
+
+  const CustomMarkerComponent = React.memo(() => (
     <TouchableOpacity
-      onPress={onPress}
+      activeOpacity={0.6}
       style={{
         justifyContent: "center",
         alignItems: "center",
-        // backgroundColor: "red",
-        // height: 100,
-        // width: 100,
-        zIndex: 99999999999,
-        // position: "absolute",
+        height: 100,
+        width: 100,
+        zIndex: 999999,
       }}
     >
-      <Image
-        source={images.goldenLocation}
-        style={{ height: 80, width: 80 }}
+      <FastImage
+        source={images.blackLocation} // Use the golden location image
+        style={{ height: 60, width: 60 }}
         resizeMode="contain"
       />
     </TouchableOpacity>
-  );
+  ));
+
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
         <MapView
           provider={PROVIDER_GOOGLE}
           ref={mapRef}
-          style={[styles.map, { height: "100%", width: "100%" }]}
-          initialRegion={{
-            latitude: 32.7157,
-            longitude: -117.1611,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          // onRegionChangeComplete={(region) => setRegion(region)}
-        >
-          <Marker coordinate={{ latitude: latitude, longitude: longitude }}>
-            {/* You can customize the Marker by providing a custom component */}
-            <CustomMarkerComponent />
-          </Marker>
-        </MapView>
-
-        {/* <MapView
-          style={styles.map}
-          showsUserLocation={true}
-          followUserLocation
-          loadingEnabled
-          // provider={PROVIDER_GOOGLE}
+          style={[
+            {
+              width: "100%",
+              height: "100%",
+              borderRadius: 10,
+              overflow: "hidden",
+            },
+          ]}
           // initialRegion={{
-          //   latitude,
-          //   longitude,
+          //   latitude: 32.7157,
+          //   longitude: -117.1611,
           //   latitudeDelta: 0.0922,
           //   longitudeDelta: 0.0421,
           // }}
+          // onRegionChangeComplete={(region) => setRegion(region)}
         >
-          <Marker coordinate={{ latitude, longitude }} />
-        </MapView> */}
+          <Marker
+            onPress={() => handleMapPress()}
+            coordinate={{
+              latitude: latitude,
+              longitude: longitude,
+            }}
+          >
+            <CustomMarkerComponent />
+          </Marker>
+          <Marker coordinate={{ latitude: latitude, longitude: longitude }}>
+            <CustomMarkerComponent />
+          </Marker>
+        </MapView>
       </View>
       <TouchableOpacity style={styles.overlay} onPress={handleMapPress} />
     </View>

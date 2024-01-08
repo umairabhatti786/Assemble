@@ -45,57 +45,76 @@ const SettingsScreen = ({ navigation }) => {
       setLoading(false);
     }
   };
-  // const onDeleteAccount = async () => {
-  //   setLoading(true);
-  //   try {
-  //     let token = await AsyncStorage.getItem("@token");
-  //     let loginType = await AsyncStorage.getItem("LOGIN_TYPE");
-  //     let body = {
-  //       sso_token: token,
-  //       login_type: loginType,
-  //     };
-  //     console.log(loginType, token, body);
-  //     const response = await Delete_Account(body);
-  //     console.log(response);
-  //     setLoading(false);
-  //     // navigation.dispatch(
-  //     //   CommonActions.reset({
-  //     //     index: 0,
-  //     //     routes: [{ name: "Login" }],
-  //     //   })
-  //     // );
-  //     // await AsyncStorage.getAllKeys()
-  //     //   .then((keys) => AsyncStorage.multiRemove(keys))
-  //     //   .then(() => {
-  //     //     Toast.show('Account deleted successfully');
-  //     //     navigation.navigation('Login')
-  //     //     setLoading(false);
-  //     //   });
-  //   } catch (error) {
-  //     console.log(error);
-  //     setLoading(false);
-  //   }
-  // };
   const onDeleteAccount = async () => {
     setLoading(true);
     try {
       let token = await AsyncStorage.getItem("@token");
       let loginType = await AsyncStorage.getItem("LOGIN_TYPE");
-      let queryParams = {
+
+      const body = {
         sso_token: token,
         login_type: loginType,
       };
-      console.log(loginType, token, queryParams);
-      const response = await Delete_Request(queryParams);
-      console.log(response);
-      setLoading(false);
+
+      const url = "https://assemble-backend.onrender.com/api/oauth/delete";
+
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          // Add any additional headers if needed
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
+
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Login" }],
+        })
+      );
+      await AsyncStorage.getAllKeys()
+        .then((keys) => AsyncStorage.multiRemove(keys))
+        .then(() => {
+          Toast.show("Account deleted successfully");
+          navigation.navigation("Login");
+          setLoading(false);
+        });
       // Handle success and navigation logic here
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setLoading(false);
       // Handle error logic here
     }
   };
+
+  // const onDeleteAccount = async () => {
+  //   setLoading(true);
+  //   try {
+  //     let token = await AsyncStorage.getItem("@token");
+  //     let loginType = await AsyncStorage.getItem("LOGIN_TYPE");
+  //     let  body = {
+  //       sso_token: token,
+  //       login_type: loginType,
+  //     };
+  //     console.log(loginType, token, queryParams);
+  //     const response = await Delete_Request(queryParams);
+  //     console.log(response);
+  //     setLoading(false);
+  //     // Handle success and navigation logic here
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoading(false);
+  //     // Handle error logic here
+  //   }
+  // };
   const handleGoBack = () => {
     navigation.goBack();
   };

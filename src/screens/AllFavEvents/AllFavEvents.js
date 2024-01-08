@@ -14,7 +14,7 @@ import { SFCompact } from "../../utils/Fonts";
 import Loading from "../../components/Loading";
 import { Get_All_Events } from "../../api/Requests";
 import { CrossIcon, CustomHeartIcon } from "../../assets/SVG/svg";
-
+import Toast from "react-native-root-toast";
 const AllFavEvents = ({ navigation }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -31,14 +31,17 @@ const AllFavEvents = ({ navigation }) => {
       let response = await Get_All_Events();
 
       if (Array.isArray(response.events) && response.events.length > 0) {
-        const modifiedEvents = response.events.map((event) => {
-          event.event_title = truncateText(event.event_title, 3);
-          event.event_location.neighborhood = truncateText(
-            event.event_location.neighborhood,
-            3
-          );
-          return event;
-        });
+        const modifiedEvents = response.events
+          .filter((event) => event.favEvent.isFav === true)
+          .map((event) => {
+            event.event_title = truncateText(event.event_title, 3);
+            event.event_location.neighborhood = truncateText(
+              event.event_location.neighborhood,
+              3
+            );
+            // You can perform additional modifications if needed
+            return event;
+          });
 
         modifiedEvents.sort(
           (a, b) => new Date(b.event_date) - new Date(a.event_date)
@@ -92,7 +95,7 @@ const AllFavEvents = ({ navigation }) => {
     </View>
   );
   const renderItem = ({ section, item }) => (
-    <Card item={item} navigation={navigation} />
+    <Card item={item} navigation={navigation} onAddFav={onAddFav} />
   );
   const onHandlePress = () => {
     navigation.goBack();
@@ -123,7 +126,72 @@ const AllFavEvents = ({ navigation }) => {
       </View>
     );
   };
-  console.log(events);
+  const onAddFav = async (item) => {
+    try {
+      const token = await AsyncStorage.getItem("@token");
+      const eventID = item._id;
+      const body = {
+        sso_token: token,
+      };
+      if (item.favEvent.isFav === false) {
+        try {
+          const url = `https://assemble-backend.onrender.com/api/events/addfavorite/${eventID}`;
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              // "Content-Type": "application/json",
+              // Add any additional headers if needed
+            },
+            body: JSON.stringify(body),
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          } else {
+            if (response.ok) {
+              setTimeout(() => {
+                Toast.show("Events Added in Favorites");
+                fetchAllEvents();
+                setLoading(false);
+              }, 1000);
+            }
+          }
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          const url = `https://assemble-backend.onrender.com/api/events/removefavorite/${eventID}`;
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              // "Content-Type": "application/json",
+              // Add any additional headers if needed
+            },
+            body: JSON.stringify(body),
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          } else {
+            if (response.ok) {
+              setTimeout(() => {
+                Toast.show("Events Removed From Favorites");
+                fetchAllEvents();
+                setLoading(false);
+              }, 1000);
+            }
+          }
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       {loading ? (

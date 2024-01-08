@@ -3,7 +3,11 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { ImageBackground } from "react-native";
 import { colors } from "../utils/colors";
 import { images } from "../assets/images";
-import { CustomHeartIcon } from "../assets/SVG/svg";
+import {
+  CustomHeartIcon,
+  FillHeartIcon,
+  UnFillHeartIcon,
+} from "../assets/SVG/svg";
 import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
 import FastImage from "react-native-fast-image";
@@ -27,7 +31,7 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
       return text;
     }
   }
-  console.log(item._id);
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -83,10 +87,14 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
           onPress={() => onAddFav(item)}
           style={styles.heartContainer}
         >
-          <CustomHeartIcon
-            style={styles.fillIcon}
-            fill={item.favEvent.isFav ? " #D53835" : "#cfb34e"}
-          />
+          {item.favEvent.isFav === true ? (
+            <FillHeartIcon
+              style={styles.fillIcon}
+              fill={item.favEvent.isFav ? "#D53835" : "#cfb34e"}
+            />
+          ) : (
+            <UnFillHeartIcon style={styles.fillIcon} fill={"#cfb34e"} />
+          )}
         </TouchableOpacity>
       </View>
     </TouchableOpacity>

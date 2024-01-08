@@ -74,44 +74,112 @@ const HomeScreen = ({ navigation }) => {
   //     setSelectedEventIndex(clampedIndex);
   //   },
   // });
+  // const onAddFav = async (item) => {
+  //   setLoading(true);
+  //   let ressss = await AsyncStorage.getItem("@token");
+  //   const eventID = item._id;
+  //   let body = {
+  //     sso_token: ressss,
+  //   };
+  //   try {
+  //     if (item.favEvent.isFav === false) {
+  //       const response = await Like_Single_Event(eventID, body);
+
+  //       if (response) {
+  //         setTimeout(() => {
+  //           Toast.show("Events Added in Favorites");
+  //           fetchAllEvents();
+  //           setLoading(false);
+  //         }, 1000);
+  //       } else {
+  //         setLoading(false);
+  //       }
+  //     } else {
+  //       const response = await UnLike_Single_Event(eventID, body);
+
+  //       if (response) {
+  //         setTimeout(() => {
+  //           Toast.show("Events Remove From Favorites");
+  //           fetchAllEvents();
+  //           setLoading(false);
+  //         }, 1000);
+  //       } else {
+  //         setLoading(false);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoading(false);
+  //   }
+  // };
+
   const onAddFav = async (item) => {
-    setLoading(true);
-    let ressss = await AsyncStorage.getItem("@token");
-    const eventID = item._id;
-    let body = {
-      sso_token: ressss,
-    };
     try {
+      const token = await AsyncStorage.getItem("@token");
+      const eventID = item._id;
+      const body = {
+        sso_token: token,
+      };
       if (item.favEvent.isFav === false) {
-        const response = await Like_Single_Event(eventID, body);
-        console.log("Fav response =====>", response);
-        if (response) {
-          setTimeout(() => {
-            Toast.show("Events Added in Favorites");
-            fetchAllEvents();
-            setLoading(false);
-          }, 1000);
-        } else {
-          setLoading(false);
+        try {
+          const url = `https://assemble-backend.onrender.com/api/events/addfavorite/${eventID}`;
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              // "Content-Type": "application/json",
+              // Add any additional headers if needed
+            },
+            body: JSON.stringify(body),
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          } else {
+            if (response.ok) {
+              setTimeout(() => {
+                Toast.show("Events Added in Favorites");
+                fetchAllEvents();
+                setLoading(false);
+              }, 1000);
+            }
+          }
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          console.log(error);
         }
       } else {
-        const response = await UnLike_Single_Event(eventID, body);
-        console.log("Remove Fav response =====>", response);
-        if (response) {
-          setTimeout(() => {
-            Toast.show("Events Remove From Favorites");
-            fetchAllEvents();
-            setLoading(false);
-          }, 1000);
-        } else {
-          setLoading(false);
+        try {
+          const url = `https://assemble-backend.onrender.com/api/events/removefavorite/${eventID}`;
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              // "Content-Type": "application/json",
+              // Add any additional headers if needed
+            },
+            body: JSON.stringify(body),
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          } else {
+            if (response.ok) {
+              setTimeout(() => {
+                Toast.show("Events Removed From Favorites");
+                fetchAllEvents();
+                setLoading(false);
+              }, 1000);
+            }
+          }
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          console.log(error);
         }
       }
     } catch (error) {
-      console.log(error);
-      setLoading(false);
+      console.error(error);
     }
   };
+
   const getItemLayout = (data, index) => ({
     length: 100, // Assuming item height is 100, adjust accordingly
     offset: 100 * index,

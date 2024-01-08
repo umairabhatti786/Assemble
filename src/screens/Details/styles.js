@@ -43,7 +43,7 @@ export const styles = ScaledSheet.create({
 
   iconContainer: {
     backgroundColor: "white",
-    padding: 5,
+    padding: 8,
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",

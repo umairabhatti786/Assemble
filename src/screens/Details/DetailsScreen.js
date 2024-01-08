@@ -40,7 +40,7 @@ import Loading from "../../components/Loading";
 import { Get_Single_Event } from "../../api/Requests";
 const DetailsScreen = ({ navigation, route }) => {
   const eventID = route.params?.eventId;
-  console.log(eventID);
+
   const [eventDetail, setEventDetails] = useState({});
 
   const [loading, setLoading] = useState(false);
@@ -212,6 +212,7 @@ const DetailsScreen = ({ navigation, route }) => {
       openExternalLink();
     }
   };
+
   return (
     <SafeAreaView style={commonStyles.main}>
       {loading ? (

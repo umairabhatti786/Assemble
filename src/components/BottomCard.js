@@ -85,10 +85,11 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
           onPress={() => onAddFav(item)}
           style={styles.heartContainer}
         >
-          <CustomHeartIcon
-            style={styles.fillIcon}
-            fill={item.favEvent.isFav ? " #D53835" : "#cfb34e"}
-          />
+          {item.favEvent.isFav === true ? (
+            <FillHeartIcon style={styles.fillIcon} />
+          ) : (
+            <UnFillHeartIcon style={styles.fillIcon} fill={"#cfb34e"} />
+          )}
         </TouchableOpacity>
       </View>
     </TouchableOpacity>

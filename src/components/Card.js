@@ -88,10 +88,7 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
           style={styles.heartContainer}
         >
           {item.favEvent.isFav === true ? (
-            <FillHeartIcon
-              style={styles.fillIcon}
-              fill={item.favEvent.isFav ? "#D53835" : "#cfb34e"}
-            />
+            <FillHeartIcon style={styles.fillIcon} />
           ) : (
             <UnFillHeartIcon style={styles.fillIcon} fill={"#cfb34e"} />
           )}

@@ -32,6 +32,7 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
   }
   return (
     <TouchableOpacity
+    activeOpacity={0.8}
       onPress={() => {
         navigation.navigate("Details", { eventId: item._id });
       }}
@@ -53,11 +54,12 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
             />
           )}
         </View>
-        <View style={styles.centerContainer}>
+        <View style={{...styles.centerContainer,}}>
           <Text style={styles.name}>{truncateText(item.event_title, 10)}</Text>
 
-          <View style={styles.eventContainer}>
+          <View style={{...styles.eventContainer,width:"60%"}}>
             <Text style={styles.eventName}>
+              {/* ckd clxnmls nxlsnx lnslxnl n sxnln lsnxlsnxlsn */}
               {truncateText(item.event_location?.neighborhood, 3)}
             </Text>
             <View style={styles.div} />
@@ -177,6 +179,8 @@ const styles = StyleSheet.create({
     width: "8%",
     justifyContent: "center",
     alignItems: "center",
+    alignSelf:"flex-start",
+    marginTop:"5%"
   },
   fillIcon: { height: 24, width: 24 },
 });

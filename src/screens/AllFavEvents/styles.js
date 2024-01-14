@@ -11,8 +11,8 @@ export const styles = ScaledSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     // backgroundColor:"red",
-    zIndex: 9999999999,
-    marginTop: Platform.OS == "ios" ? 40 : 10,
+    // zIndex: 9999999999,
+    marginTop: Platform.OS == "ios" ? 0 : 10,
 
     marginHorizontal: 10,
     marginVertical: 20,

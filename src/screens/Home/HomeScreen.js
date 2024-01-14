@@ -268,9 +268,12 @@ const HomeScreen = ({ navigation }) => {
   const Header = () => {
     return (
       <View style={styles.headerContainer}>
-        <View style={styles.iconContainer}>
-          <ProfileIcon onPress={onHandlePress} style={styles.icon} />
-        </View>
+        <TouchableOpacity 
+        activeOpacity={0.6}
+        onPress={onHandlePress}
+        style={styles.iconContainer}>
+          <ProfileIcon  style={styles.profileIcon} />
+        </TouchableOpacity>
         <View style={styles.textContainer}>
           <CustomText
             color={colors.black}
@@ -278,21 +281,37 @@ const HomeScreen = ({ navigation }) => {
             alignSelf="center"
             textAlign="center"
             label="assemble"
-            fontFamily={SFCompact.semiBold}
+            fontFamily={SFCompact.bold}
           />
         </View>
-        <View style={styles.iconContainer}>
-          <FillHeartIcon onPress={onNavigateToFav} style={styles.icon} />
-        </View>
+        <TouchableOpacity 
+        onPress={onNavigateToFav}
+        style={styles.iconContainer}>
+          <FillHeartIcon  style={styles.icon} />
+        </TouchableOpacity>
       </View>
     );
   };
+  const renderSectionHeader =({section})=>{
+    console.log("SectionDataTitle",section)
 
-  const renderSectionHeader = ({ section }) => (
-    <View style={{ padding: 10 }}>
+    return(
+      <View style={{ padding: 10 }}>
       <CustomText label={section.title} color={colors.black} fontSize={16} />
     </View>
-  );
+    )
+  }
+
+  // const renderSectionHeader = ({ section }) => ({
+  //   return(
+
+  //   <View style={{ padding: 10 }}>
+  //     <CustomText label={section.title} color={colors.black} fontSize={16} />
+  //   </View>
+
+
+  //   )
+  // })
   const renderItem = ({ section, item }) => (
     <Card item={item} navigation={navigation} onAddFav={onAddFav} />
   );
@@ -401,7 +420,7 @@ const HomeScreen = ({ navigation }) => {
             longitudeDelta: 0.0421,
           },
 
-          3000
+          2000
         );
       }
     } catch (error) {
@@ -484,7 +503,7 @@ const HomeScreen = ({ navigation }) => {
                     <CustomMarkerComponent event={event} index={index} />
                   </Marker>
                 ))}
-            </MapView>
+            </MapView> 
             {hideModelize === false && (
               <Modalize
                 modalStyle={{

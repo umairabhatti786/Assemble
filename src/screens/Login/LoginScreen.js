@@ -28,21 +28,24 @@ import {
 import { SignUp_Request, User_Login } from "../../api/Requests";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loading from "../../components/Loading";
+import { useDispatch } from "react-redux";
+import { setUserToken } from "../../redux/reducers/authReducer";
 
 const LoginScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
+  const dispatch=useDispatch()
   const onPressGoogle = async () => {
-    let ressss = await AsyncStorage.getItem("@token");
-    console.log("ressss", ressss);
+    // let ressss = await AsyncStorage.getItem("@token");
+    // console.log("ressss", ressss);
 
-    if (ressss !== null) {
-      setIsLoading(true);
-      setTimeout(() => {
-        navigation.navigate("Home");
-        setIsLoading(false);
-      }, 1000);
-    } else {
+    // if (ressss !== null) {
+    //   setIsLoading(true);
+    //   setTimeout(() => {
+    //     navigation.navigate("Home");
+    //     setIsLoading(false);
+    //   }, 1000);
+    // } else {
       GoogleSignin.configure();
       (await GoogleSignin.isSignedIn()) && (await GoogleSignin.signOut());
       try {
@@ -64,6 +67,10 @@ const LoginScreen = ({ navigation }) => {
 
           if (response?.message === "OAuth user created successfully") {
             await AsyncStorage.setItem("@token", response?.user?.sso_token);
+            // dispatch(setUserToken(response?.user?.sso_token))
+            dispatch(setUserToken({token:response?.user.sso_token}))
+
+            
             await AsyncStorage.setItem(
               "LOGIN_TYPE",
               response?.user?.login_type
@@ -76,6 +83,10 @@ const LoginScreen = ({ navigation }) => {
             "User with this email and login_type (Google) already exists"
           ) {
             await AsyncStorage.setItem("@token", response?.sso_token);
+            // dispatch(setUserToken(response?.sso_token))
+            dispatch(setUserToken({token:response?.sso_token}))
+
+
             await AsyncStorage.setItem("LOGIN_TYPE", response?.login_type);
             console.log("error", response);
             setIsLoading(false);
@@ -100,21 +111,21 @@ const LoginScreen = ({ navigation }) => {
           setIsLoading(false);
           console.log("some other error happened", error);
         }
-      }
+      // }
     }
   };
 
   const onPressApple = async () => {
-    let ressss = await AsyncStorage.getItem("@token");
-    console.log("ressss", ressss);
+    // let ressss = await AsyncStorage.getItem("@token");
+    // console.log("ressss", ressss);
 
-    if (ressss !== null) {
-      setIsLoading(true);
-      setTimeout(() => {
-        navigation.navigate("Home");
-        setIsLoading(false);
-      }, 1000);
-    } else {
+    // if (ressss !== null) {
+    //   setIsLoading(true);
+    //   setTimeout(() => {
+    //     navigation.navigate("Home");
+    //     setIsLoading(false);
+    //   }, 1000);
+    // } else {
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
@@ -129,34 +140,50 @@ const LoginScreen = ({ navigation }) => {
       });
 
       if (credentialState === appleAuth.State.AUTHORIZED) {
+        setIsLoading(true);
+
         const { email, fullName, user } = appleAuthRequestResponse;
 
         const data = {
           sso_token: user,
           login_type: "apple",
-          name: fullName?.givenName,
-          email: email,
+          name:fullName?.givenName,
+          email:email,
         };
+        console.log("UserInfo",data)
 
         const response = await SignUp_Request(data);
+        console.log("responseMessage",response?.message)
+
         if (response?.message === "OAuth user created successfully") {
           await AsyncStorage.setItem("@token", response?.user?.sso_token);
+          dispatch(setUserToken({token:response?.user.sso_token}))
+
+          // dispatch(setUserToken(response?.user?.sso_token))
+          dispatch(setUserToken({token:response?.user.sso_token}))
+
+
           await AsyncStorage.setItem("LOGIN_TYPE", response?.user?.login_type);
           Toast.show("Login successful");
           setIsLoading(false);
           navigation.navigate("Home");
         } else if (
           response.message ===
-          "User with this email and login_type (Google) already exists"
+          "User with this email and login_type (Apple) already exists"
         ) {
+
           await AsyncStorage.setItem("@token", response?.sso_token);
+          // dispatch(setUserToken(response?.sso_token))
+          dispatch(setUserToken({token:response?.sso_token}))
+
+          
+
           await AsyncStorage.setItem("LOGIN_TYPE", response?.login_type);
-          console.log("error", response);
           setIsLoading(false);
           Toast.show("Login successful");
           navigation.navigate("Home");
         }
-      }
+      // }
     }
   };
 

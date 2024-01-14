@@ -46,7 +46,11 @@ target 'Assemble' do
   )
 
   permissions_path = '../node_modules/react-native-permissions/ios'
+
+  # pod 'Google-Maps-iOS-Utils'
   # pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  # pod 'GoogleMaps'
+
   pod 'GoogleUtilities', :modular_headers => true;
 
   target 'AssembleTests' do

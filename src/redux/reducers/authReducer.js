@@ -8,6 +8,7 @@ const initialState = {
   isFirstLogin: false,
   notificationAlert: false,
   createPostLocation: "",
+  userToken:"",
   currentLocation: "",
   positionsAndSkills: [],
 };
@@ -23,6 +24,9 @@ const authSlice = createSlice({
     },
     setLogOut: (state) => {
       state.currentUser = initialState.currentUser;
+    },
+    setUserToken: (state, action) => {
+      state.userToken = action.payload;
     },
     setNotificationAlert: (state, action) => {
       state.notificationAlert = action.payload;
@@ -63,5 +67,6 @@ export const {
   setEmptyPositionsAndSkills,
   setAllViewIds,
   setIsFirstLogin,
+  setUserToken,
 } = authSlice.actions;
 export default authSlice.reducer;

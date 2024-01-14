@@ -7,6 +7,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // [GMSServices provideAPIKey:@"AIzaSyB4IiJ7-RLQuovoGa_sj5HaBNBZ5vPYzT0"];
+
   self.moduleName = @"Assemble";
   if ([FIRApp defaultApp] == nil) {
     [FIRApp configure];

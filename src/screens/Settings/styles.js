@@ -91,14 +91,16 @@ export const styles = ScaledSheet.create({
     justifyContent: "space-between",
     marginVertical: 10,
     marginHorizontal: 10,
-    marginVertical: 20,
+    marginTop:50
+    // marginVertical: 20,
   },
   iconContainer: {
     backgroundColor: "white",
     padding: 5,
     borderRadius: 100,
+    width:35,height:35,
     justifyContent: "center",
     alignItems: "center",
   },
-  icon: { height: 35, width: 35 },
+  icon: { height: 25, width: 25 },
 });

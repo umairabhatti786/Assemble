@@ -29,7 +29,7 @@ const MapComponent = ({ latitude, longitude, address }) => {
           longitudeDelta: 0.0421,
         },
 
-        3000
+        2000
       );
     } catch (error) {
       console.log(error);
@@ -73,7 +73,7 @@ const MapComponent = ({ latitude, longitude, address }) => {
     <View style={styles.container}>
       <View style={styles.mapContainer}>
         <MapView
-          provider={PROVIDER_GOOGLE}
+          // provider={Platform.OS=="" PROVIDER_GOOGLE}
           ref={mapRef}
           style={[
             {

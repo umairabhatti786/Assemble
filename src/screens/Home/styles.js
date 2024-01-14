@@ -21,12 +21,19 @@ export const styles = ScaledSheet.create({
     backgroundColor: "white",
     padding: 10,
     borderRadius: 50,
+    width:40,
+    height:40,
     justifyContent: "center",
     alignItems: "center",
   },
+ 
   icon: {
-    height: sizeHelper.screenWidth > 450 ? 35 : 30,
-    width: sizeHelper.screenWidth > 450 ? 35 : 30,
+    height: sizeHelper.screenWidth > 450 ? 30 : 25,
+    width: sizeHelper.screenWidth > 450 ? 30 : 25,
+  },
+  profileIcon: {
+    height: sizeHelper.screenWidth > 450 ? 35 : 35,
+    width: sizeHelper.screenWidth > 450 ? 35 : 35,
   },
   iconImage: { height: 50, width: 50 },
   card: { height: 100, width: 80 },

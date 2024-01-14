@@ -33,16 +33,18 @@ const DateCard = ({ item }) => {
   const addEventToCalendar = async () => {
     try {
       const hasPermission = await requestCalendarPermission();
+      console.log("hasPermission",hasPermission)
 
       if (hasPermission) {
         const eventId = await RNCalendarEvents.saveEvent("New Event", {
-          startDate: "2024-01-05T09:00:00.000Z",
-          recurrenceRule: {
-            frequency: "weekly",
-            occurrence: 52,
-            interval: 2,
-            endDate: "2024-01-08T09:00:00.000Z",
-          },
+          startDate: '2024-05-06T10:00:00.000Z',
+          endDate: '2024-06-06T12:00:00.000Z',
+
+          // recurrenceRule: {
+          //   frequency: "weekly",
+          //   occurrence: 52,
+          //   interval: 2,
+          // },
         });
         Alert.alert(
           "Event Added",
@@ -65,7 +67,8 @@ const DateCard = ({ item }) => {
 
         console.log("Event added successfully. Event ID:", eventId);
       } else {
-        console.log("Calendar permission not granted");
+        Alert.alert("Error",  "Calendar permission not granted")
+
       }
     } catch (error) {
       console.error("Error adding event to calendar:", error);

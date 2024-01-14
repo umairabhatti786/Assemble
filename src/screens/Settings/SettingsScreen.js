@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   Linking,
+  Platform,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useRef, useState } from "react";
@@ -24,11 +25,14 @@ import Loading from "../../components/Loading";
 
 import { Delete_Request } from "../../api/Requests";
 import Toast from "react-native-root-toast";
+import { setUserToken } from "../../redux/reducers/authReducer";
+import { useDispatch } from "react-redux";
 const SettingsScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
+  const dispatch=useDispatch()
 
   const logout = async () => {
-    try {
+    // try {
       setLoading(true);
       navigation.dispatch(
         CommonActions.reset({
@@ -39,11 +43,13 @@ const SettingsScreen = ({ navigation }) => {
       await AsyncStorage.getAllKeys()
         .then((keys) => AsyncStorage.multiRemove(keys))
         .then(() => {
+          dispatch(setUserToken(""))
+
           setLoading(false);
         });
-    } catch (error) {
-      setLoading(false);
-    }
+    // } catch (error) {
+    //   setLoading(false);
+    // }
   };
   const onDeleteAccount = async () => {
     setLoading(true);
@@ -128,13 +134,16 @@ const SettingsScreen = ({ navigation }) => {
   const Header = () => {
     return (
       <View style={styles.headerContainer}>
-        <View style={styles.iconContainer}>
+        <TouchableOpacity
+        activeOpacity={0.6}
+        onPress={handleGoBack}
+         style={styles.iconContainer}>
           <CrossIcon
-            onPress={handleGoBack}
+            // onPress={handleGoBack}
             style={styles.icon}
             fill={colors.black}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.textContainer}>
           <CustomText
             color={"transparent"}
@@ -155,7 +164,7 @@ const SettingsScreen = ({ navigation }) => {
       {loading ? (
         <Loading />
       ) : (
-        <SafeAreaView style={commonStyles.main}>
+        <View style={{...commonStyles.main,marginTop: Platform.OS=="android"? -50:0}}>
           <ImageBackground style={styles.main} source={images.background}>
             <Header />
             <View
@@ -226,7 +235,7 @@ const SettingsScreen = ({ navigation }) => {
               </View>
             </View>
           </ImageBackground>
-        </SafeAreaView>
+        </View>
       )}
     </>
   );

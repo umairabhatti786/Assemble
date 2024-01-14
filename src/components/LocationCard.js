@@ -46,7 +46,7 @@ const LocationCard = ({ item }) => {
         <View>
           <LocationIcon style={{ height: 22, width: 22 }} />
         </View>
-        <View style={{ marginHorizontal: 10,width:"85%" }}>
+        <View style={{ marginHorizontal: 10,width:"85%", }}>
           <CustomText
             label={
               item.event_location?.venue_name
@@ -64,7 +64,7 @@ const LocationCard = ({ item }) => {
               alignItems: "center",
             }}
           >
-            <View>
+            <View style={{marginLeft:5}}>
               <CustomText
                 label={item.event_location?.neighborhood}
                 color={"#1C1916"}
@@ -79,11 +79,13 @@ const LocationCard = ({ item }) => {
                 borderRadius: 100,
                 backgroundColor: "#f5f5f5",
                 justifyContent: "center",
-                marginHorizontal: 10,
+                // marginHorizontal: 10,
               }}
             />
-            <View>
+            <View style={{width:"70%"}}>
               <CustomText
+              numberOfLines={2}
+          
                 label={
                   item.event_location?.address
                     ? item.event_location.address

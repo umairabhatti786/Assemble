@@ -47,6 +47,15 @@ const DetailsScreen = ({ navigation, route }) => {
   const handleGoBack = () => {
     navigation.goBack();
   };
+
+  useEffect(() => {
+
+    RNCalendarEvents.checkPermissions().then(pers=>{
+      console.log("pemiss",pers)
+    })
+
+   
+  }, []);
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -121,19 +130,37 @@ const DetailsScreen = ({ navigation, route }) => {
       return text;
     }
   }
+
+  const requestCalendarPermission = async () => {
+    try {
+      const result = await RNCalendarEvents.requestPermissions();
+
+      if (result === "authorized") {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error("Error requesting calendar permission:", error);
+      return false;
+    }
+  };
   const addEventToCalendar = async () => {
+
     try {
       const hasPermission = await requestCalendarPermission();
+      console.log("hasPermission",hasPermission)
 
       if (hasPermission) {
         const eventId = await RNCalendarEvents.saveEvent("New Event", {
-          startDate: "2024-01-05T09:00:00.000Z",
-          recurrenceRule: {
-            frequency: "weekly",
-            occurrence: 52,
-            interval: 2,
-            endDate: "2024-01-08T09:00:00.000Z",
-          },
+          startDate: '2024-05-06T10:00:00.000Z',
+          endDate: '2024-06-06T12:00:00.000Z',
+
+          // recurrenceRule: {
+          //   frequency: "weekly",
+          //   occurrence: 52,
+          //   interval: 2,
+          // },
         });
         Alert.alert(
           "Event Added",
@@ -156,11 +183,13 @@ const DetailsScreen = ({ navigation, route }) => {
 
         console.log("Event added successfully. Event ID:", eventId);
       } else {
-        console.log("Calendar permission not granted");
+        Alert.alert("Error",  "Calendar permission not granted")
+        // console.log("Calendar permission not granted");
       }
     } catch (error) {
       console.error("Error adding event to calendar:", error);
     }
+   
   };
   const Header = () => {
     return (
@@ -198,19 +227,23 @@ const DetailsScreen = ({ navigation, route }) => {
               <UnFillHeartIcon style={styles.icon} fill={colors.black} />
             )}
           </View>
-          <View style={[styles.iconContainer, { marginHorizontal: 10 }]}>
+
+          <TouchableOpacity 
+          activeOpacity={0.6}
+          onPress={onShare}
+          style={[styles.iconContainer, { marginHorizontal: 10 }]}>
             <UploadIcon onPress={onShare} style={styles.icon} />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     );
   };
   const onPress = () => {
-    if (eventDetail.ticket_link === "") {
+    // if (eventDetail.ticket_link === "") {
       addEventToCalendar();
-    } else {
-      openExternalLink();
-    }
+    // } else {
+    //   openExternalLink();
+    // }
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View, SectionList, SafeAreaView } from "react-native";
+import { View, SectionList, SafeAreaView, TouchableOpacity } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -103,13 +103,16 @@ const AllFavEvents = ({ navigation }) => {
   const Header = () => {
     return (
       <View style={styles.headerContainer}>
-        <View style={styles.iconContainer}>
+        <TouchableOpacity 
+        activeOpacity={0.6}
+        onPress={onHandlePress}
+        style={styles.iconContainer}>
           <CrossIcon
             fill={colors.black}
-            onPress={onHandlePress}
+            // onPress={onHandlePress}
             style={styles.icon}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.textContainer}>
           <CustomText
             color={colors.black}
@@ -202,7 +205,9 @@ const AllFavEvents = ({ navigation }) => {
             <Header />
             <View style={{ flex: 1 }}>
               <SectionList
+              // nestedScrollEnabled={false}
                 sections={events}
+                // scrollEnabled={false}
                 keyExtractor={(item, index) => item?._id.toString()}
                 renderItem={renderItem}
                 renderSectionHeader={renderSectionHeader}

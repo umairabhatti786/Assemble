@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect } from "react";
 import { OptionsIcon } from "../assets/SVG/svg";
 import sizeHelper from "../assets/helpers/sizeHelper";
@@ -17,7 +17,9 @@ const BottomEvents = ({
   return (
     <View style={styles.bottomView}>
       <View style={styles.bottomContnet}>
-        <View style={styles.iconsContainer}>
+        <TouchableOpacity
+        activeOpacity={0.6}
+         style={styles.iconsContainer}>
           <OptionsIcon
             onPress={() => {
               modalizeRef.current?.open();
@@ -26,8 +28,13 @@ const BottomEvents = ({
             style={styles.bottomIcon}
             fill={"transparent"}
           />
-        </View>
-        <View
+        </TouchableOpacity>
+        <TouchableOpacity
+        activeOpacity={0.6}
+        onPress={() => {
+          modalizeRef.current?.open();
+          setHideModelize(false);
+        }}
           style={{
             backgroundColor: "#f5f0f0",
             padding: 5,
@@ -42,7 +49,7 @@ const BottomEvents = ({
             style={styles.bottomIcon}
             fill={colors.black}
           />
-        </View>
+        </TouchableOpacity>
       </View>
 
       <View>

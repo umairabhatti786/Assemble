@@ -12,6 +12,7 @@ import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
 import FastImage from "react-native-fast-image";
 const Card = React.memo(({ item, navigation, onAddFav }) => {
+  console.log('CardData',item)
   const formatDate = (dateString) => {
     const options = { weekday: "short", month: "short", day: "numeric" };
     const formattedDate = new Date(dateString).toLocaleDateString(
@@ -20,6 +21,8 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
     );
     return formattedDate;
   };
+
+  
   function truncateText(text, maxWords) {
     const words = text.split(" ");
 
@@ -58,7 +61,7 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
         <View style={styles.centerContainer}>
           <Text style={styles.name}>{item.event_title}</Text>
 
-          <View style={styles.eventContainer}>
+          <View style={{...styles.eventContainer,width:"60%"}}>
             <Text style={styles.eventName}>
               {truncateText(item.event_location?.neighborhood, 3)}
             </Text>
@@ -168,7 +171,8 @@ const styles = StyleSheet.create({
   },
   heartContainer: {
     width: "8%",
-    justifyContent: "center",
+    paddingTop:20,
+    // justifyContent: "center",
     alignItems: "center",
   },
   fillIcon: { height: 24, width: 24 },

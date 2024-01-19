@@ -76,42 +76,40 @@ const DateCard = ({ item }) => {
       onPress={addEventToCalendar}
       activeOpacity={0.6}
       style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
         alignItems: "center",
         backgroundColor: colors.white,
         padding: 10,
-        width: "100%",
+        flex: 1,
       }}
     >
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "space-evenly",
+          justifyContent: "space-between",
           alignItems: "center",
           marginHorizontal: 10,
+          width: "100%",
         }}
       >
-        <View>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <CalanderIcon style={{ height: 20, width: 20 }} fill={"#cfb34e"} />
+          <View style={{ marginHorizontal: 20 }}>
+            <CustomText
+              label={formatDate(item.event_date) + " , " + item.event_time}
+              color={"#1C1916"}
+              fontFamily={SFCompact.light}
+              fontSize={16}
+            />
+          </View>
         </View>
-        <View style={{ marginHorizontal: 10, width: "85%" }}>
-          <CustomText
-            label={formatDate(item.event_date) + " , " + item.event_time}
-            color={"#1C1916"}
-            fontFamily={SFCompact.light}
-            fontSize={16}
-          />
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ForwardIcon style={{ height: 20, width: 20 }} />
         </View>
-      </View>
-      <View
-        style={{
-          // marginHorizontal: 3,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ForwardIcon style={{ height: 20, width: 20 }} />
       </View>
     </TouchableOpacity>
   );

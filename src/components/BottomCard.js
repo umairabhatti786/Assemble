@@ -32,6 +32,7 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
   }
   return (
     <TouchableOpacity
+      key={item._id}
       onPress={() => {
         navigation.navigate("Details", { eventId: item._id });
       }}
@@ -162,8 +163,8 @@ const styles = StyleSheet.create({
   },
   tagBody: {
     marginHorizontal: 10,
-    height: 30,
-    width: 50,
+    height: 35,
+    width: 55,
     justifyContent: "center",
     alignItems: "center",
   },

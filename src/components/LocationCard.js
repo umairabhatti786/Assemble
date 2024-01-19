@@ -24,81 +24,88 @@ const LocationCard = ({ item }) => {
 
   return (
     <TouchableOpacity
-    activeOpacity={0.6}
+      activeOpacity={0.6}
       onPress={handleMapPress}
       style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
         alignItems: "center",
         backgroundColor: colors.white,
         padding: 10,
-        width: "100%",
+        flex: 1,
       }}
     >
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "space-evenly",
+          justifyContent: "space-between",
           alignItems: "center",
           marginHorizontal: 10,
+          // backgroundColor: colors.red,
+          width: "100%",
         }}
       >
-        <View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <LocationIcon style={{ height: 22, width: 22 }} />
-        </View>
-        <View style={{ marginHorizontal: 10,width:"85%" }}>
-          <CustomText
-            label={
-              item.event_location?.venue_name
-                ? item.event_location.venue_name
-                : ""
-            }
-            color={"#120D26"}
-            fontFamily={SFCompact.light}
-            fontSize={17}
-          />
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <View>
-              <CustomText
-                label={item.event_location?.neighborhood}
-                color={"#1C1916"}
-                fontFamily={SFCompact.light}
-                fontSize={13}
-              />
-            </View>
+          <View style={{ marginHorizontal: 20 }}>
+            <CustomText
+              label={
+                item.event_location?.venue_name
+                  ? item.event_location.venue_name
+                  : ""
+              }
+              color={"#120D26"}
+              fontFamily={SFCompact.light}
+              fontSize={17}
+            />
             <View
               style={{
-                height: 5,
-                width: 5,
-                borderRadius: 100,
-                backgroundColor: "#f5f5f5",
+                flexDirection: "row",
                 justifyContent: "center",
-                marginHorizontal: 10,
+                alignItems: "center",
               }}
-            />
-            <View>
-              <CustomText
-                label={
-                  item.event_location?.address
-                    ? item.event_location.address
-                    : ""
-                }
-                color={"#1C1916"}
-                fontFamily={SFCompact.light}
-                fontSize={13}
+            >
+              <View>
+                <CustomText
+                  label={item.event_location?.neighborhood}
+                  color={"#1C1916"}
+                  fontFamily={SFCompact.light}
+                  fontSize={13}
+                />
+              </View>
+              <View
+                style={{
+                  height: 5,
+                  width: 5,
+                  borderRadius: 100,
+                  backgroundColor: "#f5f5f5",
+                  justifyContent: "center",
+                  marginHorizontal: 10,
+                }}
               />
+              <View>
+                <CustomText
+                  label={
+                    item.event_location?.address
+                      ? item.event_location.address
+                      : ""
+                  }
+                  color={"#1C1916"}
+                  fontFamily={SFCompact.light}
+                  fontSize={13}
+                />
+              </View>
             </View>
           </View>
         </View>
-      </View>
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <ForwardIcon style={{ height: 20, width: 20 }} />
+
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <ForwardIcon style={{ height: 20, width: 20 }} />
+        </View>
       </View>
     </TouchableOpacity>
   );

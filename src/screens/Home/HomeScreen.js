@@ -1,15 +1,24 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 import {
   View,
   ImageBackground,
   SectionList,
   TouchableOpacity,
   Linking,
+  Alert,
+  Platform,
+  Image,
+  Animated,
+  SafeAreaView,
+  PanResponder,
 } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import axios from "axios";
 import FastImage from "react-native-fast-image";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-
+import Geolocation from "@react-native-community/geolocation";
+import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import { images } from "../../assets/images";
 import { styles } from "./styles";
 import sizeHelper from "../../assets/helpers/sizeHelper";
@@ -21,98 +30,259 @@ import { useFocusEffect } from "@react-navigation/native";
 import Card from "../../components/Card";
 import { SFCompact } from "../../utils/Fonts";
 import Loading from "../../components/Loading";
-import {
-  Get_All_Events,
-  Like_Single_Event,
-  UnLike_Single_Event,
-} from "../../api/Requests";
+import { Get_All_Events } from "../../api/Requests";
 import Button from "../../components/Button";
 import BottomCard from "../../components/BottomCard";
 import BottomEvents from "../../components/BottomEvents";
 import Toast from "react-native-root-toast";
 const HomeScreen = ({ navigation }) => {
+  const [pan] = useState(new Animated.ValueXY());
+  const [modalHeight, setModalHeight] = useState(500); // Initial height, adjust as needed
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event([null, { dy: pan.y }], {
+        useNativeDriver: false,
+      }),
+      onPanResponderRelease: (_, gestureState) => {
+        // Check the gesture direction and adjust modal height accordingly
+        if (gestureState.dy < 0) {
+          // User is dragging up
+          setModalHeight((prevHeight) =>
+            Math.max(prevHeight + gestureState.dy, 50)
+          );
+        } else {
+          // User is dragging down
+          setModalHeight((prevHeight) => prevHeight + gestureState.dy);
+        }
+
+        // Reset pan position
+        Animated.spring(pan, {
+          toValue: { x: 0, y: 0 },
+          useNativeDriver: false,
+        }).start();
+      },
+    })
+  ).current;
+
   const mapRef = useRef(null);
   const modalizeRef = useRef(null);
   const flatListRef = useRef(null);
-
-  const [addFavorites, setAddFavorites] = useState(false);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [eventss, setEventss] = useState([]);
   const [hideModelize, setHideModelize] = useState(false);
-  const [prsseLocation, setPrsseLocation] = useState(true);
+  const [placeId, setPlaceId] = useState(null);
   const [selectedEventIndex, setSelectedEventIndex] = useState(0);
   const [userScroll, setUserScroll] = useState(true);
-  // const lastContentOffset = useSharedValue(0);
-  // const isScrolling = useSharedValue(false);
+  const [userlocation, setUserLocation] = useState({});
+  const [locationDetails, setLocationDetails] = useState(null);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchAllEvents();
+      requestLocationPermission();
+      handleGetLocation();
+    }, [])
+  );
 
-  // const scrollHandler = useAnimatedScrollHandler({
-  //   onScroll: (event) => {
-  //     // Your logic during scrolling
-  //     if (lastContentOffset.value > event.contentOffset.x) {
-  //       // Scrolling to the right
-  //     } else if (lastContentOffset.value < event.contentOffset.x) {
-  //       // Scrolling to the left
-  //     }
-  //     lastContentOffset.value = event.contentOffset.x;
-  //   },
-  //   onBeginDrag: () => {
-  //     isScrolling.value = true;
-  //   },
-  //   onEndDrag: (event) => {
-  //     isScrolling.value = false;
-  //     const itemCount = eventss.length; // total number of items in your list
-  //     const itemWidth = sizeHelper.screenWidth > 450 ? 550 : 380;
-  //     // Calculate the current index based on the scroll position
-  //     const currentIndex = Math.floor(event.contentOffset.x / itemWidth);
+  const openModalize = () => {
+    if (modalizeRef?.current) {
+      modalizeRef?.current?.open();
+    }
+  };
 
-  //     // Make sure the currentIndex is within bounds
-  //     const clampedIndex = Math.max(0, Math.min(currentIndex, itemCount - 1));
+  // Open the modalize when the component mounts
+  useEffect(() => {
+    openModalize();
+  }, []);
+  let lastPosition = 0;
 
-  //     // Pass the clampedIndex to your update functions
-  //     updateMapCenter(clampedIndex);
-  //     setSelectedEventIndex(clampedIndex);
-  //   },
-  // });
-  // const onAddFav = async (item) => {
-  //   setLoading(true);
-  //   let ressss = await AsyncStorage.getItem("@token");
-  //   const eventID = item._id;
-  //   let body = {
-  //     sso_token: ressss,
-  //   };
-  //   try {
-  //     if (item.favEvent.isFav === false) {
-  //       const response = await Like_Single_Event(eventID, body);
+  const handlePositionChange = async (position) => {
+    const currentPosition = position;
 
-  //       if (response) {
-  //         setTimeout(() => {
-  //           Toast.show("Events Added in Favorites");
-  //           fetchAllEvents();
-  //           setLoading(false);
-  //         }, 1000);
-  //       } else {
-  //         setLoading(false);
-  //       }
-  //     } else {
-  //       const response = await UnLike_Single_Event(eventID, body);
+    // Get the height of the modalize
+    const modalHeight = await modalizeRef.current?.measureHeight();
 
-  //       if (response) {
-  //         setTimeout(() => {
-  //           Toast.show("Events Remove From Favorites");
-  //           fetchAllEvents();
-  //           setLoading(false);
-  //         }, 1000);
-  //       } else {
-  //         setLoading(false);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     setLoading(false);
-  //   }
-  // };
+    if (currentPosition < lastPosition) {
+      console.log("User is dragging up");
+      // Your logic for dragging up
 
+      // Check if height is less than 50, close the modalize
+      if (modalHeight < 50) {
+        modalizeRef.current?.close();
+      }
+    } else if (currentPosition > lastPosition) {
+      console.log("User is dragging down");
+      // Your logic for dragging down
+    }
+
+    lastPosition = currentPosition;
+  };
+  const handleGetLocation = async () => {
+    const apiKey = "AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk";
+    const result = await request(
+      Platform.OS === "android"
+        ? PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
+        : PERMISSIONS.IOS.ACCESS_FINE_LOCATION
+    );
+    let response = await getLocationPermissions();
+
+    if (response === true || response === "granted") {
+      try {
+        Geolocation.getCurrentPosition(
+          (position) => {
+            const latitude = position?.coords?.latitude;
+            const longitude = position?.coords?.longitude;
+            const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+
+            axios
+              .get(geocodingApiUrl)
+              .then((response) => {
+                const results = response.data.results;
+                if (results && results.length > 0) {
+                  const firstResult = results[0];
+                  const resultPlaceId = firstResult.place_id;
+                  setPlaceId(resultPlaceId);
+                  const placesApiUrl = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${resultPlaceId}&key=${apiKey}`;
+
+                  axios
+                    .get(placesApiUrl)
+                    .then((placesResponse) => {
+                      const result = placesResponse.data.result;
+                      if (result) {
+                        // Extracting specific components from the formatted address
+                        const addressComponents = result.address_components;
+                        const city =
+                          addressComponents.find(
+                            (component) =>
+                              component.types.includes("locality") ||
+                              component.types.includes(
+                                "administrative_area_level_2"
+                              )
+                          )?.long_name || "";
+
+                        const state =
+                          addressComponents.find((component) =>
+                            component.types.includes(
+                              "administrative_area_level_1"
+                            )
+                          )?.long_name || "";
+
+                        const country =
+                          addressComponents.find((component) =>
+                            component.types.includes("country")
+                          )?.long_name || "";
+
+                        const formattedAddress = `${city}, ${state}, ${country}`;
+                        setLocationDetails(formattedAddress);
+                      }
+                    })
+                    .catch((placesError) => {
+                      console.error(
+                        "Error fetching place details:",
+                        placesError
+                      );
+                    });
+                }
+              })
+              .catch((error) => {
+                console.error("Error fetching location details:", error);
+              });
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      } catch (error) {
+        console.log("Location error:", error);
+      }
+    } else {
+      // If permission is not granted, request permission again
+      Alert.alert(
+        "Permission Denied",
+        "Please grant location permission to use this feature.",
+        [
+          {
+            text: "OK",
+            onPress: async () => {
+              try {
+                const permissionResult = await request(
+                  Platform.OS === "android"
+                    ? PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
+                    : PERMISSIONS.IOS.ACCESS_FINE_LOCATION
+                );
+
+                if (permissionResult === RESULTS.GRANTED) {
+                  // Permission granted after the second attempt
+                  handleGetLocation();
+                } else {
+                  // Handle case where permission is still not granted
+                  console.log("Permission still not granted.");
+                }
+              } catch (permissionError) {
+                console.error(
+                  "Error requesting location permission:",
+                  permissionError
+                );
+              }
+            },
+          },
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+        ]
+      );
+    }
+  };
+  async function getLocationPermissions() {
+    const granted = await request(
+      Platform.select({
+        android: PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+        ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      })
+    );
+
+    return granted === RESULTS.GRANTED;
+  }
+  const requestLocationPermission = async () => {
+    try {
+      let response = await getLocationPermissions();
+
+      if (response === true || response === "granted") {
+        Geolocation.getCurrentPosition(
+          (position) => {
+            try {
+              const latitude = position.coords?.latitude;
+              const longitude = position.coords?.longitude;
+              mapRef?.current?.animateToRegion(
+                {
+                  latitude,
+                  longitude,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                },
+                3000
+              );
+              setUserLocation(position.coords);
+            } catch (error) {
+              console.log(error);
+            }
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+          }
+          // { enableHighAccuracy: true, timeout: 30000, maximumAge: 10000 }
+        );
+      } else {
+        console.log("errrroorrr");
+      }
+    } catch (error) {
+      console.error("Error requesting location permission:", error);
+    }
+  };
   const onAddFav = async (item) => {
     try {
       const token = await AsyncStorage.getItem("@token");
@@ -135,11 +305,54 @@ const HomeScreen = ({ navigation }) => {
             throw new Error(`HTTP error! Status: ${response.status}`);
           } else {
             if (response.ok) {
-              setTimeout(() => {
-                Toast.show("Events Added in Favorites");
-                fetchAllEvents();
-                setLoading(false);
-              }, 1000);
+              const updatedEvents = eventss.map((event) => {
+                if (event._id === eventID) {
+                  event.favEvent.isFav = true;
+                }
+                return event;
+              });
+
+              if (Array.isArray(updatedEvents) && updatedEvents.length > 0) {
+                const modifiedEvents = updatedEvents.map((event) => {
+                  event.event_title = truncateText(event.event_title, 3);
+                  event.event_location.neighborhood = truncateText(
+                    event.event_location.neighborhood,
+                    3
+                  );
+                  return event;
+                });
+                modifiedEvents.sort(
+                  (a, b) => new Date(b.event_date) - new Date(a.event_date)
+                );
+
+                setEventss(modifiedEvents);
+
+                const currentDate = new Date();
+                const eventSections = [];
+
+                modifiedEvents.forEach((event) => {
+                  const eventDate = new Date(event.event_date);
+                  const isToday =
+                    eventDate.toDateString() === currentDate.toDateString();
+
+                  const sectionTitle = isToday
+                    ? "Upcoming Events"
+                    : `${eventDate.toDateString()}`;
+
+                  let section = eventSections.find(
+                    (sec) => sec.title === sectionTitle
+                  );
+                  if (!section) {
+                    section = { title: sectionTitle, data: [] };
+                    eventSections.push(section);
+                  }
+
+                  section.data.push(event);
+                });
+
+                setEvents(eventSections);
+              }
+              Toast.show("Events Added in Favorites");
             }
           }
           const data = await response.json();
@@ -162,11 +375,48 @@ const HomeScreen = ({ navigation }) => {
             throw new Error(`HTTP error! Status: ${response.status}`);
           } else {
             if (response.ok) {
-              setTimeout(() => {
-                Toast.show("Events Removed From Favorites");
-                fetchAllEvents();
-                setLoading(false);
-              }, 1000);
+              const updatedEvents = eventss.map((event) => {
+                if (event._id === eventID) {
+                  event.favEvent.isFav = false;
+                }
+                return event;
+              });
+
+              if (Array.isArray(updatedEvents) && updatedEvents.length > 0) {
+                const modifiedEvents = updatedEvents.map((event) => {
+                  event.event_title = truncateText(event.event_title, 3);
+                  event.event_location.neighborhood = truncateText(
+                    event.event_location.neighborhood,
+                    3
+                  );
+                  return event;
+                });
+                modifiedEvents.sort(
+                  (a, b) => new Date(b.event_date) - new Date(a.event_date)
+                );
+                setEventss(modifiedEvents);
+                const currentDate = new Date();
+                const eventSections = [];
+                modifiedEvents.forEach((event) => {
+                  const eventDate = new Date(event.event_date);
+                  const isToday =
+                    eventDate.toDateString() === currentDate.toDateString();
+                  const sectionTitle = isToday
+                    ? "Upcoming Events"
+                    : `${eventDate.toDateString()}`;
+
+                  let section = eventSections.find(
+                    (sec) => sec.title === sectionTitle
+                  );
+                  if (!section) {
+                    section = { title: sectionTitle, data: [] };
+                    eventSections.push(section);
+                  }
+                  section.data.push(event);
+                });
+                setEvents(eventSections);
+              }
+              Toast.show("Events Removed From Favorites");
             }
           }
           const data = await response.json();
@@ -192,11 +442,6 @@ const HomeScreen = ({ navigation }) => {
   const onNavigateToFav = () => {
     navigation.navigate("AllFavEvents");
   };
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchAllEvents();
-    }, [])
-  );
 
   const fetchAllEvents = async () => {
     setLoading(true);
@@ -451,7 +696,7 @@ const HomeScreen = ({ navigation }) => {
       {loading ? (
         <Loading />
       ) : (
-        <>
+        <SafeAreaView style={{ flex: 1 }}>
           <Header />
           <View style={styles.container}>
             <MapView
@@ -459,15 +704,29 @@ const HomeScreen = ({ navigation }) => {
               ref={mapRef}
               style={[
                 styles.map,
-                { height: !hideModelize ? "50%" : "100%", width: "100%" },
+                {
+                  height: "100%",
+                  width: "100%",
+                },
               ]}
               initialRegion={{
-                latitude: 31.5204,
-                longitude: 74.3587,
+                latitude: userlocation.latitude
+                  ? userlocation.latitude
+                  : 32.7157,
+                longitude: userlocation.longitude
+                  ? userlocation.longitude
+                  : 117.1611,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
             >
+              <Marker
+                coordinate={{
+                  latitude: userlocation.latitude,
+                  longitude: userlocation.longitude,
+                }}
+              />
+
               {!loading &&
                 eventss.length > 0 &&
                 eventss.map((event, index) => (
@@ -478,31 +737,52 @@ const HomeScreen = ({ navigation }) => {
                       latitude: event.event_location.latitude,
                       longitude: event.event_location.longitude,
                     }}
-                    title={eventss.event_title}
-                    description={eventss.event_description}
                   >
                     <CustomMarkerComponent event={event} index={index} />
                   </Marker>
                 ))}
             </MapView>
-            {hideModelize === false && (
+            {!hideModelize && (
+              // <Animated.View
+              //   style={{
+              //     flex: 1,
+              //     justifyContent: "center",
+              //     alignItems: "center",
+              //     transform: [{ translateY: pan.y }],
+              //   }}
+              //   {...panResponder.panHandlers}
+              // >
+              //   <View
+              //     style={{
+              //       backgroundColor: "white",
+              //       padding: 16,
+              //       borderRadius: 8,
+              //       width: "100%",
+              //       height: modalHeight,
+              //     }}
+              //   >
               <Modalize
                 modalStyle={{
                   backgroundColor: "#FFFFFF",
                   flex: 1,
-                  // position: "absolute",
                   width: "100%",
                 }}
                 ref={modalizeRef}
-                alwaysOpen={sizeHelper.screenWidth > 450 ? 550 : 490}
+                alwaysOpen={
+                  !hideModelize && sizeHelper.screenWidth > 450 ? 550 : 490
+                }
                 useNativeDriver
-                modalHeight={700}
+                modalHeight={sizeHelper.screentHeight - 135}
                 handlePosition="inside"
                 panGestureComponentProps={{ enabled: true }}
               >
                 <View style={styles.content}>
                   <CustomText
-                    label={"Events in San Diego"}
+                    label={
+                      locationDetails
+                        ? "Events in \n" + locationDetails
+                        : "Events in San Diego"
+                    }
                     color={colors.black}
                     fontSize={16}
                     alignSelf="center"
@@ -510,14 +790,101 @@ const HomeScreen = ({ navigation }) => {
                     fontFamily={SFCompact.semiBold}
                   />
                 </View>
-                <SectionList
-                  sections={events}
-                  keyExtractor={(item, index) => item?._id.toString()}
-                  renderItem={renderItem}
-                  renderSectionHeader={renderSectionHeader}
-                  ListFooterComponent={loading ? null : footerComponent}
-                />
+
+                {eventss.length > 0 ? (
+                  <SectionList
+                    sections={events}
+                    keyExtractor={(item, index) => `${item?._id}_${index}`}
+                    renderItem={renderItem}
+                    renderSectionHeader={renderSectionHeader}
+                    ListFooterComponent={loading ? null : footerComponent}
+                  />
+                ) : (
+                  <>
+                    <View
+                      style={{
+                        backgroundColor: colors.white,
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginVertical: 10,
+                      }}
+                    >
+                      <View
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <CustomText
+                          label={"No Events found"}
+                          color={colors.black}
+                          fontSize={16}
+                        />
+                      </View>
+                    </View>
+                    <ImageBackground
+                      style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      source={images.background}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: colors.white,
+                          height: 300,
+                          width: 370,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: 10,
+                          marginVertical: 20,
+                        }}
+                      >
+                        <View style={{ marginVertical: 10 }}>
+                          <CustomText
+                            label={"Don't see the event you're \nlooking for? "}
+                            color={colors.black}
+                            fontSize={17}
+                            alignSelf="center"
+                            textAlign="center"
+                            fontFamily={SFCompact.regular}
+                          />
+                        </View>
+                        <View style={{ marginVertical: 10 }}>
+                          <CustomText
+                            label={
+                              "Send it our way and we will \nadd to  the list"
+                            }
+                            color={colors.black}
+                            fontSize={13}
+                            alignSelf="center"
+                            textAlign="center"
+                            fontFamily={SFCompact.light}
+                          />
+                        </View>
+                        <>
+                          <Button
+                            text={"SUBMIT EVENT"}
+                            color={colors.white}
+                            fontSize={14}
+                            height={65}
+                            width={"50%"}
+                            backgroundColor={colors.black}
+                            borderRadius={100}
+                            margin={20}
+                            fontFamily={SFCompact.regular}
+                            onPress={openExternalLink}
+                          />
+                        </>
+                      </View>
+                    </ImageBackground>
+                  </>
+                )}
               </Modalize>
+              //   </View>
+              // </Animated.View>
             )}
 
             {hideModelize && (
@@ -530,55 +897,11 @@ const HomeScreen = ({ navigation }) => {
                 onScroll={onScroll}
                 selectedEventIndex={selectedEventIndex}
                 getItemLayout={getItemLayout}
+                requestLocationPermission={requestLocationPermission}
               />
-              // <View style={styles.bottomView}>
-              //   <View style={styles.bottomContnet}>
-              //     <View style={styles.iconsContainer}>
-              //       <OptionsIcon
-              //         onPress={() => {
-              //           modalizeRef.current?.open();
-              //           setHideModelize(false);
-              //         }}
-              //         style={styles.bottomIcon}
-              //         fill={"transparent"}
-              //       />
-              //     </View>
-              //     <View
-              //       style={{
-              //         backgroundColor: "#f5f0f0",
-              //         padding: 5,
-              //         borderRadius: 100,
-              //       }}
-              //     >
-              //       <OptionsIcon
-              //         onPress={() => {
-              //           modalizeRef.current?.open();
-              //           setHideModelize(false);
-              //         }}
-              //         style={styles.bottomIcon}
-              //         fill={colors.black}
-              //       />
-              //     </View>
-              //   </View>
-
-              //   <View>
-              //     <FlatList
-              //       ref={flatListRef}
-              //       data={eventss}
-              //       keyExtractor={(item, index) => item?._id.toString()}
-              //       renderItem={renderItemBottom}
-              //       horizontal={true}
-              //       onScroll={onScroll}
-              //       getItemLayout={getItemLayout}
-              //       viewabilityConfig={{
-              //         itemVisiblePercentThreshold: 50,
-              //       }}
-              //     />
-              //   </View>
-              // </View>
             )}
           </View>
-        </>
+        </SafeAreaView>
       )}
     </>
   );

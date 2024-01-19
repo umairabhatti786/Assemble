@@ -87,6 +87,10 @@ const DetailsScreen = ({ navigation, route }) => {
 
         response.event.event_location.neighborhood = truncateText(
           response.event.event_location.neighborhood,
+          2
+        );
+        response.event.event_location.address = truncateText(
+          response.event.event_location.address,
           3
         );
         response.event.event_image =
@@ -95,9 +99,6 @@ const DetailsScreen = ({ navigation, route }) => {
             ? images.details
             : response.event.event_image;
         response.event.ticket_link = typeof response.event.ticket_link;
-        console.log(response.event.ticket_link.length > 0);
-
-        // Check if event title length > 10
 
         setTimeout(() => {
           setEventDetails(response.event);

@@ -40,7 +40,7 @@ export const styles = ScaledSheet.create({
   },
   touches: {
     backgroundColor: colors.white,
-    height: 80,
+    height: 60,
     width: width - 90,
     borderRadius: 100,
     marginVertical: 10,

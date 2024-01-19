@@ -192,21 +192,46 @@ const AllFavEvents = ({ navigation }) => {
       console.error(error);
     }
   };
+
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
         <>
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
             <Header />
-            <View style={{ flex: 1 }}>
-              <SectionList
-                sections={events}
-                keyExtractor={(item, index) => item?._id.toString()}
-                renderItem={renderItem}
-                renderSectionHeader={renderSectionHeader}
-              />
+            <View style={{ flex: 1, backgroundColor: "white" }}>
+              {events.length > 0 ? (
+                <SectionList
+                  sections={events}
+                  keyExtractor={(item, index) => `${item?._id}_${index}`}
+                  renderItem={renderItem}
+                  renderSectionHeader={renderSectionHeader}
+                />
+              ) : (
+                <View
+                  style={{
+                    backgroundColor: colors.white,
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText
+                      label={"No Favorites Events found"}
+                      color={colors.black}
+                      fontSize={16}
+                    />
+                  </View>
+                </View>
+              )}
             </View>
           </SafeAreaView>
         </>

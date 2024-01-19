@@ -35,11 +35,12 @@ const LoginScreen = ({ navigation }) => {
   const onPressGoogle = async () => {
     let ressss = await AsyncStorage.getItem("@token");
     console.log("ressss", ressss);
-
+    navigation.navigate("Home");
     if (ressss !== null) {
       setIsLoading(true);
       setTimeout(() => {
         navigation.navigate("Home");
+        Toast.show("Login successful");
         setIsLoading(false);
       }, 1000);
     } else {

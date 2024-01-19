@@ -98,13 +98,16 @@ const DetailsScreen = ({ navigation, route }) => {
           response.event.event_image === undefined
             ? images.details
             : response.event.event_image;
-        response.event.ticket_link = typeof response.event.ticket_link;
+        response.event.ticket_link =
+          response.event.ticket_link !== undefined
+            ? response.event.ticket_link
+            : "";
 
         setTimeout(() => {
           setEventDetails(response.event);
           setLoading(false);
           console.log("running stop");
-        }, 1000);
+        }, 200);
       }
     } catch (error) {
       setLoading(false);
@@ -122,6 +125,20 @@ const DetailsScreen = ({ navigation, route }) => {
       return text;
     }
   }
+  const requestCalendarPermission = async () => {
+    try {
+      const result = await RNCalendarEvents.requestPermissions();
+
+      if (result === "authorized") {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error("Error requesting calendar permission:", error);
+      return false;
+    }
+  };
   const addEventToCalendar = async () => {
     try {
       const hasPermission = await requestCalendarPermission();
@@ -224,7 +241,7 @@ const DetailsScreen = ({ navigation, route }) => {
             <View style={styles.scrollContainer}>
               <ImageBackground
                 style={styles.flex}
-                source={eventDetail.event_image}
+                source={{ uri: eventDetail.event_image }}
                 imageStyle={{ borderRadius: 20, height: 300, width: "100%" }}
                 resizeMode="cover"
               >
@@ -310,7 +327,7 @@ const DetailsScreen = ({ navigation, route }) => {
               <Button
                 text={
                   eventDetail.ticket_link === ""
-                    ? "Add to calendar"
+                    ? "ADD TO CALENDAR"
                     : "GET TICKETS"
                 }
                 color={colors.white}
@@ -323,6 +340,18 @@ const DetailsScreen = ({ navigation, route }) => {
                 fontFamily={SFCompact.semiBold}
                 onPress={onPress}
               />
+              {eventDetail.ticket_link === "" && (
+                <View style={styles.bottomView}>
+                  <CustomText
+                    label={"Tickets available at the door".toLocaleUpperCase()}
+                    color={colors.black}
+                    fontFamily={SFCompact.light}
+                    fontSize={12}
+                    textAlign="center"
+                    alignSelf="center"
+                  />
+                </View>
+              )}
             </View>
           </View>
         </ScrollView>

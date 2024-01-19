@@ -78,6 +78,7 @@ const HomeScreen = ({ navigation }) => {
   const [userScroll, setUserScroll] = useState(true);
   const [userlocation, setUserLocation] = useState({});
   const [locationDetails, setLocationDetails] = useState(null);
+  const [isAlwaysShow, setIsAlwaysShow] = useState(true);
   useFocusEffect(
     React.useCallback(() => {
       fetchAllEvents();
@@ -690,7 +691,7 @@ const HomeScreen = ({ navigation }) => {
     }, 5000);
     // Set back to true after scrolling
   };
-
+  console.log(userlocation);
   return (
     <>
       {loading ? (
@@ -729,18 +730,22 @@ const HomeScreen = ({ navigation }) => {
 
               {!loading &&
                 eventss.length > 0 &&
-                eventss.map((event, index) => (
-                  <Marker
-                    onPress={() => onPressMarker(event, index)}
-                    key={event._id}
-                    coordinate={{
-                      latitude: event.event_location.latitude,
-                      longitude: event.event_location.longitude,
-                    }}
-                  >
-                    <CustomMarkerComponent event={event} index={index} />
-                  </Marker>
-                ))}
+                eventss.map(
+                  (event, index) =>
+                    (event.latitude && event.latitude !== null) ||
+                    (event.latitude && event.latitude !== undefined && (
+                      <Marker
+                        onPress={() => onPressMarker(event, index)}
+                        key={event._id}
+                        coordinate={{
+                          latitude: event.event_location.latitude,
+                          longitude: event.event_location.longitude,
+                        }}
+                      >
+                        <CustomMarkerComponent event={event} index={index} />
+                      </Marker>
+                    ))
+                )}
             </MapView>
             {!hideModelize && (
               // <Animated.View
@@ -762,6 +767,11 @@ const HomeScreen = ({ navigation }) => {
               //     }}
               //   >
               <Modalize
+                onClose={() => {
+                  setHideModelize(true);
+
+                  modalizeRef?.current?.close();
+                }}
                 modalStyle={{
                   backgroundColor: "#FFFFFF",
                   flex: 1,

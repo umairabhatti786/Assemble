@@ -63,7 +63,8 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
             </Text>
             <View style={styles.div} />
 
-            <Text style={styles.date}>{formatDate(item.event_date)}</Text>
+            {/* <Text style={styles.date}>{formatDate(item.event_date)}</Text> */}
+            <Text style={styles.date}>{item.event_date}</Text>
           </View>
           <View style={styles.tagsContainer}>
             {Array.isArray(item.event_tags) &&

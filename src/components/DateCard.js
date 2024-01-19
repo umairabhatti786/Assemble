@@ -95,11 +95,17 @@ const DateCard = ({ item }) => {
           <CalanderIcon style={{ height: 20, width: 20 }} fill={"#cfb34e"} />
           <View style={{ marginHorizontal: 20 }}>
             <CustomText
-              label={formatDate(item.event_date) + " , " + item.event_time}
+              label={item.event_date + " , " + item.event_time}
               color={"#1C1916"}
               fontFamily={SFCompact.light}
               fontSize={16}
             />
+            {/* <CustomText
+              label={formatDate(item.event_date) + " , " + item.event_time}
+              color={"#1C1916"}
+              fontFamily={SFCompact.light}
+              fontSize={16}
+            /> */}
           </View>
         </View>
         <View

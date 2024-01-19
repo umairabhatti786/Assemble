@@ -31,7 +31,6 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
       return text;
     }
   }
-  console.log("item", item.event_image);
   return (
     <TouchableOpacity
       key={item._id}
@@ -65,7 +64,8 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
             </Text>
             <View style={styles.div} />
 
-            <Text style={styles.date}>{formatDate(item.event_date)}</Text>
+            {/* <Text style={styles.date}>{formatDate(item.event_date)}</Text> */}
+            <Text style={styles.date}>{item.event_date}</Text>
           </View>
           <View style={styles.tagsContainer}>
             {Array.isArray(item.event_tags) &&

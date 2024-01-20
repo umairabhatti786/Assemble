@@ -35,6 +35,20 @@ const LoginScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch=useDispatch()
+
+  useEffect(() => {
+    const configureGoogleSignIn = async () => {
+      GoogleSignin.configure({
+        webClientId:
+          "153444834280-be509i52m49jlt7l0ds0ic9ucbg5lh0l.apps.googleusercontent.com",
+      });
+      if (await GoogleSignin.isSignedIn()) {
+        await GoogleSignin.signOut();
+      }
+    };
+
+    configureGoogleSignIn();
+  }, []);
   const onPressGoogle = async () => {
     let ressss = await AsyncStorage.getItem("@token");
     console.log("ressss", ressss);
@@ -116,91 +130,82 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const onPressApple = async () => {
-    // let ressss = await AsyncStorage.getItem("@token");
-    // console.log("ressss", ressss);
-
-    // if (ressss !== null) {
-    //   setIsLoading(true);
-    //   setTimeout(() => {
-    //     navigation.navigate("Home");
-    //     setIsLoading(false);
-    //   }, 1000);
-    // } else {
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      });
-
-      const credentialState = await appleAuth.getCredentialStateForUser(
-        appleAuthRequestResponse.user
-      );
-
-      console.log({ credentialState }, appleAuth.State.AUTHORIZED, {
-        appleAuthRequestResponse,
-      });
-
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        setIsLoading(true);
-
-        const { email, fullName, user } = appleAuthRequestResponse;
-
-        const data = {
-          sso_token: user,
-          login_type: "apple",
-          name:fullName?.givenName,
-          email:email,
-        };
-        console.log("UserInfo",data)
-
-        const response = await SignUp_Request(data);
-        console.log("responseMessage",response?.message)
-
-        if (response?.message === "OAuth user created successfully") {
-          await AsyncStorage.setItem("@token", response?.user?.sso_token);
-          dispatch(setUserToken({token:response?.user.sso_token}))
-
-          // dispatch(setUserToken(response?.user?.sso_token))
-          dispatch(setUserToken({token:response?.user.sso_token}))
+ 
 
 
-          await AsyncStorage.setItem("LOGIN_TYPE", response?.user?.login_type);
-          Toast.show("Login successful");
-          setIsLoading(false);
-          navigation.navigate("Home");
-        } else if (
-          response.message ===
-          "User with this email and login_type (Apple) already exists"
-        ) {
+}
 
-          await AsyncStorage.setItem("@token", response?.sso_token);
-          // dispatch(setUserToken(response?.sso_token))
-          dispatch(setUserToken({token:response?.sso_token}))
+const onPressApple = async () => {
+  // let ressss = await AsyncStorage.getItem("@token");
+  // console.log("ressss", ressss);
 
-          
+  // if (ressss !== null) {
+  //   setIsLoading(true);
+  //   setTimeout(() => {
+  //     navigation.navigate("Home");
+  //     setIsLoading(false);
+  //   }, 1000);
+  // } else {
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    });
 
-          await AsyncStorage.setItem("LOGIN_TYPE", response?.login_type);
-          setIsLoading(false);
-          Toast.show("Login successful");
-          navigation.navigate("Home");
-        }
-      // }
-    }
-  };
+    const credentialState = await appleAuth.getCredentialStateForUser(
+      appleAuthRequestResponse.user
+    );
 
-  useEffect(() => {
-    const configureGoogleSignIn = async () => {
-      GoogleSignin.configure({
-        webClientId:
-          "153444834280-be509i52m49jlt7l0ds0ic9ucbg5lh0l.apps.googleusercontent.com",
-      });
-      if (await GoogleSignin.isSignedIn()) {
-        await GoogleSignin.signOut();
+    console.log({ credentialState }, appleAuth.State.AUTHORIZED, {
+      appleAuthRequestResponse,
+    });
+
+    if (credentialState === appleAuth.State.AUTHORIZED) {
+      setIsLoading(true);
+
+      const { email, fullName, user } = appleAuthRequestResponse;
+
+      const data = {
+        sso_token: user,
+        login_type: "apple",
+        name:fullName?.givenName,
+        email:email,
+      };
+      console.log("UserInfo",data)
+
+      const response = await SignUp_Request(data);
+      console.log("responseMessage",response?.message)
+
+      if (response?.message === "OAuth user created successfully") {
+        await AsyncStorage.setItem("@token", response?.user?.sso_token);
+        dispatch(setUserToken({token:response?.user.sso_token}))
+
+        // dispatch(setUserToken(response?.user?.sso_token))
+        dispatch(setUserToken({token:response?.user.sso_token}))
+
+
+        await AsyncStorage.setItem("LOGIN_TYPE", response?.user?.login_type);
+        Toast.show("Login successful");
+        setIsLoading(false);
+        navigation.navigate("Home");
+      } else if (
+        response.message ===
+        "User with this email and login_type (Apple) already exists"
+      ) {
+
+        await AsyncStorage.setItem("@token", response?.sso_token);
+        // dispatch(setUserToken(response?.sso_token))
+        dispatch(setUserToken({token:response?.sso_token}))
+
+        
+
+        await AsyncStorage.setItem("LOGIN_TYPE", response?.login_type);
+        setIsLoading(false);
+        Toast.show("Login successful");
+        navigation.navigate("Home");
       }
-    };
-
-    configureGoogleSignIn();
-  }, []);
+    // }
+  }
+};
 
   return (
     <>
@@ -286,4 +291,4 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
-export default LoginScreen;
+export default LoginScreen

@@ -16,7 +16,8 @@ const BottomEvents = ({
   requestLocationPermission,
 }) => {
   return (
-    <View style={styles.bottomView}>
+    <>
+      <View style={styles.bottomView}>
       <View style={styles.bottomContnet}>
         <TouchableOpacity
         activeOpacity={0.6}
@@ -52,6 +53,7 @@ const BottomEvents = ({
             }}
             style={styles.bottomIcon}
           />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.bottomContnet}>
@@ -84,7 +86,6 @@ const BottomEvents = ({
             style={styles.bottomIcon}
             fill={colors.black}
           />
-        </TouchableOpacity>
       </View>
 
       <View>
@@ -102,6 +103,8 @@ const BottomEvents = ({
         />
       </View>
     </View>
+    </>
+  
   );
 };
 const styles = StyleSheet.create({

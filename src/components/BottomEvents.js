@@ -1,6 +1,6 @@
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect } from "react";
-import { OptionsIcon } from "../assets/SVG/svg";
+import { LocateIcon, OptionsIcon } from "../assets/SVG/svg";
 import sizeHelper from "../assets/helpers/sizeHelper";
 import { colors } from "../utils/colors";
 
@@ -13,6 +13,7 @@ const BottomEvents = ({
   onScroll,
   selectedEventIndex,
   getItemLayout,
+  requestLocationPermission,
 }) => {
   return (
     <View style={styles.bottomView}>
@@ -38,7 +39,41 @@ const BottomEvents = ({
           style={{
             backgroundColor: "#f5f0f0",
             padding: 5,
-            borderRadius: 100,
+            borderRadius: 80,
+            justifyContent: "center",
+            alignItems: "center",
+            height: 50,
+            width: 50,
+          }}
+        >
+          <LocateIcon
+            onPress={() => {
+              requestLocationPermission();
+            }}
+            style={styles.bottomIcon}
+          />
+        </View>
+      </View>
+      <View style={styles.bottomContnet}>
+        <View style={styles.iconsContainer}>
+          <OptionsIcon
+            onPress={() => {
+              modalizeRef.current?.open();
+              setHideModelize(false);
+            }}
+            style={styles.bottomIcon}
+            fill={"transparent"}
+          />
+        </View>
+        <View
+          style={{
+            backgroundColor: "#f5f0f0",
+            padding: 5,
+            borderRadius: 80,
+            justifyContent: "center",
+            alignItems: "center",
+            height: 50,
+            width: 50,
           }}
         >
           <OptionsIcon
@@ -81,10 +116,10 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     padding: sizeHelper.screenWidth > 450 ? 5 : 5,
   },
+
   bottomIcon: {
-    height: sizeHelper.screenWidth > 450 ? 50 : 40,
-    width: sizeHelper.screenWidth > 450 ? 50 : 40,
-    borderRadius: 100,
+    height: 30,
+    width: 30,
   },
 });
 export default BottomEvents;

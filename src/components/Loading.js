@@ -9,18 +9,18 @@ import { images } from "../assets/images";
 
 const Loading = () => {
   return (
-    <ImageBackground
+    <View
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
       }}
-      source={images.assembleLogin}
+      // source={images.assembleLogin}
     >
       <View style={[styles.popupContainer, { zIndex: 99999 }]}>
         <ActivityIndicator size="small" color={"black"} />
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 const styles = StyleSheet.create({
@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    backgroundColor: "transparent",
+    // backgroundColor: "rgba(255, 255, 255, 0.9)",
     zIndex: 9999,
   },
 });

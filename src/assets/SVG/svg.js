@@ -293,3 +293,19 @@ export const LocationGoldenIcon = ({ style, fill, onPress }) => {
     </Svg>
   );
 };
+export const LocateIcon = ({ style, fill, onPress }) => {
+  return (
+    <Svg
+      style={style}
+      onPress={onPress}
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <Path
+        d="M1.401 10.6611C-0.219886 10.6504 -0.484736 8.7347 0.871296 8.10676L17.8005 0.220371C19.2837 -0.471418 20.502 0.550301 19.7922 2.10417L11.9632 19.0157C11.2534 20.559 9.35709 20.1865 9.35709 18.6007L9.3359 10.9058C9.3359 10.7462 9.28293 10.693 9.12402 10.693L1.401 10.6611Z"
+        fill="black"
+      />
+    </Svg>
+  );
+};

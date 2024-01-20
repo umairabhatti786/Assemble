@@ -121,4 +121,10 @@ export const styles = ScaledSheet.create({
     alignItems: "center",
     borderRadius: 20,
   },
+  bottomView: {
+    backgroundColor: colors.white,
+    marginVertical: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

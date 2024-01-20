@@ -32,7 +32,7 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
   }
   return (
     <TouchableOpacity
-    activeOpacity={0.8}
+      key={item._id}
       onPress={() => {
         navigation.navigate("Details", { eventId: item._id });
       }}
@@ -64,7 +64,8 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
             </Text>
             <View style={styles.div} />
 
-            <Text style={styles.date}>{formatDate(item.event_date)}</Text>
+            {/* <Text style={styles.date}>{formatDate(item.event_date)}</Text> */}
+            <Text style={styles.date}>{item.event_date}</Text>
           </View>
           <View style={styles.tagsContainer}>
             {Array.isArray(item.event_tags) &&
@@ -164,8 +165,8 @@ const styles = StyleSheet.create({
   },
   tagBody: {
     marginHorizontal: 10,
-    height: 30,
-    width: 50,
+    height: 35,
+    width: 55,
     justifyContent: "center",
     alignItems: "center",
   },

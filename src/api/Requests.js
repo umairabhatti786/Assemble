@@ -87,9 +87,6 @@ const Like_Single_Event = async (eventID, body) => {
   try {
     const inst = axios.create({
       baseURL: Url,
-      // headers: {
-      //   Authorization: `Bearer ${token}`,
-      // },
     });
     const response = await inst.post(`events/addfavorite/${eventID}`, body);
 

@@ -36,16 +36,17 @@ const LoginScreen = ({ navigation }) => {
 
   const dispatch=useDispatch()
   const onPressGoogle = async () => {
-    // let ressss = await AsyncStorage.getItem("@token");
-    // console.log("ressss", ressss);
-
-    // if (ressss !== null) {
-    //   setIsLoading(true);
-    //   setTimeout(() => {
-    //     navigation.navigate("Home");
-    //     setIsLoading(false);
-    //   }, 1000);
-    // } else {
+    let ressss = await AsyncStorage.getItem("@token");
+    console.log("ressss", ressss);
+    navigation.navigate("Home");
+    if (ressss !== null) {
+      setIsLoading(true);
+      setTimeout(() => {
+        navigation.navigate("Home");
+        Toast.show("Login successful");
+        setIsLoading(false);
+      }, 1000);
+    } else {
       GoogleSignin.configure();
       (await GoogleSignin.isSignedIn()) && (await GoogleSignin.signOut());
       try {

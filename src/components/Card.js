@@ -34,9 +34,9 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
       return text;
     }
   }
-
   return (
     <TouchableOpacity
+      key={item._id}
       onPress={() => {
         navigation.navigate("Details", { eventId: item._id });
       }}
@@ -67,7 +67,8 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
             </Text>
             <View style={styles.div} />
 
-            <Text style={styles.date}>{formatDate(item.event_date)}</Text>
+            {/* <Text style={styles.date}>{formatDate(item.event_date)}</Text> */}
+            <Text style={styles.date}>{item.event_date}</Text>
           </View>
           <View style={styles.tagsContainer}>
             {Array.isArray(item.event_tags) &&
@@ -91,7 +92,7 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
           style={styles.heartContainer}
         >
           {item.favEvent.isFav === true ? (
-            <FillHeartIcon style={styles.fillIcon} />
+            <FillHeartIcon style={{ height: 20, width: 20 }} />
           ) : (
             <UnFillHeartIcon style={styles.fillIcon} fill={"#cfb34e"} />
           )}
@@ -158,10 +159,11 @@ const styles = StyleSheet.create({
   },
   tagBody: {
     marginHorizontal: 10,
-    height: 30,
-    width: 50,
+    height: 35,
+    width: 55,
     justifyContent: "center",
     alignItems: "center",
+    // elevation: 5,
   },
   tagName: {
     fontSize: 12,

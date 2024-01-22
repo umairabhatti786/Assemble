@@ -128,13 +128,17 @@ const SettingsScreen = ({ navigation }) => {
   const Header = () => {
     return (
       <View style={styles.headerContainer}>
-        <View style={styles.iconContainer}>
+        <TouchableOpacity 
+        activeOpacity={0.6}
+                    onPress={handleGoBack}
+
+        style={styles.iconContainer}>
           <CrossIcon
             onPress={handleGoBack}
             style={styles.icon}
             fill={colors.black}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.textContainer}>
           <CustomText
             color={"transparent"}
@@ -155,7 +159,7 @@ const SettingsScreen = ({ navigation }) => {
       {loading ? (
         <Loading />
       ) : (
-        <SafeAreaView style={commonStyles.main}>
+        <View style={commonStyles.main}>
           <ImageBackground style={styles.main} source={images.background}>
             <Header />
             <View
@@ -226,7 +230,7 @@ const SettingsScreen = ({ navigation }) => {
               </View>
             </View>
           </ImageBackground>
-        </SafeAreaView>
+        </View>
       )}
     </>
   );

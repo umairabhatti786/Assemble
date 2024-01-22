@@ -37,12 +37,13 @@ const DateCard = ({ item }) => {
       if (hasPermission) {
         const eventId = await RNCalendarEvents.saveEvent("New Event", {
           startDate: "2024-01-05T09:00:00.000Z",
-          recurrenceRule: {
-            frequency: "weekly",
-            occurrence: 52,
-            interval: 2,
-            endDate: "2024-01-08T09:00:00.000Z",
-          },
+          endDate: "2024-01-08T09:00:00.000Z",
+          // recurrenceRule: {
+          //   frequency: "weekly",
+          //   occurrence: 52,
+          //   interval: 2,
+          //   endDate: "2024-01-08T09:00:00.000Z",
+          // },
         });
         Alert.alert(
           "Event Added",

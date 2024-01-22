@@ -144,14 +144,25 @@ const DetailsScreen = ({ navigation, route }) => {
       const hasPermission = await requestCalendarPermission();
 
       if (hasPermission) {
+        // const startDate = new Date();
+        // const endDate = (new Date() + 7);
+        
+        // console.log("startDate",startDate)
+        //         console.log("startDate",startDate)
+
+
+
+        // endDate.setDate(endDate.getDate() + 7);
         const eventId = await RNCalendarEvents.saveEvent("New Event", {
           startDate: "2024-01-05T09:00:00.000Z",
-          recurrenceRule: {
-            frequency: "weekly",
-            occurrence: 52,
-            interval: 2,
-            endDate: "2024-01-08T09:00:00.000Z",
-          },
+          endDate: "2024-01-08T09:00:00.000Z",
+
+          // recurrenceRule: {
+          //   frequency: "weekly",
+          //   occurrence: 52,
+          //   interval: 2,
+          //   endDate: "2024-01-08T09:00:00.000Z",
+          // },
         });
         Alert.alert(
           "Event Added",

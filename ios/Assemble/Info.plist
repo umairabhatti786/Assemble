@@ -59,10 +59,22 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+  <string>YOUR TEXT</string>
+  <key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+  <string>YOUR TEXT</string>
+	<key>NSCalendarsUsageDescription</key> 
+   <string>This app requires access to the calendar</string>
+   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+      <string>This app requires access to the Location</string>
+      <key>NSLocationAlwaysUsageDescription</key>
+      <string>This app requires access to the Location</string>
+      <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	   <string>This app requires access to the Location</string>
+	  <key>NSLocationWhenInUseUsageDescription</key>
+      <string>This app requires access to the Location</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Your message to user when the camera is accessed for the first time</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>This App need to access your Camera</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Your message to user when the microsphone is accessed for the first time</string>
 	<key>NSPhotoLibraryUsageDescription</key>

@@ -42,7 +42,7 @@ const LoginScreen = ({ navigation }) => {
         navigation.navigate("Home");
         Toast.show("Login successful");
         setIsLoading(false);
-      }, 1000);
+      }, 300);
     } else {
       GoogleSignin.configure();
       (await GoogleSignin.isSignedIn()) && (await GoogleSignin.signOut());
@@ -114,7 +114,7 @@ const LoginScreen = ({ navigation }) => {
       setTimeout(() => {
         navigation.navigate("Home");
         setIsLoading(false);
-      }, 1000);
+      }, 300);
     } else {
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,

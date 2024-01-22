@@ -73,7 +73,7 @@ const MapComponent = ({ latitude, longitude, address }) => {
     <View style={styles.container}>
       <View style={styles.mapContainer}>
         <MapView
-          provider={PROVIDER_GOOGLE}
+          // provider={PROVIDER_GOOGLE}
           ref={mapRef}
           style={[
             {

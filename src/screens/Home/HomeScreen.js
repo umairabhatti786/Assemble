@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   ImageBackground,
@@ -36,36 +36,6 @@ import BottomCard from "../../components/BottomCard";
 import BottomEvents from "../../components/BottomEvents";
 import Toast from "react-native-root-toast";
 const HomeScreen = ({ navigation }) => {
-  const [pan] = useState(new Animated.ValueXY());
-  const [modalHeight, setModalHeight] = useState(500); // Initial height, adjust as needed
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event([null, { dy: pan.y }], {
-        useNativeDriver: false,
-      }),
-      onPanResponderRelease: (_, gestureState) => {
-        // Check the gesture direction and adjust modal height accordingly
-        if (gestureState.dy < 0) {
-          // User is dragging up
-          setModalHeight((prevHeight) =>
-            Math.max(prevHeight + gestureState.dy, 50)
-          );
-        } else {
-          // User is dragging down
-          setModalHeight((prevHeight) => prevHeight + gestureState.dy);
-        }
-
-        // Reset pan position
-        Animated.spring(pan, {
-          toValue: { x: 0, y: 0 },
-          useNativeDriver: false,
-        }).start();
-      },
-    })
-  ).current;
-
   const mapRef = useRef(null);
   const modalizeRef = useRef(null);
   const flatListRef = useRef(null);
@@ -79,6 +49,7 @@ const HomeScreen = ({ navigation }) => {
   const [userlocation, setUserLocation] = useState({});
   const [locationDetails, setLocationDetails] = useState(null);
   const [isAlwaysShow, setIsAlwaysShow] = useState(true);
+  const [modalHeight, setModalHeight] = useState(600);
   useFocusEffect(
     React.useCallback(() => {
       fetchAllEvents();
@@ -87,39 +58,34 @@ const HomeScreen = ({ navigation }) => {
     }, [])
   );
 
-  const openModalize = () => {
-    if (modalizeRef?.current) {
-      modalizeRef?.current?.open();
-    }
-  };
+  // const pan = useRef(new Animated.ValueXY()).current;
 
-  // Open the modalize when the component mounts
-  useEffect(() => {
-    openModalize();
-  }, []);
-  let lastPosition = 0;
+  // const panResponder = useRef(
+  //   PanResponder.create({
+  //     onMoveShouldSetPanResponder: (e, gestureState) => {
+  //       // Allow pan responder to handle the gesture if it's a vertical drag
+  //       return Math.abs(gestureState.dy) > 5;
+  //     },
+  //     onPanResponderMove: (_, gestureState) => {
+  //       // Check the gesture direction and adjust modal height accordingly
+  //       if (gestureState.dy < 0) {
+  //         // User is dragging up
+  //         setModalHeight(sizeHelper.screentHeight);
+  //       } else {
+  //         // User is dragging down
+  //         setModalHeight(sizeHelper.screenWidth);
+  //       }
+  //     },
+  //     onPanResponderRelease: () => {
+  //       // Reset pan position
+  //       Animated.spring(pan, {
+  //         toValue: 0,
+  //         useNativeDriver: false,
+  //       }).start();
+  //     },
+  //   })
+  // ).current;
 
-  const handlePositionChange = async (position) => {
-    const currentPosition = position;
-
-    // Get the height of the modalize
-    const modalHeight = await modalizeRef.current?.measureHeight();
-
-    if (currentPosition < lastPosition) {
-      console.log("User is dragging up");
-      // Your logic for dragging up
-
-      // Check if height is less than 50, close the modalize
-      if (modalHeight < 50) {
-        modalizeRef.current?.close();
-      }
-    } else if (currentPosition > lastPosition) {
-      console.log("User is dragging down");
-      // Your logic for dragging down
-    }
-
-    lastPosition = currentPosition;
-  };
   const handleGetLocation = async () => {
     const apiKey = "AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk";
     const result = await request(
@@ -514,9 +480,12 @@ const HomeScreen = ({ navigation }) => {
   const Header = () => {
     return (
       <View style={styles.headerContainer}>
-        <View style={styles.iconContainer}>
+        <TouchableOpacity 
+        activeOpacity={0.6}
+        onPress={onHandlePress}
+        style={styles.iconContainer}>
           <ProfileIcon onPress={onHandlePress} style={styles.icon} />
-        </View>
+        </TouchableOpacity>
         <View style={styles.textContainer}>
           <CustomText
             color={colors.black}
@@ -527,9 +496,12 @@ const HomeScreen = ({ navigation }) => {
             fontFamily={SFCompact.semiBold}
           />
         </View>
-        <View style={styles.iconContainer}>
+        <TouchableOpacity 
+        activeOpacity={0.6}
+        onPress={onNavigateToFav} 
+        style={styles.iconContainer}>
           <FillHeartIcon onPress={onNavigateToFav} style={styles.icon} />
-        </View>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -691,7 +663,6 @@ const HomeScreen = ({ navigation }) => {
     }, 5000);
     // Set back to true after scrolling
   };
-  console.log(userlocation);
   return (
     <>
       {loading ? (
@@ -754,6 +725,7 @@ const HomeScreen = ({ navigation }) => {
               //     justifyContent: "center",
               //     alignItems: "center",
               //     transform: [{ translateY: pan.y }],
+              //     top: "20%",
               //   }}
               //   {...panResponder.panHandlers}
               // >
@@ -893,7 +865,7 @@ const HomeScreen = ({ navigation }) => {
                   </>
                 )}
               </Modalize>
-              //   </View>
+              //  </View>
               // </Animated.View>
             )}
 

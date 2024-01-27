@@ -29,7 +29,10 @@ const AllFavEvents = ({ navigation }) => {
       fetchAllEvents();
     }, [])
   );
-
+  const formatEventDate = (date) => {
+    const options = { weekday: "short", month: "short", day: "numeric" };
+    return date.toLocaleDateString(undefined, options);
+  };
   const fetchAllEvents = async () => {
     setLoading(true);
     try {
@@ -56,22 +59,36 @@ const AllFavEvents = ({ navigation }) => {
         const eventSections = [];
 
         modifiedEvents.forEach((event) => {
-          const eventDate = new Date(event.event_date);
-          const isToday =
-            eventDate.toDateString() === currentDate.toDateString();
+          const eventDateParts = event?.event_date.split("-");
+          if (eventDateParts.length === 3) {
+            // Assuming the format is DD-MM-YYYY
+            const day = parseInt(eventDateParts[0], 10);
+            const month = parseInt(eventDateParts[1], 10) - 1; // Month is zero-based
+            const year = parseInt(eventDateParts[2], 10);
 
-          const sectionTitle = isToday
-            ? "Upcoming Events"
-            : `${eventDate.toDateString()}`;
+            let eventDate = new Date(year, month, day);
 
-          // Create the section if it doesn't exist
-          let section = eventSections.find((sec) => sec.title === sectionTitle);
-          if (!section) {
-            section = { title: sectionTitle, data: [] };
-            eventSections.push(section);
+            // Set the time portion of the event date to midnight
+            eventDate.setHours(0, 0, 0, 0);
+
+            const currentDate = new Date();
+            const isFutureEvent = eventDate > currentDate;
+
+            const sectionTitle = isFutureEvent
+              ? "Upcoming Events"
+              : formatEventDate(eventDate);
+
+            // Create the section if it doesn't exist
+            let section = eventSections.find(
+              (sec) => sec.title === sectionTitle
+            );
+            if (!section) {
+              section = { title: sectionTitle, data: [] };
+              eventSections.push(section);
+            }
+
+            section.data.push(event);
           }
-
-          section.data.push(event);
         });
 
         setEvents(eventSections);
@@ -153,11 +170,9 @@ const AllFavEvents = ({ navigation }) => {
             throw new Error(`HTTP error! Status: ${response.status}`);
           } else {
             if (response.ok) {
-              setTimeout(() => {
-                Toast.show("Events Added in Favorites");
-                fetchAllEvents();
-                setLoading(false);
-              }, 1000);
+              Toast.show("Event Added in Favorites");
+              fetchAllEvents();
+              setLoading(false);
             }
           }
           const data = await response.json();
@@ -180,11 +195,9 @@ const AllFavEvents = ({ navigation }) => {
             throw new Error(`HTTP error! Status: ${response.status}`);
           } else {
             if (response.ok) {
-              setTimeout(() => {
-                Toast.show("Events Removed From Favorites");
-                fetchAllEvents();
-                setLoading(false);
-              }, 1000);
+              Toast.show("Event Removed From Favorites");
+              fetchAllEvents();
+              setLoading(false);
             }
           }
           const data = await response.json();

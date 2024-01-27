@@ -72,6 +72,8 @@ const HomeScreen = ({ navigation }) => {
         if (link?.url) {
           const id = link?.url?.split("=").pop();
           navigation.navigate("Details", { eventId: id });
+        } else {
+          setLoading(false);
         }
       });
   };
@@ -85,8 +87,9 @@ const HomeScreen = ({ navigation }) => {
       const id = link.url?.split("=").pop();
       if (id) {
         navigation.navigate("Details", { eventId: id });
+      } else {
+        setLoading(false);
       }
-      console.log("handleDynamicLink", id);
     }
   };
   // const pan = useRef(new Animated.ValueXY()).current;
@@ -364,7 +367,7 @@ const HomeScreen = ({ navigation }) => {
 
                 setEvents(eventSections);
               }
-              Toast.show("Events Added in Favorites");
+              Toast.show("Event Added in Favorites");
             }
           }
           const data = await response.json();
@@ -443,7 +446,7 @@ const HomeScreen = ({ navigation }) => {
                 });
                 setEvents(eventSections);
               }
-              Toast.show("Events Removed From Favorites");
+              Toast.show("Event Removed From Favorites");
             }
           }
           const data = await response.json();

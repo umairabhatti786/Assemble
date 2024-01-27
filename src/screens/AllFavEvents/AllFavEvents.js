@@ -42,18 +42,19 @@ const AllFavEvents = ({ navigation }) => {
         const modifiedEvents = response.events
           .filter((event) => event.favEvent.isFav === true)
           .map((event) => {
-            event.event_title = truncateText(event.event_title, 2);
+            event.event_title = truncateText(event.event_title, 3);
             event.event_location.neighborhood = truncateText(
               event.event_location.neighborhood,
               2
             );
+
             // You can perform additional modifications if needed
             return event;
           });
 
-        modifiedEvents.sort(
-          (a, b) => new Date(b.event_date) - new Date(a.event_date)
-        );
+        // modifiedEvents.sort(
+        //   (a, b) => new Date(b.event_date) - new Date(a.event_date)
+        // );
 
         const currentDate = new Date();
         const eventSections = [];
@@ -104,7 +105,7 @@ const AllFavEvents = ({ navigation }) => {
   function truncateText(text, maxWords) {
     const words = text.split(" ");
     if (words.length > maxWords) {
-      const truncatedText = words.slice(0, maxWords).join(" ") + "...";
+      const truncatedText = words.slice(0, maxWords).join(" ") + "  ";
       return truncatedText;
     } else {
       return text;

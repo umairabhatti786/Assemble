@@ -59,7 +59,7 @@ export const styles = ScaledSheet.create({
   },
   tagBody: {
     marginHorizontal: 10,
-    height: 30,
+    height: 25,
     width: 50,
     justifyContent: "center",
     alignItems: "center",

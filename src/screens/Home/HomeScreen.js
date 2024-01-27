@@ -11,14 +11,16 @@ import {
   Animated,
   SafeAreaView,
   PanResponder,
+  PermissionsAndroid,
 } from "react-native";
+import Geolocation from "react-native-geolocation-service";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import axios from "axios";
 import FastImage from "react-native-fast-image";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import Geolocation from "@react-native-community/geolocation";
+
 import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import { images } from "../../assets/images";
 import { styles } from "./styles";
@@ -52,14 +54,12 @@ const HomeScreen = ({ navigation }) => {
   const [placeId, setPlaceId] = useState(null);
   const [selectedEventIndex, setSelectedEventIndex] = useState(0);
   const [userScroll, setUserScroll] = useState(true);
-  const [userlocation, setUserLocation] = useState({});
+  const [userlocation, setUserLocation] = useState(false);
   const [locationDetails, setLocationDetails] = useState(null);
   useFocusEffect(
     React.useCallback(() => {
       fetchAllEvents();
-
       handleGetLocation();
-
       checkDynamicLink();
     }, [])
   );
@@ -130,7 +130,8 @@ const HomeScreen = ({ navigation }) => {
           const position = await new Promise((resolve, reject) => {
             Geolocation.getCurrentPosition(
               (position) => resolve(position),
-              (error) => reject(error)
+              (error) => reject(error),
+              { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
             );
           });
 
@@ -166,16 +167,6 @@ const HomeScreen = ({ navigation }) => {
                         component.types.includes("administrative_area_level_2")
                     )?.long_name || "";
 
-                  const state =
-                    addressComponents.find((component) =>
-                      component.types.includes("administrative_area_level_1")
-                    )?.long_name || "";
-
-                  const country =
-                    addressComponents.find((component) =>
-                      component.types.includes("country")
-                    )?.long_name || "";
-
                   const formattedAddress = `${city}`;
 
                   setLocationDetails(formattedAddress);
@@ -206,7 +197,10 @@ const HomeScreen = ({ navigation }) => {
                       : PERMISSIONS.IOS.ACCESS_FINE_LOCATION
                   );
 
-                  if (permissionResult === RESULTS.GRANTED) {
+                  if (
+                    permissionResult === true ||
+                    permissionResult === "granted"
+                  ) {
                     // Permission granted after the second attempt
                     handleGetLocation();
                   } else {
@@ -234,20 +228,22 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  async function getLocationPermissions() {
+  const getLocationPermissions = async () => {
     try {
-      const granted = await request(
+      const permissionResult = await request(
         Platform.select({
           android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
           ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
         })
       );
 
-      return granted === RESULTS.GRANTED;
+      return permissionResult === RESULTS.GRANTED;
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      return false;
     }
-  }
+  };
+
   const requestLocationPermission = async () => {
     try {
       let response = await getLocationPermissions();
@@ -328,9 +324,9 @@ const HomeScreen = ({ navigation }) => {
                   );
                   return event;
                 });
-                modifiedEvents.sort(
-                  (a, b) => new Date(b.event_date) - new Date(a.event_date)
-                );
+                // modifiedEvents.sort(
+                //   (a, b) => new Date(b.event_date) - new Date(a.event_date)
+                // );
 
                 setEventss(modifiedEvents);
 
@@ -411,9 +407,9 @@ const HomeScreen = ({ navigation }) => {
                   );
                   return event;
                 });
-                modifiedEvents.sort(
-                  (a, b) => new Date(b.event_date) - new Date(a.event_date)
-                );
+                // modifiedEvents.sort(
+                //   (a, b) => new Date(b.event_date) - new Date(a.event_date)
+                // );
                 setEventss(modifiedEvents);
                 const currentDate = new Date();
                 const eventSections = [];
@@ -493,17 +489,17 @@ const HomeScreen = ({ navigation }) => {
             event.event_location.neighborhood,
             2
           );
+
           return event;
         });
 
         // Sort events by date, with the newest events first
-        modifiedEvents.sort(
-          (a, b) => new Date(b.event_date) - new Date(a.event_date)
-        );
+        // modifiedEvents.sort(
+        //   (a, b) => new Date(b.event_date) - new Date(a.event_date)
+        // );
 
         setEventss(modifiedEvents);
 
-        const currentDate = new Date();
         const eventSections = [];
 
         modifiedEvents.forEach((event) => {
@@ -552,7 +548,7 @@ const HomeScreen = ({ navigation }) => {
   function truncateText(text, maxWords) {
     const words = text.split(" ");
     if (words.length > maxWords) {
-      const truncatedText = words.slice(0, maxWords).join(" ") + "...";
+      const truncatedText = words.slice(0, maxWords).join(" ") + "";
       return truncatedText;
     } else {
       return text;
@@ -710,7 +706,7 @@ const HomeScreen = ({ navigation }) => {
         );
       }
     } catch (error) {
-      console.log(error);
+      console.log("updateMapCenter", error);
     }
   };
   const onScroll = (event) => {
@@ -770,32 +766,32 @@ const HomeScreen = ({ navigation }) => {
                 },
               ]}
               initialRegion={{
-                latitude: userlocation?.latitude
-                  ? userlocation.latitude
-                  : 32.7157,
-                longitude: userlocation?.longitude
-                  ? userlocation.longitude
-                  : 117.1611,
+                latitude:
+                  !userlocation && userlocation?.latitude
+                    ? userlocation.latitude
+                    : 32.7157,
+                longitude:
+                  !userlocation && userlocation?.longitude
+                    ? userlocation.longitude
+                    : 117.1611,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
             >
-              {!loading &&
-                userlocation !== undefined &&
-                userlocation !== null && (
-                  <Marker
-                    coordinate={{
-                      latitude: userlocation?.latitude,
-                      longitude: userlocation?.longitude,
-                    }}
-                  >
-                    <FastImage
-                      source={images.user}
-                      style={{ height: 30, width: 30 }}
-                      resizeMode={FastImage.resizeMode.contain}
-                    />
-                  </Marker>
-                )}
+              {!loading && userlocation !== false && (
+                <Marker
+                  coordinate={{
+                    latitude: userlocation?.latitude,
+                    longitude: userlocation?.longitude,
+                  }}
+                >
+                  <FastImage
+                    source={images.user}
+                    style={{ height: 30, width: 30 }}
+                    resizeMode={FastImage.resizeMode.contain}
+                  />
+                </Marker>
+              )}
 
               {!loading &&
                 eventss.length > 0 &&

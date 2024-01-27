@@ -14,17 +14,23 @@ import sizeHelper from "../assets/helpers/sizeHelper";
 import FastImage from "react-native-fast-image";
 const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
   const formatDate = (dateString) => {
+    const eventDateParts = dateString.split("-");
+    const day = parseInt(eventDateParts[0], 10);
+    const month = parseInt(eventDateParts[1], 10) - 1; // Month is zero-based
+    const year = parseInt(eventDateParts[2], 10);
+
+    let eventDate = new Date(year, month, day);
+
+    // Format the date as "Sun, Jan 28"
     const options = { weekday: "short", month: "short", day: "numeric" };
-    const formattedDate = new Date(dateString).toLocaleDateString(
-      "en-US",
-      options
-    );
+    const formattedDate = eventDate.toLocaleString("en-US", options);
+
     return formattedDate;
   };
   function truncateText(text, maxWords) {
     const words = text.split(" ");
     if (words.length > maxWords) {
-      const truncatedText = words.slice(0, maxWords).join(" ") + "...";
+      const truncatedText = words.slice(0, maxWords).join(" ") + "";
       return truncatedText;
     } else {
       return text;
@@ -44,12 +50,12 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
             <FastImage
               style={styles.img}
               source={{ uri: item.event_image }}
-              resizeMode={FastImage.resizeMode.contain}
+              resizeMode={FastImage.resizeMode.cover}
             />
           ) : (
-            <Image
+            <FastImage
               source={images.card}
-              resizeMode="contain"
+              resizeMode="cover"
               style={styles.img}
             />
           )}
@@ -63,8 +69,8 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
             </Text>
             <View style={styles.div} />
 
-            {/* <Text style={styles.date}>{formatDate(item.event_date)}</Text> */}
-            <Text style={styles.date}>{item.event_date}</Text>
+            <Text style={styles.date}>{formatDate(item.event_date)}</Text>
+            {/* <Text style={styles.date}>{item.event_date}</Text> */}
           </View>
           <View style={styles.tagsContainer}>
             {Array.isArray(item.event_tags) &&
@@ -106,7 +112,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   cardContainer: {
-    backgroundColor: "#f5f0f0",
+    backgroundColor: "#F2ECEC",
     // width: "80%",
     flexDirection: "row",
     padding: 10,
@@ -115,9 +121,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   imageContainer: { width: "20%" },
-  img: { height: 100, width: 80 },
+  img: { height: 100, width: 80, borderRadius: 10 },
   centerContainer: {
-    width: "60%",
+    width: "67%",
     // width: Platform.OS === "ios" ? "60%" : "70%",
     marginHorizontal: sizeHelper.screenWidth < 450 && 5,
   },

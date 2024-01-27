@@ -21,18 +21,24 @@ import FastImage from "react-native-fast-image";
 import sizeHelper from "../assets/helpers/sizeHelper";
 const Card = React.memo(({ item, navigation, onAddFav }) => {
   const formatDate = (dateString) => {
+    const eventDateParts = dateString.split("-");
+    const day = parseInt(eventDateParts[0], 10);
+    const month = parseInt(eventDateParts[1], 10) - 1; // Month is zero-based
+    const year = parseInt(eventDateParts[2], 10);
+
+    let eventDate = new Date(year, month, day);
+
+    // Format the date as "Sun, Jan 28"
     const options = { weekday: "short", month: "short", day: "numeric" };
-    const formattedDate = new Date(dateString).toLocaleDateString(
-      "en-US",
-      options
-    );
+    const formattedDate = eventDate.toLocaleString("en-US", options);
+
     return formattedDate;
   };
   function truncateText(text, maxWords) {
     const words = text.split(" ");
 
     if (words.length > maxWords) {
-      const truncatedText = words.slice(0, maxWords).join(" ") + "...";
+      const truncatedText = words.slice(0, maxWords).join(" ") + "";
 
       return truncatedText;
     } else {
@@ -53,10 +59,10 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
             <FastImage
               style={styles.img}
               source={{ uri: item.event_image }}
-              resizeMode={FastImage.resizeMode.contain}
+              resizeMode={FastImage.resizeMode.cover}
             />
           ) : (
-            <Image
+            <FastImage
               source={images.card}
               resizeMode="contain"
               style={styles.img}
@@ -72,8 +78,8 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
             </Text>
             <View style={styles.div} />
 
-            {/* <Text style={styles.date}>{formatDate(item.event_date)}</Text> */}
-            <Text style={styles.date}>{item.event_date}</Text>
+            <Text style={styles.date}>{formatDate(item.event_date)}</Text>
+            {/* <Text style={styles.date}>{item.event_date}</Text> */}
           </View>
           <View style={styles.tagsContainer}>
             {Array.isArray(item.event_tags) &&
@@ -109,7 +115,7 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
 const styles = StyleSheet.create({
   cardMain: { marginHorizontal: 10 },
   cardContainer: {
-    backgroundColor: "#f5f0f0",
+    backgroundColor: "#F2ECEC",
     // width: "100%",
     flexDirection: "row",
     padding: 10,
@@ -118,9 +124,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   imageContainer: { width: "20%", height: "100%" },
-  img: { height: 100, width: 80 },
+  img: { height: 100, width: 80, borderRadius: 10 },
   centerContainer: {
-    width: "60%",
+    width: "67%",
     // Platform.OS === "ios"
     //   ? "60%"
     //   : sizeHelper.screenWidth > 450
@@ -136,6 +142,7 @@ const styles = StyleSheet.create({
     // textShadowOffset: {width: 2, height: 2},
     // textShadowRadius: 3,
     fontFamily: SFCompact.bold,
+    marginTop: 10,
   },
   eventContainer: {
     flexDirection: "row",
@@ -156,24 +163,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     justifyContent: "center",
     marginHorizontal: 10,
+    top: 8,
   },
   date: {
     fontSize: 14,
     color: colors.black,
     marginHorizontal: 5,
     fontFamily: SFCompact.regular,
-    marginTop: 10,
+    top: 8,
   },
   tagsContainer: {
     flexDirection: "row",
     marginTop: 20,
     alignItems: "center",
     marginHorizontal: 5,
-    left: -5,
+    left: -10,
   },
   tagBody: {
     marginHorizontal: 10,
-    height: 35,
+    height: 25,
     width: 55,
     justifyContent: "center",
     alignItems: "center",

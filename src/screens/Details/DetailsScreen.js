@@ -115,6 +115,7 @@ const DetailsScreen = ({ navigation, route }) => {
     try {
       let response = await Get_Single_Event(eventID);
       if (response.event !== undefined) {
+        let address = response.event.event_location.address;
         response.event.event_title = truncateText(
           response.event.event_title,
           5
@@ -128,6 +129,7 @@ const DetailsScreen = ({ navigation, route }) => {
           response.event.event_location.address,
           3
         );
+        response.event.realAddress = address;
         response.event.event_image =
           response.event.event_image === null ||
           response.event.event_image === undefined
@@ -137,6 +139,16 @@ const DetailsScreen = ({ navigation, route }) => {
           response.event.ticket_link !== undefined
             ? response.event.ticket_link
             : "";
+        const eventDateParts = response.event.event_date.split("-");
+        const day = parseInt(eventDateParts[0], 10);
+        const month = parseInt(eventDateParts[1], 10) - 1; // Month is zero-based
+        const year = parseInt(eventDateParts[2], 10);
+
+        let eventDate = new Date(year, month, day);
+
+        // Format the date as "Sun, Jan 28"
+        const options = { weekday: "short", month: "short", day: "numeric" };
+        response.event.event_date = eventDate.toLocaleString("en-US", options);
 
         setTimeout(() => {
           setEventDetails(response.event);
@@ -326,7 +338,8 @@ const DetailsScreen = ({ navigation, route }) => {
                 label={eventDetail.event_title}
                 fontSize={16}
                 color={colors.black}
-                fontFamily={SFCompact.regular}
+                // fontFamily={SFCompact.regular}
+                fontFamily={SFCompact.bold}
               />
             </View>
             <View style={styles.cardsContainer}>
@@ -342,7 +355,7 @@ const DetailsScreen = ({ navigation, route }) => {
               fontFamily={SFCompact.semiBold}
               fontSize={15}
             />
-            <View>
+            <View style={{ marginVertical: 10 }}>
               <CustomText
                 label={eventDetail.event_description}
                 fontFamily={SFCompact.light}
@@ -359,11 +372,7 @@ const DetailsScreen = ({ navigation, route }) => {
               </View>
 
               <CustomText
-                label={
-                  eventDetail?.event_location?.address
-                    ? eventDetail?.event_location?.address
-                    : ""
-                }
+                label={eventDetail?.realAddress ? eventDetail?.realAddress : ""}
                 color="#1C1916"
                 fontFamily={SFCompact.light}
                 fontSize={13}

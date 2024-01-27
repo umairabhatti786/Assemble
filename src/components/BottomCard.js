@@ -73,7 +73,7 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
                 <ImageBackground
                   key={tag} // Add a unique key for each tag
                   style={styles.tagBody}
-                  source={images.smallBox}
+                  source={images.tag}
                   imageStyle={{ borderRadius: 50 }}
                 >
                   <View style={{ padding: 5 }}>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   imageContainer: { width: "20%" },
   img: { height: 100, width: 80 },
   centerContainer: {
-    width: "70%",
+    width: Platform.OS === "ios" ? "60%" : "70%",
     marginHorizontal: sizeHelper.screenWidth < 450 && 5,
   },
   name: {
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
   eventName: {
     fontSize: 14,
-
+    marginTop: 10,
     color: colors.black,
     marginHorizontal: 5,
     fontFamily: SFCompact.regular,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 14,
-
+    marginTop: 10,
     color: colors.black,
     marginHorizontal: 5,
     fontFamily: SFCompact.regular,
@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: "center",
     marginHorizontal: 5,
+    left: -5,
   },
   tagBody: {
     marginHorizontal: 10,
@@ -179,6 +180,7 @@ const styles = StyleSheet.create({
     width: "8%",
     justifyContent: "center",
     alignItems: "center",
+    top: -10,
   },
   fillIcon: { height: 24, width: 24 },
 });

@@ -32,114 +32,55 @@ import Loading from "../../components/Loading";
 const LoginScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const onPressGoogle = async () => {
-    let ressss = await AsyncStorage.getItem("@token");
-    console.log("ressss", ressss);
-    navigation.navigate("Home");
-    if (ressss !== null) {
-      setIsLoading(true);
-      setTimeout(() => {
+  useEffect(() => {
+    getUser();
+  }, []);
+  const getUser = async () => {
+    setIsLoading(true);
+    try {
+      let ressss = await AsyncStorage.getItem("@token");
+      console.log("ressss", ressss);
+      if (ressss !== null) {
         navigation.navigate("Home");
-        Toast.show("Login successful");
         setIsLoading(false);
-      }, 300);
-    } else {
-      GoogleSignin.configure();
-      (await GoogleSignin.isSignedIn()) && (await GoogleSignin.signOut());
-      try {
-        await GoogleSignin.hasPlayServices({
-          showPlayServicesUpdateDialog: true,
-        });
-        const userInfo = await GoogleSignin.signIn();
-        if (userInfo) {
-          setIsLoading(true);
-
-          const data = {
-            sso_token: userInfo?.user?.id,
-            login_type: "google",
-            name: userInfo?.user?.name,
-            email: userInfo?.user?.email,
-          };
-
-          const response = await SignUp_Request(data);
-
-          if (response?.message === "OAuth user created successfully") {
-            await AsyncStorage.setItem("@token", response?.user?.sso_token);
-            await AsyncStorage.setItem(
-              "LOGIN_TYPE",
-              response?.user?.login_type
-            );
-            Toast.show("Login successful");
-            setIsLoading(false);
-            navigation.navigate("Home");
-          } else if (
-            response.message ===
-            "User with this email and login_type (Google) already exists"
-          ) {
-            await AsyncStorage.setItem("@token", response?.sso_token);
-            await AsyncStorage.setItem("LOGIN_TYPE", response?.login_type);
-            console.log("error", response);
-            setIsLoading(false);
-            Toast.show("Login successful");
-            navigation.navigate("Home");
-          }
-
-          // respanseData(userInfo);
-        }
-      } catch (error) {
-        if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-          setIsLoading(false);
-          console.log("user cancelled the login flow");
-        } else if (error.code === statusCodes.IN_PROGRESS) {
-          setIsLoading(false);
-          console.log("operation (e.g. sign in) is in progress already");
-          setIsLoading(false);
-        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-          setIsLoading(false);
-          console.log("play services not available or outdated");
-        } else {
-          setIsLoading(false);
-          console.log("some other error happened", error);
-        }
+      } else {
+        setIsLoading(false);
       }
+    } catch (error) {
+      console.log(error);
     }
   };
-
-  const onPressApple = async () => {
-    let ressss = await AsyncStorage.getItem("@token");
-    console.log("ressss", ressss);
-
-    if (ressss !== null) {
-      setIsLoading(true);
-      setTimeout(() => {
-        navigation.navigate("Home");
-        setIsLoading(false);
-      }, 300);
-    } else {
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+  const onPressGoogle = async () => {
+    // let ressss = await AsyncStorage.getItem("@token");
+    // console.log("ressss", ressss);
+    // navigation.navigate("Home");
+    // if (ressss !== null) {
+    //   setIsLoading(true);
+    //   setTimeout(() => {
+    //     navigation.navigate("Home");
+    //     Toast.show("Login successful");
+    //     setIsLoading(false);
+    //   }, 300);
+    // } else {
+    GoogleSignin.configure();
+    (await GoogleSignin.isSignedIn()) && (await GoogleSignin.signOut());
+    try {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
       });
-
-      const credentialState = await appleAuth.getCredentialStateForUser(
-        appleAuthRequestResponse.user
-      );
-
-      console.log({ credentialState }, appleAuth.State.AUTHORIZED, {
-        appleAuthRequestResponse,
-      });
-
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        const { email, fullName, user } = appleAuthRequestResponse;
+      const userInfo = await GoogleSignin.signIn();
+      if (userInfo) {
+        setIsLoading(true);
 
         const data = {
-          sso_token: user,
-          login_type: "apple",
-          name: fullName?.givenName,
-          email: email,
+          sso_token: userInfo?.user?.id,
+          login_type: "google",
+          name: userInfo?.user?.name,
+          email: userInfo?.user?.email,
         };
 
         const response = await SignUp_Request(data);
+
         if (response?.message === "OAuth user created successfully") {
           await AsyncStorage.setItem("@token", response?.user?.sso_token);
           await AsyncStorage.setItem("LOGIN_TYPE", response?.user?.login_type);
@@ -157,8 +98,82 @@ const LoginScreen = ({ navigation }) => {
           Toast.show("Login successful");
           navigation.navigate("Home");
         }
+
+        // respanseData(userInfo);
+      }
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        setIsLoading(false);
+        console.log("user cancelled the login flow");
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        setIsLoading(false);
+        console.log("operation (e.g. sign in) is in progress already");
+        setIsLoading(false);
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        setIsLoading(false);
+        console.log("play services not available or outdated");
+      } else {
+        setIsLoading(false);
+        console.log("some other error happened", error);
       }
     }
+    // }
+  };
+
+  const onPressApple = async () => {
+    let ressss = await AsyncStorage.getItem("@token");
+    console.log("ressss", ressss);
+
+    // if (ressss !== null) {
+    //   setIsLoading(true);
+    //   setTimeout(() => {
+    //     navigation.navigate("Home");
+    //     setIsLoading(false);
+    //   }, 300);
+    // } else {
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    });
+
+    const credentialState = await appleAuth.getCredentialStateForUser(
+      appleAuthRequestResponse.user
+    );
+
+    console.log({ credentialState }, appleAuth.State.AUTHORIZED, {
+      appleAuthRequestResponse,
+    });
+
+    if (credentialState === appleAuth.State.AUTHORIZED) {
+      const { email, fullName, user } = appleAuthRequestResponse;
+
+      const data = {
+        sso_token: user,
+        login_type: "apple",
+        name: fullName?.givenName,
+        email: email,
+      };
+
+      const response = await SignUp_Request(data);
+      if (response?.message === "OAuth user created successfully") {
+        await AsyncStorage.setItem("@token", response?.user?.sso_token);
+        await AsyncStorage.setItem("LOGIN_TYPE", response?.user?.login_type);
+        Toast.show("Login successful");
+        setIsLoading(false);
+        navigation.navigate("Home");
+      } else if (
+        response.message ===
+        "User with this email and login_type (Google) already exists"
+      ) {
+        await AsyncStorage.setItem("@token", response?.sso_token);
+        await AsyncStorage.setItem("LOGIN_TYPE", response?.login_type);
+        console.log("error", response);
+        setIsLoading(false);
+        Toast.show("Login successful");
+        navigation.navigate("Home");
+      }
+    }
+    // }
   };
 
   useEffect(() => {

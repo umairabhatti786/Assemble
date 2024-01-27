@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+} from "react-native";
 import { ImageBackground } from "react-native";
 import { colors } from "../utils/colors";
 import { images } from "../assets/images";
@@ -74,7 +81,7 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
                 <ImageBackground
                   key={tag} // Add a unique key for each tag
                   style={styles.tagBody}
-                  source={images.smallBox}
+                  source={images.tag}
                   imageStyle={{ borderRadius: 50 }}
                 >
                   <View style={{ padding: 5 }}>
@@ -109,9 +116,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginVertical: 5,
   },
-  imageContainer: { width: "20%" },
+  imageContainer: { width: "20%", height: "100%" },
   img: { height: 100, width: 80 },
-  centerContainer: { width: "70%" },
+  centerContainer: {
+    width: Platform.OS === "ios" ? "60%" : "70%",
+  },
   name: {
     fontSize: 16,
     //   fontWeight: '700',
@@ -132,6 +141,7 @@ const styles = StyleSheet.create({
     color: colors.black,
     marginHorizontal: 5,
     fontFamily: SFCompact.regular,
+    marginTop: 10,
   },
   div: {
     height: 5,
@@ -143,16 +153,17 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 14,
-
     color: colors.black,
     marginHorizontal: 5,
     fontFamily: SFCompact.regular,
+    marginTop: 10,
   },
   tagsContainer: {
     flexDirection: "row",
     marginTop: 20,
     alignItems: "center",
     marginHorizontal: 5,
+    left: -5,
   },
   tagBody: {
     marginHorizontal: 10,
@@ -160,7 +171,8 @@ const styles = StyleSheet.create({
     width: 55,
     justifyContent: "center",
     alignItems: "center",
-    // elevation: 5,
+
+    top: -5,
   },
   tagName: {
     fontSize: 12,
@@ -172,6 +184,7 @@ const styles = StyleSheet.create({
     width: "8%",
     justifyContent: "center",
     alignItems: "center",
+    top: -10,
   },
   fillIcon: { height: 24, width: 24 },
 });

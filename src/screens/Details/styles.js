@@ -8,6 +8,7 @@ export const styles = ScaledSheet.create({
   flex: {
     height: 300,
     width: "98%",
+    borderRadius: 20,
   },
   headerContainer: {
     flexDirection: "row",
@@ -47,6 +48,7 @@ export const styles = ScaledSheet.create({
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
   },
   icon: { height: 27, width: 27 },
   tagsContainer: {

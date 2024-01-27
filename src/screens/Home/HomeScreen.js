@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   ImageBackground,
@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   PanResponder,
 } from "react-native";
+import dynamicLinks from "@react-native-firebase/dynamic-links";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import axios from "axios";
 import FastImage from "react-native-fast-image";
@@ -22,7 +23,12 @@ import { request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import { images } from "../../assets/images";
 import { styles } from "./styles";
 import sizeHelper from "../../assets/helpers/sizeHelper";
-import { FillHeartIcon, ProfileIcon } from "../../assets/SVG/svg";
+import {
+  CustomHeartIcon,
+  FillHeartIcon,
+  FillHeartIconBlack,
+  ProfileIcon,
+} from "../../assets/SVG/svg";
 import CustomText from "../../components/CustomText";
 import { colors } from "../../utils/colors";
 import { Modalize } from "react-native-modalize";
@@ -55,9 +61,34 @@ const HomeScreen = ({ navigation }) => {
       fetchAllEvents();
       requestLocationPermission();
       handleGetLocation();
+      checkDynamicLink();
     }, [])
   );
 
+  const checkDynamicLink = async () => {
+    dynamicLinks()
+      .getInitialLink()
+      .then(async (link) => {
+        if (link?.url) {
+          const id = link?.url?.split("=").pop();
+          navigation.navigate("Details", { eventId: id });
+        }
+      });
+  };
+
+  useEffect(() => {
+    dynamicLinks().onLink(handleDynamicLink);
+  }, [dynamicLinks]);
+
+  const handleDynamicLink = async (link) => {
+    if (link?.url) {
+      const id = link.url?.split("=").pop();
+      if (id) {
+        navigation.navigate("Details", { eventId: id });
+      }
+      console.log("handleDynamicLink", id);
+    }
+  };
   // const pan = useRef(new Animated.ValueXY()).current;
 
   // const panResponder = useRef(
@@ -141,7 +172,8 @@ const HomeScreen = ({ navigation }) => {
                             component.types.includes("country")
                           )?.long_name || "";
 
-                        const formattedAddress = `${city}, ${state}, ${country}`;
+                        const formattedAddress = `${city}`;
+                        // const formattedAddress = `${city}, ${state}, ${country}`;
                         setLocationDetails(formattedAddress);
                       }
                     })
@@ -298,23 +330,36 @@ const HomeScreen = ({ navigation }) => {
                 const eventSections = [];
 
                 modifiedEvents.forEach((event) => {
-                  const eventDate = new Date(event.event_date);
-                  const isToday =
-                    eventDate.toDateString() === currentDate.toDateString();
+                  const eventDateParts = event?.event_date.split("-");
+                  if (eventDateParts.length === 3) {
+                    // Assuming the format is DD-MM-YYYY
+                    const day = parseInt(eventDateParts[0], 10);
+                    const month = parseInt(eventDateParts[1], 10) - 1; // Month is zero-based
+                    const year = parseInt(eventDateParts[2], 10);
 
-                  const sectionTitle = isToday
-                    ? "Upcoming Events"
-                    : `${eventDate.toDateString()}`;
+                    let eventDate = new Date(year, month, day);
 
-                  let section = eventSections.find(
-                    (sec) => sec.title === sectionTitle
-                  );
-                  if (!section) {
-                    section = { title: sectionTitle, data: [] };
-                    eventSections.push(section);
+                    // Set the time portion of the event date to midnight
+                    eventDate.setHours(0, 0, 0, 0);
+
+                    const currentDate = new Date();
+                    const isFutureEvent = eventDate > currentDate;
+
+                    const sectionTitle = isFutureEvent
+                      ? "Upcoming Events"
+                      : formatEventDate(eventDate);
+
+                    // Create the section if it doesn't exist
+                    let section = eventSections.find(
+                      (sec) => sec.title === sectionTitle
+                    );
+                    if (!section) {
+                      section = { title: sectionTitle, data: [] };
+                      eventSections.push(section);
+                    }
+
+                    section.data.push(event);
                   }
-
-                  section.data.push(event);
                 });
 
                 setEvents(eventSections);
@@ -365,21 +410,36 @@ const HomeScreen = ({ navigation }) => {
                 const currentDate = new Date();
                 const eventSections = [];
                 modifiedEvents.forEach((event) => {
-                  const eventDate = new Date(event.event_date);
-                  const isToday =
-                    eventDate.toDateString() === currentDate.toDateString();
-                  const sectionTitle = isToday
-                    ? "Upcoming Events"
-                    : `${eventDate.toDateString()}`;
+                  const eventDateParts = event?.event_date.split("-");
+                  if (eventDateParts.length === 3) {
+                    // Assuming the format is DD-MM-YYYY
+                    const day = parseInt(eventDateParts[0], 10);
+                    const month = parseInt(eventDateParts[1], 10) - 1; // Month is zero-based
+                    const year = parseInt(eventDateParts[2], 10);
 
-                  let section = eventSections.find(
-                    (sec) => sec.title === sectionTitle
-                  );
-                  if (!section) {
-                    section = { title: sectionTitle, data: [] };
-                    eventSections.push(section);
+                    let eventDate = new Date(year, month, day);
+
+                    // Set the time portion of the event date to midnight
+                    eventDate.setHours(0, 0, 0, 0);
+
+                    const currentDate = new Date();
+                    const isFutureEvent = eventDate > currentDate;
+
+                    const sectionTitle = isFutureEvent
+                      ? "Upcoming Events"
+                      : formatEventDate(eventDate);
+
+                    // Create the section if it doesn't exist
+                    let section = eventSections.find(
+                      (sec) => sec.title === sectionTitle
+                    );
+                    if (!section) {
+                      section = { title: sectionTitle, data: [] };
+                      eventSections.push(section);
+                    }
+
+                    section.data.push(event);
                   }
-                  section.data.push(event);
                 });
                 setEvents(eventSections);
               }
@@ -409,7 +469,10 @@ const HomeScreen = ({ navigation }) => {
   const onNavigateToFav = () => {
     navigation.navigate("AllFavEvents");
   };
-
+  const formatEventDate = (date) => {
+    const options = { weekday: "short", month: "short", day: "numeric" };
+    return date.toLocaleDateString(undefined, options);
+  };
   const fetchAllEvents = async () => {
     setLoading(true);
     try {
@@ -420,7 +483,7 @@ const HomeScreen = ({ navigation }) => {
           event.event_title = truncateText(event.event_title, 3);
           event.event_location.neighborhood = truncateText(
             event.event_location.neighborhood,
-            3
+            2
           );
           return event;
         });
@@ -436,22 +499,36 @@ const HomeScreen = ({ navigation }) => {
         const eventSections = [];
 
         modifiedEvents.forEach((event) => {
-          const eventDate = new Date(event.event_date);
-          const isToday =
-            eventDate.toDateString() === currentDate.toDateString();
+          const eventDateParts = event?.event_date.split("-");
+          if (eventDateParts.length === 3) {
+            // Assuming the format is DD-MM-YYYY
+            const day = parseInt(eventDateParts[0], 10);
+            const month = parseInt(eventDateParts[1], 10) - 1; // Month is zero-based
+            const year = parseInt(eventDateParts[2], 10);
 
-          const sectionTitle = isToday
-            ? "Upcoming Events"
-            : `${eventDate.toDateString()}`;
+            let eventDate = new Date(year, month, day);
 
-          // Create the section if it doesn't exist
-          let section = eventSections.find((sec) => sec.title === sectionTitle);
-          if (!section) {
-            section = { title: sectionTitle, data: [] };
-            eventSections.push(section);
+            // Set the time portion of the event date to midnight
+            eventDate.setHours(0, 0, 0, 0);
+
+            const currentDate = new Date();
+            const isFutureEvent = eventDate > currentDate;
+
+            const sectionTitle = isFutureEvent
+              ? "Upcoming Events"
+              : formatEventDate(eventDate);
+
+            // Create the section if it doesn't exist
+            let section = eventSections.find(
+              (sec) => sec.title === sectionTitle
+            );
+            if (!section) {
+              section = { title: sectionTitle, data: [] };
+              eventSections.push(section);
+            }
+
+            section.data.push(event);
           }
-
-          section.data.push(event);
         });
 
         setEvents(eventSections);
@@ -480,11 +557,12 @@ const HomeScreen = ({ navigation }) => {
   const Header = () => {
     return (
       <View style={styles.headerContainer}>
-        <TouchableOpacity 
-        activeOpacity={0.6}
-        onPress={onHandlePress}
-        style={styles.iconContainer}>
-          <ProfileIcon onPress={onHandlePress} style={styles.icon} />
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={onHandlePress}
+          style={styles.iconContainer}
+        >
+          <ProfileIcon style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.textContainer}>
           <CustomText
@@ -496,11 +574,12 @@ const HomeScreen = ({ navigation }) => {
             fontFamily={SFCompact.semiBold}
           />
         </View>
-        <TouchableOpacity 
-        activeOpacity={0.6}
-        onPress={onNavigateToFav} 
-        style={styles.iconContainer}>
-          <FillHeartIcon onPress={onNavigateToFav} style={styles.icon} />
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={onNavigateToFav}
+          style={styles.iconContainer}
+        >
+          <FillHeartIconBlack style={styles.icon} />
         </TouchableOpacity>
       </View>
     );
@@ -699,24 +778,19 @@ const HomeScreen = ({ navigation }) => {
                 }}
               />
 
-              {!loading &&
-                eventss.length > 0 &&
-                eventss.map(
-                  (event, index) =>
-                    (event.latitude && event.latitude !== null) ||
-                    (event.latitude && event.latitude !== undefined && (
-                      <Marker
-                        onPress={() => onPressMarker(event, index)}
-                        key={event._id}
-                        coordinate={{
-                          latitude: event.event_location.latitude,
-                          longitude: event.event_location.longitude,
-                        }}
-                      >
-                        <CustomMarkerComponent event={event} index={index} />
-                      </Marker>
-                    ))
-                )}
+              {eventss.length > 0 &&
+                eventss.map((event, index) => (
+                  <Marker
+                    onPress={() => onPressMarker(event, index)}
+                    key={event._id}
+                    coordinate={{
+                      latitude: event.event_location.latitude,
+                      longitude: event.event_location.longitude,
+                    }}
+                  >
+                    <CustomMarkerComponent event={event} index={index} />
+                  </Marker>
+                ))}
             </MapView>
             {!hideModelize && (
               // <Animated.View
@@ -762,7 +836,7 @@ const HomeScreen = ({ navigation }) => {
                   <CustomText
                     label={
                       locationDetails
-                        ? "Events in \n" + locationDetails
+                        ? "Events in" + " " + locationDetails
                         : "Events in San Diego"
                     }
                     color={colors.black}

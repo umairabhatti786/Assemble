@@ -39,6 +39,10 @@
 	<string>371059782002541</string>
 	<key>FacebookDisplayName</key>
 	<string>Loyalty</string>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://assemble.page.link/jfVL</string>
+	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -60,21 +64,21 @@
 		</dict>
 	</dict>
 	<key>NSCalendarsFullAccessUsageDescription</key>
-  <string>YOUR TEXT</string>
-  <key>NSCalendarsWriteOnlyAccessUsageDescription</key>
-  <string>YOUR TEXT</string>
-	<key>NSCalendarsUsageDescription</key> 
-   <string>This app requires access to the calendar</string>
-   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-      <string>This app requires access to the Location</string>
-      <key>NSLocationAlwaysUsageDescription</key>
-      <string>This app requires access to the Location</string>
-      <key>NSLocationTemporaryUsageDescriptionDictionary</key>
-	   <string>This app requires access to the Location</string>
-	  <key>NSLocationWhenInUseUsageDescription</key>
-      <string>This app requires access to the Location</string>
+	<string>YOUR TEXT</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app requires access to the calendar</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<string>YOUR TEXT</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This App need to access your Camera</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app requires access to the Location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app requires access to the Location</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<string>This app requires access to the Location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app requires access to the Location</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Your message to user when the microsphone is accessed for the first time</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -125,6 +129,7 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
+		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

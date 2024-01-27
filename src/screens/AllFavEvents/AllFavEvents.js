@@ -39,10 +39,10 @@ const AllFavEvents = ({ navigation }) => {
         const modifiedEvents = response.events
           .filter((event) => event.favEvent.isFav === true)
           .map((event) => {
-            event.event_title = truncateText(event.event_title, 3);
+            event.event_title = truncateText(event.event_title, 2);
             event.event_location.neighborhood = truncateText(
               event.event_location.neighborhood,
-              3
+              2
             );
             // You can perform additional modifications if needed
             return event;

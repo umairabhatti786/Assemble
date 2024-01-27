@@ -30,6 +30,7 @@ const SettingsScreen = ({ navigation }) => {
   const logout = async () => {
     try {
       setLoading(true);
+      await AsyncStorage.removeItem("@token");
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
@@ -128,11 +129,11 @@ const SettingsScreen = ({ navigation }) => {
   const Header = () => {
     return (
       <View style={styles.headerContainer}>
-        <TouchableOpacity 
-        activeOpacity={0.6}
-                    onPress={handleGoBack}
-
-        style={styles.iconContainer}>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={handleGoBack}
+          style={styles.iconContainer}
+        >
           <CrossIcon
             onPress={handleGoBack}
             style={styles.icon}

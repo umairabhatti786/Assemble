@@ -163,6 +163,22 @@ export const FillHeartIcon = ({ style, fill, onPress }) => {
     </Svg>
   );
 };
+export const FillHeartIconBlack = ({ style, fill, onPress }) => {
+  return (
+    <Svg
+      style={style}
+      onPress={onPress}
+      viewBox="0 0 24 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <Path
+        d="M11.5 22.5C11.7009 22.5 11.9879 22.3551 12.1888 22.2206C17.5846 18.4951 21 14.159 21 9.75054C21 6.08715 18.6752 3.5 15.6712 3.5C13.8056 3.5 12.3514 4.628 11.5 6.32516C10.6294 4.61765 9.19433 3.5 7.32877 3.5C4.32474 3.5 1.99997 6.08715 1.99997 9.75054C1.99997 14.159 5.41537 18.4951 10.8016 22.2206C11.0121 22.3551 11.2991 22.5 11.5 22.5Z"
+        fill="#080808"
+      />
+    </Svg>
+  );
+};
 export const CrossIcon = ({ style, fill, onPress }) => {
   return (
     <Svg

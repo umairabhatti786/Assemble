@@ -9,4 +9,5 @@ export const images = {
   details: require("../images/details.png"),
   goldenLocation: require("../images/goldenLocation.png"),
   blackLocation: require("../images/blackLocation.png"),
+  tag: require("../images/Tag.png"),
 };

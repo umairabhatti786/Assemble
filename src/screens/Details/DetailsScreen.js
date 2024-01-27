@@ -12,6 +12,7 @@ import {
   Linking,
   Platform,
 } from "react-native";
+import dynamicLinks from "@react-native-firebase/dynamic-links";
 import RNCalendarEvents from "react-native-calendar-events";
 import React, { useEffect, useRef, useState } from "react";
 import commonStyles, { PH10 } from "../../utils/CommonStyles";
@@ -32,6 +33,7 @@ import {
   UnFillHeartIcon,
   UploadIcon,
 } from "../../assets/SVG/svg";
+import FastImage from "react-native-fast-image";
 import DateCard from "../../components/DateCard";
 import LocationCard from "../../components/LocationCard";
 import MapComponent from "../../components/MapComponent";
@@ -47,11 +49,44 @@ const DetailsScreen = ({ navigation, route }) => {
   const handleGoBack = () => {
     navigation.goBack();
   };
+  const generateLink = async (eventDetail) => {
+    try {
+      var link = await dynamicLinks().buildShortLink(
+        {
+          link: `https://assemble.page.link/jfVL?id=${eventDetail?._id}`,
+          domainUriPrefix: "https://assemble.page.link",
+
+          android: {
+            packageName: "com.assemble",
+            // fallbackUrl:
+          },
+          ios: {
+            bundleId: "com.qatapolt.qatapolt",
+          },
+
+          social: {
+            title: eventDetail.event_title
+              ? eventDetail.event_title
+              : "Check out this post on Assemble",
+            descriptionText: eventDetail?.event_description
+              ? eventDetail?.event_description
+              : "",
+            imageUrl: eventDetail?.event_image ? eventDetail?.event_image : "",
+          },
+        },
+        dynamicLinks.ShortLinkType.DEFAULT
+      );
+      return link;
+    } catch (error) {
+      console.log("error raised", error);
+    }
+  };
   const onShare = async () => {
     try {
+      const link = await generateLink(eventDetail);
+      console.log(link);
       const result = await Share.share({
-        message:
-          "React Native | A framework for building native apps using React",
+        message: link,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -82,7 +117,7 @@ const DetailsScreen = ({ navigation, route }) => {
       if (response.event !== undefined) {
         response.event.event_title = truncateText(
           response.event.event_title,
-          3
+          5
         );
 
         response.event.event_location.neighborhood = truncateText(
@@ -146,11 +181,9 @@ const DetailsScreen = ({ navigation, route }) => {
       if (hasPermission) {
         // const startDate = new Date();
         // const endDate = (new Date() + 7);
-        
+
         // console.log("startDate",startDate)
         //         console.log("startDate",startDate)
-
-
 
         // endDate.setDate(endDate.getDate() + 7);
         const eventId = await RNCalendarEvents.saveEvent("New Event", {
@@ -227,9 +260,13 @@ const DetailsScreen = ({ navigation, route }) => {
               <UnFillHeartIcon style={styles.icon} fill={colors.black} />
             )}
           </View>
-          <View style={[styles.iconContainer, { marginHorizontal: 10 }]}>
-            <UploadIcon onPress={onShare} style={styles.icon} />
-          </View>
+          <TouchableOpacity
+            onPress={onShare}
+            activeOpacity={0.6}
+            style={[styles.iconContainer, { marginHorizontal: 10 }]}
+          >
+            <UploadIcon style={styles.icon} />
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -250,10 +287,10 @@ const DetailsScreen = ({ navigation, route }) => {
         <ScrollView style={styles.scroll}>
           <View style={styles.scollInner}>
             <View style={styles.scrollContainer}>
-              <ImageBackground
+              <FastImage
                 style={styles.flex}
                 source={{ uri: eventDetail.event_image }}
-                imageStyle={{ borderRadius: 20, height: 300, width: "100%" }}
+                // imageStyle={{ borderRadius: 20, height: 300, width: "100%" }}
                 resizeMode="cover"
               >
                 {!loading && <Header />}
@@ -272,7 +309,7 @@ const DetailsScreen = ({ navigation, route }) => {
                         <ImageBackground
                           key={tag} // Add a unique key for each tag
                           style={styles.tagBody}
-                          source={images.smallBox}
+                          source={images.tag}
                           imageStyle={{ borderRadius: 50 }}
                         >
                           <View style={{ padding: 5 }}>
@@ -282,7 +319,7 @@ const DetailsScreen = ({ navigation, route }) => {
                       ))}
                   </View>
                 </View>
-              </ImageBackground>
+              </FastImage>
             </View>
             <View style={styles.eventHeader}>
               <CustomText

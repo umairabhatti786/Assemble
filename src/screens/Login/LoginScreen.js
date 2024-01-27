@@ -25,7 +25,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import { SignUp_Request, User_Login } from "../../api/Requests";
+import { SignUp_Request } from "../../api/Requests";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loading from "../../components/Loading";
 
@@ -51,17 +51,6 @@ const LoginScreen = ({ navigation }) => {
     }
   };
   const onPressGoogle = async () => {
-    // let ressss = await AsyncStorage.getItem("@token");
-    // console.log("ressss", ressss);
-    // navigation.navigate("Home");
-    // if (ressss !== null) {
-    //   setIsLoading(true);
-    //   setTimeout(() => {
-    //     navigation.navigate("Home");
-    //     Toast.show("Login successful");
-    //     setIsLoading(false);
-    //   }, 300);
-    // } else {
     GoogleSignin.configure();
     (await GoogleSignin.isSignedIn()) && (await GoogleSignin.signOut());
     try {
@@ -117,20 +106,9 @@ const LoginScreen = ({ navigation }) => {
         console.log("some other error happened", error);
       }
     }
-    // }
   };
 
   const onPressApple = async () => {
-    let ressss = await AsyncStorage.getItem("@token");
-    console.log("ressss", ressss);
-
-    // if (ressss !== null) {
-    //   setIsLoading(true);
-    //   setTimeout(() => {
-    //     navigation.navigate("Home");
-    //     setIsLoading(false);
-    //   }, 300);
-    // } else {
     const appleAuthRequestResponse = await appleAuth.performRequest({
       requestedOperation: appleAuth.Operation.LOGIN,
       requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
@@ -173,7 +151,6 @@ const LoginScreen = ({ navigation }) => {
         navigation.navigate("Home");
       }
     }
-    // }
   };
 
   useEffect(() => {

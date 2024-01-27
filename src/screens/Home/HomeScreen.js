@@ -54,13 +54,12 @@ const HomeScreen = ({ navigation }) => {
   const [userScroll, setUserScroll] = useState(true);
   const [userlocation, setUserLocation] = useState({});
   const [locationDetails, setLocationDetails] = useState(null);
-  const [isAlwaysShow, setIsAlwaysShow] = useState(true);
-  const [modalHeight, setModalHeight] = useState(600);
   useFocusEffect(
     React.useCallback(() => {
       fetchAllEvents();
-      requestLocationPermission();
+
       handleGetLocation();
+
       checkDynamicLink();
     }, [])
   );
@@ -121,170 +120,176 @@ const HomeScreen = ({ navigation }) => {
   // ).current;
 
   const handleGetLocation = async () => {
-    const apiKey = "AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk";
-    const result = await request(
-      Platform.OS === "android"
-        ? PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
-        : PERMISSIONS.IOS.ACCESS_FINE_LOCATION
-    );
-    let response = await getLocationPermissions();
+    try {
+      const apiKey = "AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk";
 
-    if (response === true || response === "granted") {
-      try {
-        Geolocation.getCurrentPosition(
-          (position) => {
-            const latitude = position?.coords?.latitude;
-            const longitude = position?.coords?.longitude;
-            const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+      let response = await getLocationPermissions();
 
-            axios
-              .get(geocodingApiUrl)
-              .then((response) => {
-                const results = response.data.results;
-                if (results && results.length > 0) {
-                  const firstResult = results[0];
-                  const resultPlaceId = firstResult.place_id;
-                  setPlaceId(resultPlaceId);
-                  const placesApiUrl = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${resultPlaceId}&key=${apiKey}`;
+      if (response === true || response === "granted") {
+        try {
+          const position = await new Promise((resolve, reject) => {
+            Geolocation.getCurrentPosition(
+              (position) => resolve(position),
+              (error) => reject(error)
+            );
+          });
 
-                  axios
-                    .get(placesApiUrl)
-                    .then((placesResponse) => {
-                      const result = placesResponse.data.result;
-                      if (result) {
-                        // Extracting specific components from the formatted address
-                        const addressComponents = result.address_components;
-                        const city =
-                          addressComponents.find(
-                            (component) =>
-                              component.types.includes("locality") ||
-                              component.types.includes(
-                                "administrative_area_level_2"
-                              )
-                          )?.long_name || "";
+          const latitude = position?.coords?.latitude;
+          const longitude = position?.coords?.longitude;
 
-                        const state =
-                          addressComponents.find((component) =>
-                            component.types.includes(
-                              "administrative_area_level_1"
-                            )
-                          )?.long_name || "";
+          // Set userLocation state here
+          setUserLocation(position?.coords);
 
-                        const country =
-                          addressComponents.find((component) =>
-                            component.types.includes("country")
-                          )?.long_name || "";
+          const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
 
-                        const formattedAddress = `${city}`;
-                        // const formattedAddress = `${city}, ${state}, ${country}`;
-                        setLocationDetails(formattedAddress);
-                      }
-                    })
-                    .catch((placesError) => {
-                      console.error(
-                        "Error fetching place details:",
-                        placesError
-                      );
-                    });
-                }
-              })
-              .catch((error) => {
-                console.error("Error fetching location details:", error);
-              });
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      } catch (error) {
-        console.log("Location error:", error);
-      }
-    } else {
-      // If permission is not granted, request permission again
-      Alert.alert(
-        "Permission Denied",
-        "Please grant location permission to use this feature.",
-        [
-          {
-            text: "OK",
-            onPress: async () => {
+          try {
+            const response = await axios.get(geocodingApiUrl);
+            const results = response.data.results;
+
+            if (results && results.length > 0) {
+              const firstResult = results[0];
+              const resultPlaceId = firstResult.place_id;
+              setPlaceId(resultPlaceId);
+
+              const placesApiUrl = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${resultPlaceId}&key=${apiKey}`;
+
               try {
-                const permissionResult = await request(
-                  Platform.OS === "android"
-                    ? PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
-                    : PERMISSIONS.IOS.ACCESS_FINE_LOCATION
-                );
+                const placesResponse = await axios.get(placesApiUrl);
+                const result = placesResponse.data.result;
 
-                if (permissionResult === RESULTS.GRANTED) {
-                  // Permission granted after the second attempt
-                  handleGetLocation();
-                } else {
-                  // Handle case where permission is still not granted
-                  console.log("Permission still not granted.");
+                if (result) {
+                  const addressComponents = result.address_components;
+                  const city =
+                    addressComponents.find(
+                      (component) =>
+                        component.types.includes("locality") ||
+                        component.types.includes("administrative_area_level_2")
+                    )?.long_name || "";
+
+                  const state =
+                    addressComponents.find((component) =>
+                      component.types.includes("administrative_area_level_1")
+                    )?.long_name || "";
+
+                  const country =
+                    addressComponents.find((component) =>
+                      component.types.includes("country")
+                    )?.long_name || "";
+
+                  const formattedAddress = `${city}`;
+
+                  setLocationDetails(formattedAddress);
                 }
-              } catch (permissionError) {
-                console.error(
-                  "Error requesting location permission:",
-                  permissionError
-                );
+              } catch (placesError) {
+                console.error("Error fetching place details:", placesError);
               }
+            }
+          } catch (error) {
+            console.error("Error fetching location details:", error);
+          }
+        } catch (error) {
+          console.error("Location error:", error);
+        }
+      } else {
+        // If permission is not granted, request permission again
+        Alert.alert(
+          "Permission Denied",
+          "Please grant location permission to use this feature.",
+          [
+            {
+              text: "OK",
+              onPress: async () => {
+                try {
+                  const permissionResult = await request(
+                    Platform.OS === "android"
+                      ? PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
+                      : PERMISSIONS.IOS.ACCESS_FINE_LOCATION
+                  );
+
+                  if (permissionResult === RESULTS.GRANTED) {
+                    // Permission granted after the second attempt
+                    handleGetLocation();
+                  } else {
+                    // Handle case where permission is still not granted
+                    console.log("Permission still not granted.");
+                  }
+                } catch (permissionError) {
+                  console.error(
+                    "Error requesting location permission:",
+                    permissionError
+                  );
+                }
+              },
             },
-          },
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel",
-          },
-        ]
-      );
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel",
+            },
+          ]
+        );
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
-  async function getLocationPermissions() {
-    const granted = await request(
-      Platform.select({
-        android: PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-        ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-      })
-    );
 
-    return granted === RESULTS.GRANTED;
+  async function getLocationPermissions() {
+    try {
+      const granted = await request(
+        Platform.select({
+          android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+          ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+        })
+      );
+
+      return granted === RESULTS.GRANTED;
+    } catch (error) {
+      console.log(error);
+    }
   }
   const requestLocationPermission = async () => {
     try {
       let response = await getLocationPermissions();
 
       if (response === true || response === "granted") {
-        Geolocation.getCurrentPosition(
-          (position) => {
-            try {
-              const latitude = position.coords?.latitude;
-              const longitude = position.coords?.longitude;
-              mapRef?.current?.animateToRegion(
-                {
-                  latitude,
-                  longitude,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                },
-                3000
-              );
-              setUserLocation(position.coords);
-            } catch (error) {
-              console.log(error);
-            }
-          },
-          (error) => {
-            console.error("Error getting location:", error);
-          }
-          // { enableHighAccuracy: true, timeout: 30000, maximumAge: 10000 }
-        );
+        try {
+          Geolocation.getCurrentPosition(
+            (position) => {
+              try {
+                if (position) {
+                  const { latitude, longitude } = position.coords;
+                  mapRef?.current?.animateToRegion(
+                    {
+                      latitude,
+                      longitude,
+                      latitudeDelta: 0.0922,
+                      longitudeDelta: 0.0421,
+                    },
+                    3000
+                  );
+                  setUserLocation(position.coords);
+                }
+              } catch (error) {
+                console.error("Error handling location:", error);
+              }
+            },
+            (error) => {
+              console.error("Error getting location:", error);
+            },
+            { enableHighAccuracy: true, timeout: 30000, maximumAge: 10000 }
+          );
+        } catch (locationError) {
+          console.error("Error in getCurrentPosition:", locationError);
+        }
       } else {
-        console.log("errrroorrr");
+        console.log("Error: Location permission not granted.");
       }
-    } catch (error) {
-      console.error("Error requesting location permission:", error);
+    } catch (permissionError) {
+      console.error("Error requesting location permission:", permissionError);
     }
   };
+
   const onAddFav = async (item) => {
     try {
       const token = await AsyncStorage.getItem("@token");
@@ -670,7 +675,7 @@ const HomeScreen = ({ navigation }) => {
         zIndex: 999999,
       }}
     >
-      {index === selectedEventIndex ? (
+      {index === selectedEventIndex && selectedEventIndex !== 0 ? (
         <FastImage
           source={images.blackLocation} // Use the black location image
           style={{ height: 60, width: 60 }}
@@ -745,6 +750,7 @@ const HomeScreen = ({ navigation }) => {
     }, 5000);
     // Set back to true after scrolling
   };
+
   return (
     <>
       {loading ? (
@@ -764,24 +770,35 @@ const HomeScreen = ({ navigation }) => {
                 },
               ]}
               initialRegion={{
-                latitude: userlocation.latitude
+                latitude: userlocation?.latitude
                   ? userlocation.latitude
                   : 32.7157,
-                longitude: userlocation.longitude
+                longitude: userlocation?.longitude
                   ? userlocation.longitude
                   : 117.1611,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
             >
-              <Marker
-                coordinate={{
-                  latitude: userlocation.latitude,
-                  longitude: userlocation.longitude,
-                }}
-              />
+              {!loading &&
+                userlocation !== undefined &&
+                userlocation !== null && (
+                  <Marker
+                    coordinate={{
+                      latitude: userlocation?.latitude,
+                      longitude: userlocation?.longitude,
+                    }}
+                  >
+                    <FastImage
+                      source={images.user}
+                      style={{ height: 30, width: 30 }}
+                      resizeMode={FastImage.resizeMode.contain}
+                    />
+                  </Marker>
+                )}
 
-              {eventss.length > 0 &&
+              {!loading &&
+                eventss.length > 0 &&
                 eventss.map((event, index) => (
                   <Marker
                     onPress={() => onPressMarker(event, index)}
@@ -816,11 +833,6 @@ const HomeScreen = ({ navigation }) => {
               //     }}
               //   >
               <Modalize
-                onClose={() => {
-                  setHideModelize(true);
-
-                  modalizeRef?.current?.close();
-                }}
                 modalStyle={{
                   backgroundColor: "#FFFFFF",
                   flex: 1,

@@ -18,6 +18,7 @@ import {
 import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
 import FastImage from "react-native-fast-image";
+import sizeHelper from "../assets/helpers/sizeHelper";
 const Card = React.memo(({ item, navigation, onAddFav }) => {
   const formatDate = (dateString) => {
     const options = { weekday: "short", month: "short", day: "numeric" };
@@ -119,7 +120,12 @@ const styles = StyleSheet.create({
   imageContainer: { width: "20%", height: "100%" },
   img: { height: 100, width: 80 },
   centerContainer: {
-    width: Platform.OS === "ios" ? "60%" : "70%",
+    width: "60%",
+    // Platform.OS === "ios"
+    //   ? "60%"
+    //   : sizeHelper.screenWidth > 450
+    //   ? "60%"
+    //   : "70%",
   },
   name: {
     fontSize: 16,

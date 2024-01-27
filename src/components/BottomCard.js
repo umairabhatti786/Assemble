@@ -117,7 +117,8 @@ const styles = StyleSheet.create({
   imageContainer: { width: "20%" },
   img: { height: 100, width: 80 },
   centerContainer: {
-    width: Platform.OS === "ios" ? "60%" : "70%",
+    width: "60%",
+    // width: Platform.OS === "ios" ? "60%" : "70%",
     marginHorizontal: sizeHelper.screenWidth < 450 && 5,
   },
   name: {

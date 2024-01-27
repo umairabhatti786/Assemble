@@ -10,4 +10,5 @@ export const images = {
   goldenLocation: require("../images/goldenLocation.png"),
   blackLocation: require("../images/blackLocation.png"),
   tag: require("../images/Tag.png"),
+  user: require("../images/user.png"),
 };

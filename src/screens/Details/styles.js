@@ -70,6 +70,8 @@ export const styles = ScaledSheet.create({
     fontSize: 12,
     color: colors.black,
     fontFamily: SFCompact.regular,
+    top: Platform.OS == "ios" ? 0 : -2,
+    textAlign: "center",
   },
   scroll: {
     flex: 1,

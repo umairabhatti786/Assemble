@@ -64,12 +64,17 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
           <Text style={styles.name}>{truncateText(item.event_title, 10)}</Text>
 
           <View style={styles.eventContainer}>
-            <Text style={styles.eventName}>
-              {truncateText(item.event_location?.neighborhood, 3)}
-            </Text>
-            <View style={styles.div} />
+            <View>
+              <Text style={styles.eventName}>
+                {truncateText(item.event_location?.neighborhood, 3)}
+              </Text>
+            </View>
 
-            <Text style={styles.date}>{formatDate(item.event_date)}</Text>
+            <View style={styles.div} />
+            <View>
+              <Text style={styles.date}>{formatDate(item.event_date)}</Text>
+            </View>
+
             {/* <Text style={styles.date}>{item.event_date}</Text> */}
           </View>
           <View style={styles.tagsContainer}>
@@ -110,6 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: sizeHelper.screenWidth > 450 ? 550 : 400,
     marginBottom: 30,
+    padding: 7,
   },
   cardContainer: {
     backgroundColor: "#F2ECEC",
@@ -118,14 +124,19 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: "space-between",
     borderRadius: 10,
-    marginVertical: 5,
+    // marginVertical: 5,
+    padding: 10,
   },
-  imageContainer: { width: "20%" },
-  img: { height: 100, width: 80, borderRadius: 10 },
+  imageContainer: { justifyContent: "center" },
+  img: { height: 70, width: 61, borderRadius: 5 },
   centerContainer: {
-    width: "67%",
-    // width: Platform.OS === "ios" ? "60%" : "70%",
-    marginHorizontal: sizeHelper.screenWidth < 450 && 5,
+    width: Platform.OS === "ios" ? "68%" : "68%",
+    // Platform.OS === "ios"
+    //   ? "60%"
+    //   : sizeHelper.screenWidth > 450
+    //   ? "60%"
+    //   : "70%",
+    justifyContent: "center",
   },
   name: {
     fontSize: 16,
@@ -136,43 +147,45 @@ const styles = StyleSheet.create({
     // textShadowOffset: {width: 2, height: 2},
     // textShadowRadius: 3,
     fontFamily: SFCompact.bold,
+    top: -2,
   },
   eventContainer: {
     flexDirection: "row",
     alignItems: "center",
+    // backgroundColor: "red",
+    width: "68%",
+    justifyContent: "space-between",
   },
   eventName: {
     fontSize: 14,
-    marginTop: 10,
     color: colors.black,
-    marginHorizontal: 5,
+    marginLeft: 5,
     fontFamily: SFCompact.regular,
   },
   div: {
     height: 5,
     width: 5,
     borderRadius: 100,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#D9D9D9",
     justifyContent: "center",
-    marginHorizontal: 10,
+    // marginRight: 5,
   },
   date: {
     fontSize: 14,
-    marginTop: 10,
     color: colors.black,
-    marginHorizontal: 5,
+    marginLeft: 5,
     fontFamily: SFCompact.regular,
   },
   tagsContainer: {
     flexDirection: "row",
-    marginTop: 20,
+    marginTop: 5,
     alignItems: "center",
     marginHorizontal: 5,
-    left: -5,
+    left: -12,
   },
   tagBody: {
     marginHorizontal: 10,
-    height: 35,
+    height: 25,
     width: 55,
     justifyContent: "center",
     alignItems: "center",
@@ -182,13 +195,14 @@ const styles = StyleSheet.create({
 
     color: colors.black,
     fontFamily: SFCompact.regular,
+    top: -3,
+    textAlign: "center",
   },
   heartContainer: {
-    width: "8%",
+    width: "10%",
     justifyContent: "center",
     alignItems: "center",
-    top: -10,
   },
-  fillIcon: { height: 24, width: 24 },
+  fillIcon: { height: 20, width: 20 },
 });
 export default BottomCard;

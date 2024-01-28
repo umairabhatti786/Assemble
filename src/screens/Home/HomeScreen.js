@@ -60,10 +60,11 @@ const HomeScreen = ({ navigation }) => {
     React.useCallback(() => {
       fetchAllEvents();
       handleGetLocation();
-      checkDynamicLink();
     }, [])
   );
-
+  useEffect(() => {
+    checkDynamicLink();
+  }, []);
   const checkDynamicLink = async () => {
     dynamicLinks()
       .getInitialLink()
@@ -471,7 +472,8 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const onNavigateToFav = () => {
-    navigation.navigate("AllFavEvents");
+    setHideModelize(true);
+    // navigation.navigate("AllFavEvents");
   };
   const formatEventDate = (date) => {
     const options = { weekday: "short", month: "short", day: "numeric" };

@@ -33,6 +33,7 @@ import {
   UnFillHeartIcon,
   UploadIcon,
 } from "../../assets/SVG/svg";
+import Toast from "react-native-root-toast";
 import FastImage from "react-native-fast-image";
 import DateCard from "../../components/DateCard";
 import LocationCard from "../../components/LocationCard";
@@ -76,6 +77,7 @@ const DetailsScreen = ({ navigation, route }) => {
         },
         dynamicLinks.ShortLinkType.DEFAULT
       );
+
       return link;
     } catch (error) {
       console.log("error raised", error);

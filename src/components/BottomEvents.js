@@ -35,15 +35,15 @@ const BottomEvents = ({
             borderRadius: 80,
             justifyContent: "center",
             alignItems: "center",
-            height: 50,
-            width: 50,
+            height: 40,
+            width: 40,
           }}
         >
           <LocateIcon
             onPress={() => {
               requestLocationPermission();
             }}
-            style={styles.bottomIcon}
+            style={{ height: 20, width: 20 }}
           />
         </View>
       </View>
@@ -65,8 +65,8 @@ const BottomEvents = ({
             borderRadius: 80,
             justifyContent: "center",
             alignItems: "center",
-            height: 50,
-            width: 50,
+            height: 40,
+            width: 40,
           }}
         >
           <OptionsIcon
@@ -107,12 +107,12 @@ const styles = StyleSheet.create({
   },
   iconsContainer: {
     backgroundColor: "transparent",
-    padding: sizeHelper.screenWidth > 450 ? 5 : 5,
+    padding: 5,
   },
 
   bottomIcon: {
-    height: 30,
-    width: 30,
+    height: 25,
+    width: 25,
   },
 });
 export default BottomEvents;

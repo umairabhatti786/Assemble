@@ -64,7 +64,7 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
           ) : (
             <FastImage
               source={images.card}
-              resizeMode="contain"
+              resizeMode="cover"
               style={styles.img}
             />
           )}
@@ -73,12 +73,17 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
           <Text style={styles.name}>{item.event_title}</Text>
 
           <View style={styles.eventContainer}>
-            <Text style={styles.eventName}>
-              {truncateText(item.event_location?.neighborhood, 3)}
-            </Text>
-            <View style={styles.div} />
+            <View>
+              <Text style={styles.eventName}>
+                {truncateText(item.event_location?.neighborhood, 3)}
+              </Text>
+            </View>
 
-            <Text style={styles.date}>{formatDate(item.event_date)}</Text>
+            <View style={styles.div} />
+            <View>
+              <Text style={styles.date}>{formatDate(item.event_date)}</Text>
+            </View>
+
             {/* <Text style={styles.date}>{item.event_date}</Text> */}
           </View>
           <View style={styles.tagsContainer}>
@@ -113,25 +118,32 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
   );
 });
 const styles = StyleSheet.create({
-  cardMain: { marginHorizontal: 10 },
-  cardContainer: {
+  cardMain: {
+    marginHorizontal: 10,
     backgroundColor: "#F2ECEC",
+    justifyContent: "center",
+    borderRadius: 10,
+    marginVertical: 5,
+    padding: 7,
+    // height: 100,
+    // left: -3,
+  },
+  cardContainer: {
     // width: "100%",
     flexDirection: "row",
     padding: 10,
     justifyContent: "space-between",
-    borderRadius: 10,
-    marginVertical: 5,
   },
-  imageContainer: { width: "20%", height: "100%" },
-  img: { height: 100, width: 80, borderRadius: 10 },
+  imageContainer: { justifyContent: "center" },
+  img: { height: 70, width: 61, borderRadius: 5 },
   centerContainer: {
-    width: "67%",
+    width: Platform.OS === "ios" ? "68%" : "68%",
     // Platform.OS === "ios"
     //   ? "60%"
     //   : sizeHelper.screenWidth > 450
     //   ? "60%"
     //   : "70%",
+    justifyContent: "center",
   },
   name: {
     fontSize: 16,
@@ -142,42 +154,41 @@ const styles = StyleSheet.create({
     // textShadowOffset: {width: 2, height: 2},
     // textShadowRadius: 3,
     fontFamily: SFCompact.bold,
-    marginTop: 10,
+    top: -2,
   },
   eventContainer: {
     flexDirection: "row",
     alignItems: "center",
+    // backgroundColor: "red",
+    width: "68%",
+    justifyContent: "space-between",
   },
   eventName: {
     fontSize: 14,
-
     color: colors.black,
-    marginHorizontal: 5,
+    marginLeft: 5,
     fontFamily: SFCompact.regular,
-    marginTop: 10,
   },
   div: {
     height: 5,
     width: 5,
     borderRadius: 100,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#D9D9D9",
     justifyContent: "center",
-    marginHorizontal: 10,
-    top: 8,
+    // marginRight: 5,
   },
   date: {
     fontSize: 14,
     color: colors.black,
-    marginHorizontal: 5,
+    marginLeft: 5,
     fontFamily: SFCompact.regular,
-    top: 8,
   },
   tagsContainer: {
     flexDirection: "row",
-    marginTop: 20,
+    marginTop: 5,
     alignItems: "center",
     marginHorizontal: 5,
-    left: -10,
+    left: -12,
   },
   tagBody: {
     marginHorizontal: 10,
@@ -185,21 +196,20 @@ const styles = StyleSheet.create({
     width: 55,
     justifyContent: "center",
     alignItems: "center",
-
-    top: -5,
   },
   tagName: {
     fontSize: 12,
 
     color: colors.black,
     fontFamily: SFCompact.regular,
+    top: Platform.OS == "ios" ? 0 : -3,
+    textAlign: "center",
   },
   heartContainer: {
-    width: "8%",
+    width: "10%",
     justifyContent: "center",
     alignItems: "center",
-    top: -10,
   },
-  fillIcon: { height: 24, width: 24 },
+  fillIcon: { height: 20, width: 20 },
 });
 export default Card;

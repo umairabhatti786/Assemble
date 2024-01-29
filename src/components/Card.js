@@ -97,7 +97,7 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
                   imageStyle={{ borderRadius: 50 }}
                 >
                   <View style={{ padding: 5 }}>
-                    <Text style={styles.tagName}>{tag}</Text>
+                    <Text style={{...styles.tagName,fontWeight:"700"}}>{tag}</Text>
                   </View>
                 </ImageBackground>
               ))}

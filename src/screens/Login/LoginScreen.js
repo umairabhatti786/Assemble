@@ -141,7 +141,7 @@ const LoginScreen = ({ navigation }) => {
         navigation.navigate("Home");
       } else if (
         response.message ===
-        "User with this email and login_type (Google) already exists"
+        "User with this email and login_type (Apple) already exists"
       ) {
         await AsyncStorage.setItem("@token", response?.sso_token);
         await AsyncStorage.setItem("LOGIN_TYPE", response?.login_type);
@@ -191,6 +191,7 @@ const LoginScreen = ({ navigation }) => {
                     alignSelf="center"
                     textAlign="center"
                     label="Login or signup"
+                    fontWeight="600"
                     fontFamily={SFCompact.semiBold}
                   />
                 </View>
@@ -213,6 +214,7 @@ const LoginScreen = ({ navigation }) => {
                         color={"#B2B2B2"}
                         fontSize={12}
                         alignSelf="center"
+                        fontWeight="600"
                         textAlign="center"
                         label="Continue with Google"
                         fontFamily={SFCompact.regular}
@@ -234,6 +236,8 @@ const LoginScreen = ({ navigation }) => {
                           color={"#B2B2B2"}
                           fontSize={12}
                           alignSelf="center"
+                          fontWeight="600"
+
                           textAlign="center"
                           label="Continue with Apple"
                           fontFamily={SFCompact.regular}

@@ -2,6 +2,7 @@ import Url from "./baseUrl";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const SignUp_Request = async (data) => {
+  console.log("DataLogin",data)
   try {
     const inst = axios.create({
       baseURL: Url,

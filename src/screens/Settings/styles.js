@@ -99,5 +99,5 @@ export const styles = ScaledSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  icon: { height: 35, width: 35 },
+  icon: { height: 30, width: 30 },
 });

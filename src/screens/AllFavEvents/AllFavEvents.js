@@ -138,8 +138,10 @@ const AllFavEvents = ({ navigation }) => {
             color={colors.black}
             fontSize={16}
             alignSelf="center"
+            fontWeight={"700"}
             textAlign="center"
             label="Your Events"
+          
             fontFamily={SFCompact.semiBold}
           />
         </View>

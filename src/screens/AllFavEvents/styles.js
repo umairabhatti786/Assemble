@@ -24,8 +24,8 @@ export const styles = ScaledSheet.create({
     alignItems: "center",
   },
   icon: {
-    height: sizeHelper.screenWidth > 450 ? 35 : 30,
-    width: sizeHelper.screenWidth > 450 ? 35 : 30,
+    height: sizeHelper.screenWidth > 450 ? 35 : 25,
+    width: sizeHelper.screenWidth > 450 ? 35 : 25,
   },
   iconImage: { height: 50, width: 50 },
   card: { height: 100, width: 80 },

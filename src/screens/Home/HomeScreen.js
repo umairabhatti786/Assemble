@@ -81,6 +81,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     dynamicLinks().onLink(handleDynamicLink);
   }, [dynamicLinks]);
+  console.log("events",events)
 
   const handleDynamicLink = async (link) => {
     if (link?.url) {
@@ -472,8 +473,8 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const onNavigateToFav = () => {
-    setHideModelize(true);
-    // navigation.navigate("AllFavEvents");
+    // setHideModelize(true);
+    navigation.navigate("AllFavEvents");
   };
   const formatEventDate = (date) => {
     const options = { weekday: "short", month: "short", day: "numeric" };
@@ -578,7 +579,7 @@ const HomeScreen = ({ navigation }) => {
             textAlign="center"
             label="assemble"
             fontFamily={SFCompact.semiBold}
-            fontWeight={Platform.OS === "ios" ? "500" : "400"}
+            fontWeight={Platform.OS === "ios" ? "700" : "400"}
           />
         </View>
         <TouchableOpacity
@@ -597,8 +598,8 @@ const HomeScreen = ({ navigation }) => {
       <CustomText
         label={section.title}
         color={colors.black}
-        fontSize={16}
-        fontWeight={Platform.OS == "ios" ? "500" : "300"}
+        fontSize={14}
+        fontWeight={Platform.OS == "ios" ? "600" : "300"}
         fontFamily={SFCompact.semiBold}
       />
     </View>
@@ -864,7 +865,7 @@ const HomeScreen = ({ navigation }) => {
                     alignSelf="center"
                     textAlign="center"
                     fontFamily={SFCompact.semiBold}
-                    fontWeight={Platform.OS == "ios" ? "500" : "300"}
+                    fontWeight={Platform.OS == "ios" ? "700" : "300"}
                   />
                 </View>
 

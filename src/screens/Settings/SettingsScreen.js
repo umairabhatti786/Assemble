@@ -193,6 +193,7 @@ const SettingsScreen = ({ navigation }) => {
                     fontSize={17}
                     height={65}
                     width={"70%"}
+                    fontWeight={"600"}
                     backgroundColor={colors.white}
                     borderRadius={100}
                     margin={20}
@@ -207,6 +208,7 @@ const SettingsScreen = ({ navigation }) => {
                     fontSize={17}
                     height={65}
                     width={"70%"}
+                    fontWeight={"600"}
                     backgroundColor={colors.white}
                     borderRadius={100}
                     margin={20}
@@ -221,6 +223,7 @@ const SettingsScreen = ({ navigation }) => {
                     fontSize={17}
                     height={65}
                     width={"70%"}
+                    fontWeight={"600"}
                     backgroundColor={colors.white}
                     borderRadius={100}
                     margin={20}

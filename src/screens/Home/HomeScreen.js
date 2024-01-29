@@ -578,6 +578,7 @@ const HomeScreen = ({ navigation }) => {
             textAlign="center"
             label="assemble"
             fontFamily={SFCompact.semiBold}
+            fontWeight={Platform.OS === "ios" ? "500" : "400"}
           />
         </View>
         <TouchableOpacity
@@ -593,7 +594,13 @@ const HomeScreen = ({ navigation }) => {
 
   const renderSectionHeader = ({ section }) => (
     <View style={{ padding: 10 }}>
-      <CustomText label={section.title} color={colors.black} fontSize={16} />
+      <CustomText
+        label={section.title}
+        color={colors.black}
+        fontSize={16}
+        fontWeight={Platform.OS == "ios" ? "500" : "300"}
+        fontFamily={SFCompact.semiBold}
+      />
     </View>
   );
   const renderItem = ({ section, item }) => (
@@ -857,6 +864,7 @@ const HomeScreen = ({ navigation }) => {
                     alignSelf="center"
                     textAlign="center"
                     fontFamily={SFCompact.semiBold}
+                    fontWeight={Platform.OS == "ios" ? "500" : "300"}
                   />
                 </View>
 

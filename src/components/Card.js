@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
     // textShadowRadius: 3,
     fontFamily: SFCompact.bold,
     top: -2,
+    fontWeight: Platform.OS == "ios" ? "600" : "300",
   },
   eventContainer: {
     flexDirection: "row",

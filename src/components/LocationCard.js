@@ -75,6 +75,7 @@ const LocationCard = ({ item }) => {
                   color={"#1C1916"}
                   fontFamily={SFCompact.light}
                   fontSize={13}
+                  fontWeight={Platform.OS == "ios" ? "400" : "300"}
                 />
               </View>
               <View

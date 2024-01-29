@@ -62,7 +62,7 @@ const DetailsScreen = ({ navigation, route }) => {
             // fallbackUrl:
           },
           ios: {
-            bundleId: "com.qatapolt.qatapolt",
+            bundleId: "com.assemble.assemble",
           },
 
           social: {
@@ -342,6 +342,7 @@ const DetailsScreen = ({ navigation, route }) => {
                 color={colors.black}
                 // fontFamily={SFCompact.regular}
                 fontFamily={SFCompact.bold}
+                fontWeight={Platform.OS == "ios" ? "500" : "300"}
               />
             </View>
             <View style={styles.cardsContainer}>
@@ -356,6 +357,7 @@ const DetailsScreen = ({ navigation, route }) => {
               label="Event Detail"
               fontFamily={SFCompact.semiBold}
               fontSize={15}
+              fontWeight={Platform.OS == "ios" ? "500" : "300"}
             />
             <View style={{ marginVertical: 10 }}>
               <CustomText

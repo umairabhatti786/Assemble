@@ -106,6 +106,7 @@ const DateCard = ({ item }) => {
               color={"#1C1916"}
               fontFamily={SFCompact.light}
               fontSize={16}
+              fontWeight={Platform.OS == "ios" ? "400" : "300"}
             />
             {/* <CustomText
               label={formatDate(item.event_date) + " at " + item.event_time}

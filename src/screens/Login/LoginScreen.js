@@ -193,6 +193,7 @@ const LoginScreen = ({ navigation }) => {
                     label="Login or signup"
                     fontWeight="600"
                     fontFamily={SFCompact.semiBold}
+                    fontWeight={Platform.OS == "ios" ? "600" : "300"}
                   />
                 </View>
               </ImageBackground>

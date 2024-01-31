@@ -45,6 +45,7 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
       return text;
     }
   }
+
   return (
     <TouchableOpacity
       key={item._id}
@@ -89,18 +90,21 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
           <View style={styles.tagsContainer}>
             {Array.isArray(item.event_tags) &&
               item.event_tags.length > 0 &&
-              item.event_tags[0].split(",").map((tag) => (
-                <ImageBackground
-                  key={tag} // Add a unique key for each tag
-                  style={styles.tagBody}
-                  source={images.tag}
-                  imageStyle={{ borderRadius: 50 }}
-                >
-                  <View style={{ padding: 5 }}>
-                    <Text style={{...styles.tagName,fontWeight:"700"}}>{tag}</Text>
-                  </View>
-                </ImageBackground>
-              ))}
+              item.event_tags.map(
+                (tag, index) =>
+                  tag !== null && (
+                    <ImageBackground
+                      key={tag} // Add a unique key for each tag
+                      style={styles.tagBody}
+                      source={images.tag}
+                      imageStyle={{ borderRadius: 50 }}
+                    >
+                      <View style={{ padding: 5 }}>
+                        <Text style={styles.tagName}>{tag}</Text>
+                      </View>
+                    </ImageBackground>
+                  )
+              )}
           </View>
         </View>
         <TouchableOpacity
@@ -110,7 +114,10 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
           {item.favEvent.isFav === true ? (
             <FillHeartIcon style={{ height: 20, width: 20 }} />
           ) : (
-            <UnFillHeartIcon style={styles.fillIcon} fill={"#cfb34e"} />
+            <UnFillHeartIcon
+              style={{ height: 25, width: 25 }}
+              fill={"#cfb34e"}
+            />
           )}
         </TouchableOpacity>
       </View>
@@ -161,13 +168,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     // backgroundColor: "red",
-    width: "68%",
+    width: "72%",
     justifyContent: "space-between",
   },
   eventName: {
     fontSize: 14,
     color: colors.black,
-    marginLeft: 5,
+    marginHorizontal: 5,
     fontFamily: SFCompact.regular,
   },
   div: {
@@ -181,7 +188,7 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 14,
     color: colors.black,
-    marginLeft: 5,
+    marginHorizontal: 5,
     fontFamily: SFCompact.regular,
   },
   tagsContainer: {
@@ -193,10 +200,11 @@ const styles = StyleSheet.create({
   },
   tagBody: {
     marginHorizontal: 10,
-    height: 25,
-    width: 55,
+    height: 28,
+    // width: 55,
     justifyContent: "center",
     alignItems: "center",
+    padding: 2,
   },
   tagName: {
     fontSize: 12,

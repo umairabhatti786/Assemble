@@ -59,12 +59,14 @@ const HomeScreen = ({ navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       fetchAllEvents();
+      requestLocationPermission();
       handleGetLocation();
     }, [])
   );
   useEffect(() => {
     checkDynamicLink();
   }, []);
+  useEffect(() => {}, []);
   const checkDynamicLink = async () => {
     dynamicLinks()
       .getInitialLink()
@@ -81,7 +83,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     dynamicLinks().onLink(handleDynamicLink);
   }, [dynamicLinks]);
-  console.log("events",events)
+  console.log("events", events);
 
   const handleDynamicLink = async (link) => {
     if (link?.url) {
@@ -130,11 +132,11 @@ const HomeScreen = ({ navigation }) => {
       if (response === true || response === "granted") {
         try {
           const position = await new Promise((resolve, reject) => {
-            Geolocation.getCurrentPosition(
-              (position) => resolve(position),
-              (error) => reject(error),
-              { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-            );
+            Geolocation.getCurrentPosition((position) => {
+              resolve(position),
+                (error) => reject(error),
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
+            });
           });
 
           const latitude = position?.coords?.latitude;
@@ -324,11 +326,12 @@ const HomeScreen = ({ navigation }) => {
                     event.event_location.neighborhood,
                     3
                   );
+
                   return event;
                 });
-                // modifiedEvents.sort(
-                //   (a, b) => new Date(b.event_date) - new Date(a.event_date)
-                // );
+                modifiedEvents.sort(
+                  (a, b) => new Date(b.event_date) - new Date(a.event_date)
+                );
 
                 setEventss(modifiedEvents);
 
@@ -365,6 +368,11 @@ const HomeScreen = ({ navigation }) => {
                     }
 
                     section.data.push(event);
+
+                    // Sort events within each section based on their specific dates
+                    section.data.sort(
+                      (a, b) => new Date(a.event_date) - new Date(b.event_date)
+                    );
                   }
                 });
 
@@ -407,11 +415,12 @@ const HomeScreen = ({ navigation }) => {
                     event.event_location.neighborhood,
                     3
                   );
+
                   return event;
                 });
-                // modifiedEvents.sort(
-                //   (a, b) => new Date(b.event_date) - new Date(a.event_date)
-                // );
+                modifiedEvents.sort(
+                  (a, b) => new Date(b.event_date) - new Date(a.event_date)
+                );
                 setEventss(modifiedEvents);
                 const currentDate = new Date();
                 const eventSections = [];
@@ -445,6 +454,11 @@ const HomeScreen = ({ navigation }) => {
                     }
 
                     section.data.push(event);
+
+                    // Sort events within each section based on their specific dates
+                    section.data.sort(
+                      (a, b) => new Date(a.event_date) - new Date(b.event_date)
+                    );
                   }
                 });
                 setEvents(eventSections);
@@ -473,7 +487,6 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const onNavigateToFav = () => {
-    // setHideModelize(true);
     navigation.navigate("AllFavEvents");
   };
   const formatEventDate = (date) => {
@@ -486,22 +499,26 @@ const HomeScreen = ({ navigation }) => {
       let response = await Get_All_Events();
 
       if (Array.isArray(response.events) && response.events.length > 0) {
+        setEventss(response.events);
         const modifiedEvents = response.events.map((event) => {
           event.event_title = truncateText(event.event_title, 3);
           event.event_location.neighborhood = truncateText(
             event.event_location.neighborhood,
             2
           );
-
+          if (event.event_tags.length > 0) {
+            event.tagNumbers = event.event_tags.map((tag, index) => ({
+              tag,
+              number: index + 1,
+            }));
+          }
           return event;
         });
 
         // Sort events by date, with the newest events first
-        // modifiedEvents.sort(
-        //   (a, b) => new Date(b.event_date) - new Date(a.event_date)
-        // );
-
-        setEventss(modifiedEvents);
+        modifiedEvents.sort(
+          (a, b) => new Date(b.event_date) - new Date(a.event_date)
+        );
 
         const eventSections = [];
 
@@ -533,8 +550,12 @@ const HomeScreen = ({ navigation }) => {
               section = { title: sectionTitle, data: [] };
               eventSections.push(section);
             }
+            // Sort events within each section based on their specific dates
 
             section.data.push(event);
+            section.data.sort(
+              (a, b) => new Date(a.event_date) - new Date(b.event_date)
+            );
           }
         });
 
@@ -756,7 +777,6 @@ const HomeScreen = ({ navigation }) => {
     }, 5000);
     // Set back to true after scrolling
   };
-
   return (
     <>
       {loading ? (
@@ -796,8 +816,8 @@ const HomeScreen = ({ navigation }) => {
                   }}
                 >
                   <FastImage
-                    source={images.user}
-                    style={{ height: 30, width: 30 }}
+                    source={images.location}
+                    style={{ height: 80, width: 50 }}
                     resizeMode={FastImage.resizeMode.contain}
                   />
                 </Marker>
@@ -846,7 +866,7 @@ const HomeScreen = ({ navigation }) => {
                 }}
                 ref={modalizeRef}
                 alwaysOpen={
-                  !hideModelize && sizeHelper.screenWidth > 450 ? 550 : 490
+                  !hideModelize && sizeHelper.screenWidth > 450 ? 460 : 440
                 }
                 useNativeDriver
                 modalHeight={sizeHelper.screentHeight - 135}

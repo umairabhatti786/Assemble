@@ -87,7 +87,9 @@ const AllFavEvents = ({ navigation }) => {
               section = { title: sectionTitle, data: [] };
               eventSections.push(section);
             }
-
+            section.data.sort(
+              (a, b) => new Date(a.event_date) - new Date(b.event_date)
+            );
             section.data.push(event);
           }
         });

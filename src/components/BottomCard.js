@@ -101,9 +101,12 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
           style={styles.heartContainer}
         >
           {item.favEvent.isFav === true ? (
-            <FillHeartIcon style={styles.fillIcon} />
+            <FillHeartIcon style={{ height: 20, width: 20 }} />
           ) : (
-            <UnFillHeartIcon style={styles.fillIcon} fill={"#cfb34e"} />
+            <UnFillHeartIcon
+              style={{ height: 25, width: 25 }}
+              fill={"#cfb34e"}
+            />
           )}
         </TouchableOpacity>
       </View>
@@ -155,7 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     // backgroundColor: "red",
-    width: "68%",
+    width: "72%",
     justifyContent: "space-between",
   },
   eventName: {
@@ -163,6 +166,7 @@ const styles = StyleSheet.create({
     color: colors.black,
     marginLeft: 5,
     fontFamily: SFCompact.regular,
+    marginHorizontal: 5,
   },
   div: {
     height: 5,
@@ -170,6 +174,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: "#D9D9D9",
     justifyContent: "center",
+    marginHorizontal: 5,
     // marginRight: 5,
   },
   date: {
@@ -188,7 +193,7 @@ const styles = StyleSheet.create({
   tagBody: {
     marginHorizontal: 10,
     height: 25,
-    width: 55,
+    // width: 55,
     justifyContent: "center",
     alignItems: "center",
   },

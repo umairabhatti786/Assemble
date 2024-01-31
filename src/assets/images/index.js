@@ -11,4 +11,5 @@ export const images = {
   blackLocation: require("../images/blackLocation.png"),
   tag: require("../images/Tag.png"),
   user: require("../images/user.png"),
+  location: require("../images/location.png"),
 };

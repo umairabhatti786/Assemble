@@ -66,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     checkDynamicLink();
   }, []);
-  useEffect(() => {}, []);
+
   const checkDynamicLink = async () => {
     dynamicLinks()
       .getInitialLink()
@@ -83,7 +83,6 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     dynamicLinks().onLink(handleDynamicLink);
   }, [dynamicLinks]);
-  console.log("events", events);
 
   const handleDynamicLink = async (link) => {
     if (link?.url) {

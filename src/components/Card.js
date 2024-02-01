@@ -75,16 +75,25 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
 
           <View style={styles.eventContainer}>
             <View>
-              <Text style={styles.eventName}>
+              <Text numberOfLines={1} style={styles.eventName}>
                 {truncateText(item.event_location?.neighborhood, 3)}
               </Text>
             </View>
-            <View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                alignSelf: "center",
+                marginHorizontal: 4,
+              }}
+            >
               <View style={styles.div} />
             </View>
 
             <View>
-              <Text style={styles.date}>{formatDate(item.event_date)}</Text>
+              <Text numberOfLines={1} style={styles.date}>
+                {formatDate(item.event_date)}
+              </Text>
             </View>
 
             {/* <Text style={styles.date}>{item.event_date}</Text> */}
@@ -169,11 +178,12 @@ const styles = StyleSheet.create({
   eventContainer: {
     flexDirection: "row",
     alignItems: "center",
-    // backgroundColor: "red",
-    width: "72%",
-    justifyContent: "space-between",
+    // justifyContent: "space-evenly", // Use space-evenly to distribute space between children
+    flex: 1, // Allow the container to take the available width
+    // left: -8,
   },
   eventName: {
+    flex: 1, // Make both text views take equal space
     fontSize: 14,
     color: colors.black,
     marginHorizontal: 5,
@@ -184,10 +194,9 @@ const styles = StyleSheet.create({
     width: 5,
     borderRadius: 100,
     backgroundColor: "#D9D9D9",
-    justifyContent: "center",
-    // marginRight: 5,
   },
   date: {
+    flex: 1, // Make both text views take equal space
     fontSize: 14,
     color: colors.black,
     marginHorizontal: 5,

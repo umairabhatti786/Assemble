@@ -79,8 +79,10 @@ const Card = React.memo(({ item, navigation, onAddFav }) => {
                 {truncateText(item.event_location?.neighborhood, 3)}
               </Text>
             </View>
+            <View>
+              <View style={styles.div} />
+            </View>
 
-            <View style={styles.div} />
             <View>
               <Text style={styles.date}>{formatDate(item.event_date)}</Text>
             </View>
@@ -144,7 +146,7 @@ const styles = StyleSheet.create({
   imageContainer: { justifyContent: "center" },
   img: { height: 70, width: 61, borderRadius: 5 },
   centerContainer: {
-    width: Platform.OS === "ios" ? "68%" : "68%",
+    width: "68%",
     // Platform.OS === "ios"
     //   ? "60%"
     //   : sizeHelper.screenWidth > 450
@@ -195,11 +197,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 5,
     alignItems: "center",
-    marginHorizontal: 5,
-    left: -12,
+    // marginHorizontal: 5,
+    // left: -5,
   },
   tagBody: {
-    marginHorizontal: 10,
+    marginHorizontal: 3,
     height: 28,
     // width: 55,
     justifyContent: "center",

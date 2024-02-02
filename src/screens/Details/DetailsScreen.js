@@ -41,6 +41,8 @@ import MapComponent from "../../components/MapComponent";
 import { useFocusEffect } from "@react-navigation/native";
 import Loading from "../../components/Loading";
 import { Get_Single_Event } from "../../api/Requests";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const DetailsScreen = ({ navigation, route }) => {
   const eventID = route.params?.eventId;
 
@@ -141,6 +143,7 @@ const DetailsScreen = ({ navigation, route }) => {
           response.event.ticket_link !== undefined
             ? response.event.ticket_link
             : "";
+        response.event.realDate = response.event.event_date;
         const eventDateParts = response.event.event_date.split("-");
         const day = parseInt(eventDateParts[0], 10);
         const month = parseInt(eventDateParts[1], 10) - 1; // Month is zero-based
@@ -267,13 +270,16 @@ const DetailsScreen = ({ navigation, route }) => {
             alignItems: "center",
           }}
         >
-          <View style={styles.iconContainer}>
+          <TouchableOpacity onPress={onAddFav} style={styles.iconContainer}>
             {eventDetail?.favEvent?.isFav === true ? (
-              <FillHeartIcon style={styles.icon} />
+              <FillHeartIcon style={{ height: 30, width: 30 }} />
             ) : (
-              <UnFillHeartIcon style={styles.icon} fill={colors.black} />
+              <UnFillHeartIcon
+                style={{ height: 35, width: 35 }}
+                fill={colors.black}
+              />
             )}
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={onShare}
             activeOpacity={0.6}
@@ -290,6 +296,67 @@ const DetailsScreen = ({ navigation, route }) => {
       addEventToCalendar();
     } else {
       openExternalLink();
+    }
+  };
+  const onAddFav = async () => {
+    try {
+      const token = await AsyncStorage.getItem("@token");
+      const body = {
+        sso_token: token,
+      };
+
+      let updatedEventDetail = { ...eventDetail }; // Create a copy of eventDetail
+
+      if (eventDetail.favEvent.isFav === false) {
+        try {
+          const url = `https://assemble-backend.onrender.com/api/events/addfavorite/${eventDetail._id}`;
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              // "Content-Type": "application/json",
+              // Add any additional headers if needed
+            },
+            body: JSON.stringify(body),
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          // Update the isFav property in the copied eventDetail
+          updatedEventDetail.favEvent.isFav = true;
+          Toast.show("Event Added in Favorites");
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          const url = `https://assemble-backend.onrender.com/api/events/removefavorite/${eventDetail._id}`;
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              // "Content-Type": "application/json",
+              // Add any additional headers if needed
+            },
+            body: JSON.stringify(body),
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          // Update the isFav property in the copied eventDetail
+          updatedEventDetail.favEvent.isFav = false;
+          Toast.show("Event Removed From Favorites");
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      // Set the updated eventDetail state after the if conditions
+      setEventDetails(updatedEventDetail);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -319,18 +386,21 @@ const DetailsScreen = ({ navigation, route }) => {
                   <View style={styles.tagsContainer}>
                     {Array.isArray(eventDetail.event_tags) &&
                       eventDetail.event_tags.length > 0 &&
-                      eventDetail.event_tags[0].split(",").map((tag) => (
-                        <ImageBackground
-                          key={tag} // Add a unique key for each tag
-                          style={styles.tagBody}
-                          source={images.tag}
-                          imageStyle={{ borderRadius: 50 }}
-                        >
-                          <View style={{ padding: 5 }}>
-                            <Text style={{...styles.tagName,fontWeight:"700"}}>{tag}</Text>
-                          </View>
-                        </ImageBackground>
-                      ))}
+                      eventDetail.event_tags.map(
+                        (tag, index) =>
+                          tag !== null && (
+                            <ImageBackground
+                              key={tag} // Add a unique key for each tag
+                              style={styles.tagBody}
+                              source={images.tag}
+                              imageStyle={{ borderRadius: 50 }}
+                            >
+                              <View style={{ padding: 5 }}>
+                                <Text style={styles.tagName}>{tag}</Text>
+                              </View>
+                            </ImageBackground>
+                          )
+                      )}
                   </View>
                 </View>
               </FastImage>
@@ -338,11 +408,10 @@ const DetailsScreen = ({ navigation, route }) => {
             <View style={styles.eventHeader}>
               <CustomText
                 label={eventDetail.event_title}
-                fontSize={16}
+                fontSize={17}
                 color={colors.black}
-                // fontFamily={SFCompact.regular}
-                fontFamily={SFCompact.bold}
-                fontWeight={Platform.OS == "ios" ? "500" : "300"}
+                fontFamily={SFCompact.regular}
+                fontWeight={"600"}
               />
             </View>
             <View style={styles.cardsContainer}>
@@ -357,7 +426,7 @@ const DetailsScreen = ({ navigation, route }) => {
               label="Event Detail"
               fontFamily={SFCompact.semiBold}
               fontSize={15}
-              fontWeight={Platform.OS == "ios" ? "500" : "300"}
+              fontWeight={"500"}
             />
             <View style={{ marginVertical: 10 }}>
               <CustomText

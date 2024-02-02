@@ -58,11 +58,14 @@ const HomeScreen = ({ navigation }) => {
   const [locationDetails, setLocationDetails] = useState(null);
   useFocusEffect(
     React.useCallback(() => {
+      setTimeout(() => {
+        requestLocationPermission();
+      }, 100);
+
       fetchAllEvents();
-      requestLocationPermission();
-      handleGetLocation();
     }, [])
   );
+
   useEffect(() => {
     checkDynamicLink();
   }, []);
@@ -275,9 +278,10 @@ const HomeScreen = ({ navigation }) => {
             },
             (error) => {
               console.error("Error getting location:", error);
-            },
-            { enableHighAccuracy: true, timeout: 30000, maximumAge: 10000 }
+            }
+            // { enableHighAccuracy: true, timeout: 30000, maximumAge: 10000 }
           );
+          handleGetLocation();
         } catch (locationError) {
           console.error("Error in getCurrentPosition:", locationError);
         }
@@ -369,9 +373,20 @@ const HomeScreen = ({ navigation }) => {
                     section.data.push(event);
 
                     // Sort events within each section based on their specific dates
-                    section.data.sort(
-                      (a, b) => new Date(a.event_date) - new Date(b.event_date)
-                    );
+                    section.data.sort((a, b) => {
+                      const getDateValue = (dateString) => {
+                        const [day, month, year] = dateString
+                          .split("-")
+                          .map(Number);
+                        // Months are zero-based in JavaScript's Date object
+                        return new Date(year, month - 1, day);
+                      };
+
+                      const dateA = getDateValue(a.event_date);
+                      const dateB = getDateValue(b.event_date);
+
+                      return dateA - dateB;
+                    });
                   }
                 });
 
@@ -455,9 +470,20 @@ const HomeScreen = ({ navigation }) => {
                     section.data.push(event);
 
                     // Sort events within each section based on their specific dates
-                    section.data.sort(
-                      (a, b) => new Date(a.event_date) - new Date(b.event_date)
-                    );
+                    section.data.sort((a, b) => {
+                      const getDateValue = (dateString) => {
+                        const [day, month, year] = dateString
+                          .split("-")
+                          .map(Number);
+                        // Months are zero-based in JavaScript's Date object
+                        return new Date(year, month - 1, day);
+                      };
+
+                      const dateA = getDateValue(a.event_date);
+                      const dateB = getDateValue(b.event_date);
+
+                      return dateA - dateB;
+                    });
                   }
                 });
                 setEvents(eventSections);
@@ -552,9 +578,18 @@ const HomeScreen = ({ navigation }) => {
             // Sort events within each section based on their specific dates
 
             section.data.push(event);
-            section.data.sort(
-              (a, b) => new Date(a.event_date) - new Date(b.event_date)
-            );
+            section.data.sort((a, b) => {
+              const getDateValue = (dateString) => {
+                const [day, month, year] = dateString.split("-").map(Number);
+                // Months are zero-based in JavaScript's Date object
+                return new Date(year, month - 1, day);
+              };
+
+              const dateA = getDateValue(a.event_date);
+              const dateB = getDateValue(b.event_date);
+
+              return dateA - dateB;
+            });
           }
         });
 

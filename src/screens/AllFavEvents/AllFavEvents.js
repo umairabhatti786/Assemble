@@ -87,10 +87,20 @@ const AllFavEvents = ({ navigation }) => {
               section = { title: sectionTitle, data: [] };
               eventSections.push(section);
             }
-            section.data.sort(
-              (a, b) => new Date(a.event_date) - new Date(b.event_date)
-            );
+
             section.data.push(event);
+            section.data.sort((a, b) => {
+              const getDateValue = (dateString) => {
+                const [day, month, year] = dateString.split("-").map(Number);
+                // Months are zero-based in JavaScript's Date object
+                return new Date(year, month - 1, day);
+              };
+
+              const dateA = getDateValue(a.event_date);
+              const dateB = getDateValue(b.event_date);
+
+              return dateA - dateB;
+            });
           }
         });
 
@@ -143,7 +153,6 @@ const AllFavEvents = ({ navigation }) => {
             fontWeight={"700"}
             textAlign="center"
             label="Your Events"
-          
             fontFamily={SFCompact.semiBold}
           />
         </View>

@@ -21,6 +21,7 @@ const DateCard = ({ item }) => {
 
   //   return formattedDate;
   // };
+
   const requestCalendarPermission = async () => {
     try {
       const result = await RNCalendarEvents.requestPermissions();
@@ -35,42 +36,55 @@ const DateCard = ({ item }) => {
       return false;
     }
   };
+  const convertToISOString = (inputDate) => {
+    const [day, month, year] = inputDate.split("-");
+
+    // Ensure month and day have two digits
+    const paddedMonth = month.padStart(2, "0");
+    const paddedDay = day.padStart(2, "0");
+
+    const formattedDate = `${year}-${paddedMonth}-${paddedDay}T09:00:00.000Z`;
+
+    return formattedDate;
+  };
 
   const addEventToCalendar = async () => {
+    const formattedDateTime = convertToISOString(item.realDate);
+    console.log(formattedDateTime);
+
     try {
       const hasPermission = await requestCalendarPermission();
 
       if (hasPermission) {
-        const eventId = await RNCalendarEvents.saveEvent("New Event", {
-          startDate: "2024-01-05T09:00:00.000Z",
-          endDate: "2024-01-08T09:00:00.000Z",
-          // recurrenceRule: {
-          //   frequency: "weekly",
-          //   occurrence: 52,
-          //   interval: 2,
-          //   endDate: "2024-01-08T09:00:00.000Z",
-          // },
-        });
-        Alert.alert(
-          "Event Added",
-          "The event has been added to your calendar. To view the event, open your calendar app.",
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                const calendarAppUrl =
-                  Platform.OS === "ios"
-                    ? "calshow:"
-                    : "content://com.android.calendar/time/";
+        try {
+          const eventId = await RNCalendarEvents.saveEvent(item.event_name, {
+            startDate: formattedDateTime,
+            endDate: formattedDateTime,
+          });
 
-                Linking.openURL(calendarAppUrl);
+          Alert.alert(
+            "Event Added",
+            "The event has been added to your calendar. To view the event, open your calendar app.",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  const calendarAppUrl =
+                    Platform.OS === "ios"
+                      ? "calshow:"
+                      : "content://com.android.calendar/time/";
+
+                  Linking.openURL(calendarAppUrl);
+                },
               },
-            },
-          ],
-          { cancelable: false }
-        );
+            ],
+            { cancelable: false }
+          );
 
-        console.log("Event added successfully. Event ID:", eventId);
+          console.log("Event added successfully. Event ID:", eventId);
+        } catch (error) {
+          console.error("Error parsing or formatting dates:", error);
+        }
       } else {
         console.log("Calendar permission not granted");
       }
@@ -78,6 +92,7 @@ const DateCard = ({ item }) => {
       console.error("Error adding event to calendar:", error);
     }
   };
+
   return (
     <TouchableOpacity
       onPress={addEventToCalendar}
@@ -105,8 +120,8 @@ const DateCard = ({ item }) => {
               label={item.event_date + " at " + item.event_time}
               color={"#1C1916"}
               fontFamily={SFCompact.light}
-              fontSize={16}
-              fontWeight={Platform.OS == "ios" ? "400" : "300"}
+              fontSize={17}
+              fontWeight={"500"}
             />
             {/* <CustomText
               label={formatDate(item.event_date) + " at " + item.event_time}

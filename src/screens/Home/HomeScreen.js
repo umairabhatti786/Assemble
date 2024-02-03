@@ -51,7 +51,7 @@ const HomeScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [eventss, setEventss] = useState([]);
   const [hideModelize, setHideModelize] = useState(false);
-  const [placeId, setPlaceId] = useState(null);
+
   const [selectedEventIndex, setSelectedEventIndex] = useState(0);
   const [userScroll, setUserScroll] = useState(true);
   const [userlocation, setUserLocation] = useState(false);
@@ -134,11 +134,11 @@ const HomeScreen = ({ navigation }) => {
       if (response === true || response === "granted") {
         try {
           const position = await new Promise((resolve, reject) => {
-            Geolocation.getCurrentPosition((position) => {
-              resolve(position),
-                (error) => reject(error),
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
-            });
+            Geolocation.getCurrentPosition(
+              (position) => resolve(position),
+              (error) => reject(error),
+              { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            );
           });
 
           const latitude = position?.coords?.latitude;
@@ -150,19 +150,34 @@ const HomeScreen = ({ navigation }) => {
           const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
 
           try {
-            const response = await axios.get(geocodingApiUrl);
-            const results = response.data.results;
+            const geocodingResponse = await fetch(geocodingApiUrl);
+
+            if (!geocodingResponse.ok) {
+              throw new Error(
+                `Geocoding request failed with status ${geocodingResponse.status}`
+              );
+            }
+
+            const geocodingData = await geocodingResponse.json();
+            const results = geocodingData.results;
 
             if (results && results.length > 0) {
               const firstResult = results[0];
               const resultPlaceId = firstResult.place_id;
-              setPlaceId(resultPlaceId);
 
               const placesApiUrl = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${resultPlaceId}&key=${apiKey}`;
 
               try {
-                const placesResponse = await axios.get(placesApiUrl);
-                const result = placesResponse.data.result;
+                const placesResponse = await fetch(placesApiUrl);
+
+                if (!placesResponse.ok) {
+                  throw new Error(
+                    `Places request failed with status ${placesResponse.status}`
+                  );
+                }
+
+                const placesData = await placesResponse.json();
+                const result = placesData.result;
 
                 if (result) {
                   const addressComponents = result.address_components;
@@ -178,14 +193,20 @@ const HomeScreen = ({ navigation }) => {
                   setLocationDetails(formattedAddress);
                 }
               } catch (placesError) {
-                console.error("Error fetching place details:", placesError);
+                console.error(
+                  "Error fetching place details:",
+                  placesError.message
+                );
               }
             }
-          } catch (error) {
-            console.error("Error fetching location details:", error);
+          } catch (geocodingError) {
+            console.error(
+              "Error fetching location details:",
+              geocodingError.message
+            );
           }
-        } catch (error) {
-          console.error("Location error:", error);
+        } catch (locationError) {
+          console.error("Location error:", locationError.message);
         }
       } else {
         // If permission is not granted, request permission again
@@ -216,7 +237,7 @@ const HomeScreen = ({ navigation }) => {
                 } catch (permissionError) {
                   console.error(
                     "Error requesting location permission:",
-                    permissionError
+                    permissionError.message
                   );
                 }
               },
@@ -230,7 +251,7 @@ const HomeScreen = ({ navigation }) => {
         );
       }
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
     }
   };
 

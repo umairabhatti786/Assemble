@@ -137,7 +137,7 @@ const HomeScreen = ({ navigation }) => {
             Geolocation.getCurrentPosition(
               (position) => resolve(position),
               (error) => reject(error),
-              { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+              { enableHighAccuracy: true, timeout: 30000, maximumAge: 10000 }
             );
           });
 
@@ -206,7 +206,13 @@ const HomeScreen = ({ navigation }) => {
             );
           }
         } catch (locationError) {
-          console.error("Location error:", locationError.message);
+          if (locationError.code === "TIMEOUT") {
+            console.warn("Location request timed out. Please try again.");
+            // Display a message to the user or take appropriate action
+            // Example: alert("Location request timed out. Please try again.");
+          } else {
+            console.error("Location error:", locationError.message);
+          }
         }
       } else {
         // If permission is not granted, request permission again

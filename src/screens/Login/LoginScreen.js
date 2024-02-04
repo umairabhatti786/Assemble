@@ -191,7 +191,6 @@ const LoginScreen = ({ navigation }) => {
                     alignSelf="center"
                     textAlign="center"
                     label="Login or signup"
-                    fontWeight="600"
                     fontFamily={SFCompact.semiBold}
                     fontWeight={Platform.OS == "ios" ? "600" : "300"}
                   />
@@ -238,7 +237,6 @@ const LoginScreen = ({ navigation }) => {
                           fontSize={12}
                           alignSelf="center"
                           fontWeight="600"
-
                           textAlign="center"
                           label="Continue with Apple"
                           fontFamily={SFCompact.regular}

@@ -61,6 +61,7 @@ const LocationCard = ({ item }) => {
               color={"#120D26"}
               fontFamily={SFCompact.light}
               fontSize={17}
+              fontWeight={"500"}
             />
             <View
               style={{

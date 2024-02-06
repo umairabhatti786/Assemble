@@ -59,7 +59,7 @@ const HomeScreen = ({ navigation }) => {
   const [userScroll, setUserScroll] = useState(true);
   const [userlocation, setUserLocation] = useState(false);
   const [locationDetails, setLocationDetails] = useState(null);
-
+  console.log("isFocused", isFocused);
   useFocusEffect(
     React.useCallback(() => {
       fetchAllEvents();

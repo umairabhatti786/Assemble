@@ -221,7 +221,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
 
     color: colors.black,
-    fontFamily: SFCompact.regular,
+    fontFamily: SFCompact.bold,
+    fontWeight:"700",
     top: Platform.OS == "ios" ? 0 : -3,
     textAlign: "center",
   },

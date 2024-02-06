@@ -43,16 +43,16 @@ export const styles = ScaledSheet.create({
   },
 
   iconContainer: {
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     padding: 8,
-    borderRadius: 100,
+    borderRadius: 999,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
-    height: 50,
-    width: 50,
+    height: 40,
+    width: 40,
   },
-  icon: { height: 30, width: 30 },
+  icon: { height: 25, width: 25 },
   tagsContainer: {
     flexDirection: "row",
     marginTop: 25,
@@ -69,10 +69,12 @@ export const styles = ScaledSheet.create({
     padding: 2,
   },
   tagName: {
-    fontSize: 12,
+    fontSize: 11,
+    fontFamily: SFCompact.bold,
+    fontWeight:"700",
+
 
     color: colors.black,
-    fontFamily: SFCompact.regular,
     top: Platform.OS == "ios" ? 0 : -3,
     textAlign: "center",
   },

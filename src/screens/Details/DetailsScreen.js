@@ -272,10 +272,10 @@ const DetailsScreen = ({ navigation, route }) => {
         >
           <TouchableOpacity onPress={onAddFav} style={styles.iconContainer}>
             {eventDetail?.favEvent?.isFav === true ? (
-              <FillHeartIcon style={{ height: 30, width: 30 }} />
+              <FillHeartIcon style={{ height: 23, width: 23 }} />
             ) : (
               <UnFillHeartIcon
-                style={{ height: 35, width: 35 }}
+                style={{ height: 27, width: 27 }}
                 fill={colors.black}
               />
             )}
@@ -408,7 +408,7 @@ const DetailsScreen = ({ navigation, route }) => {
             <View style={styles.eventHeader}>
               <CustomText
                 label={eventDetail.event_title}
-                fontSize={17}
+                fontSize={15}
                 color={colors.black}
                 fontFamily={SFCompact.regular}
                 fontWeight={"600"}

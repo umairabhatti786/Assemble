@@ -120,7 +120,7 @@ const DateCard = ({ item }) => {
               label={item.event_date + " at " + item.event_time}
               color={"#1C1916"}
               fontFamily={SFCompact.light}
-              fontSize={17}
+              fontSize={16}
               fontWeight={"500"}
             />
             {/* <CustomText

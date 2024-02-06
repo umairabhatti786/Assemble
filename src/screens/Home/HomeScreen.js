@@ -56,6 +56,8 @@ const HomeScreen = ({ navigation }) => {
   const [userScroll, setUserScroll] = useState(true);
   const [userlocation, setUserLocation] = useState(false);
   const [locationDetails, setLocationDetails] = useState(null);
+
+  console.log("userlocation",userlocation?.altitude)
   useFocusEffect(
     React.useCallback(() => {
       setTimeout(() => {

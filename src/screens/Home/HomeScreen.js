@@ -13,7 +13,7 @@ import {
   PanResponder,
   PermissionsAndroid,
 } from "react-native";
-import Geolocation from "react-native-geolocation-service";
+import Geolocation from "@react-native-community/geolocation";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import axios from "axios";
@@ -34,7 +34,7 @@ import {
 import CustomText from "../../components/CustomText";
 import { colors } from "../../utils/colors";
 import { Modalize } from "react-native-modalize";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import Card from "../../components/Card";
 import { SFCompact } from "../../utils/Fonts";
 import Loading from "../../components/Loading";
@@ -43,7 +43,10 @@ import Button from "../../components/Button";
 import BottomCard from "../../components/BottomCard";
 import BottomEvents from "../../components/BottomEvents";
 import Toast from "react-native-root-toast";
+import Geocoder from "react-native-geocoding";
+Geocoder.init("AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk");
 const HomeScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const mapRef = useRef(null);
   const modalizeRef = useRef(null);
   const flatListRef = useRef(null);
@@ -56,16 +59,69 @@ const HomeScreen = ({ navigation }) => {
   const [userScroll, setUserScroll] = useState(true);
   const [userlocation, setUserLocation] = useState(false);
   const [locationDetails, setLocationDetails] = useState(null);
+  console.log("isFocused", isFocused);
   useFocusEffect(
     React.useCallback(() => {
-      setTimeout(() => {
-        requestLocationPermission();
-      }, 100);
-
       fetchAllEvents();
     }, [])
   );
 
+  const requestLocationPermission = async () => {
+    try {
+      let response = await getLocationPermissions();
+
+      if (response === true || response === "granted") {
+        try {
+          Geolocation.getCurrentPosition(
+            (position) => {
+              try {
+                if (position) {
+                  const { latitude, longitude } = position.coords;
+                  console.log("Received coordinates:", mapRef.current);
+
+                  try {
+                    // Access map object from mapRef.current and animate to region
+                    mapRef.current.animateToRegion(
+                      {
+                        latitude,
+                        longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                      },
+                      3000
+                    );
+                    console.log("Animation completed.");
+                  } catch (error) {
+                    console.error("Error during animation:", error);
+                  }
+
+                  // Ensure setUserLocation is called after animation
+                  setUserLocation(position.coords);
+                }
+              } catch (error) {
+                console.error("Error handling location:", error);
+              }
+            },
+            (error) => {
+              console.error("Error getting location:", error);
+            },
+            { enableHighAccuracy: true, timeout: 30000 }
+          );
+        } catch (locationError) {
+          console.error("Error in getCurrentPosition:", locationError);
+        }
+      } else {
+        console.log("Error: Location permission not granted.");
+      }
+    } catch (permissionError) {
+      console.error("Error requesting location permission:", permissionError);
+    }
+  };
+  useEffect(() => {
+    if (isFocused === true) {
+      handleGetLocation();
+    }
+  }, [isFocused]);
   useEffect(() => {
     checkDynamicLink();
   }, []);
@@ -143,6 +199,26 @@ const HomeScreen = ({ navigation }) => {
 
           const latitude = position?.coords?.latitude;
           const longitude = position?.coords?.longitude;
+          console.log("check=====>", position, latitude, longitude);
+          setTimeout(() => {
+            if (position) {
+              try {
+                // Access map object from mapRef.current and animate to region
+                mapRef.current.animateToRegion(
+                  {
+                    latitude,
+                    longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  },
+                  3000
+                );
+                console.log("Animation completed.");
+              } catch (error) {
+                console.error("Error during animation:", error);
+              }
+            }
+          }, 300);
 
           // Set userLocation state here
           setUserLocation(position?.coords);
@@ -274,49 +350,6 @@ const HomeScreen = ({ navigation }) => {
     } catch (error) {
       console.error(error);
       return false;
-    }
-  };
-
-  const requestLocationPermission = async () => {
-    try {
-      let response = await getLocationPermissions();
-
-      if (response === true || response === "granted") {
-        try {
-          Geolocation.getCurrentPosition(
-            (position) => {
-              try {
-                if (position) {
-                  const { latitude, longitude } = position.coords;
-                  mapRef?.current?.animateToRegion(
-                    {
-                      latitude,
-                      longitude,
-                      latitudeDelta: 0.0922,
-                      longitudeDelta: 0.0421,
-                    },
-                    3000
-                  );
-                  setUserLocation(position.coords);
-                }
-              } catch (error) {
-                console.error("Error handling location:", error);
-              }
-            },
-            (error) => {
-              console.error("Error getting location:", error);
-            }
-            // { enableHighAccuracy: true, timeout: 30000, maximumAge: 10000 }
-          );
-          handleGetLocation();
-        } catch (locationError) {
-          console.error("Error in getCurrentPosition:", locationError);
-        }
-      } else {
-        console.log("Error: Location permission not granted.");
-      }
-    } catch (permissionError) {
-      console.error("Error requesting location permission:", permissionError);
     }
   };
 

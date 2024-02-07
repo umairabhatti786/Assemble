@@ -410,8 +410,8 @@ const DetailsScreen = ({ navigation, route }) => {
                 label={eventDetail.event_title}
                 fontSize={15}
                 color={colors.black}
-                fontFamily={SFCompact.regular}
-                fontWeight={"600"}
+                fontFamily={SFCompact.semiBold}
+                fontWeight={Platform.OS == "ios" ? "600" : "300"}
               />
             </View>
             <View style={styles.cardsContainer}>
@@ -425,13 +425,14 @@ const DetailsScreen = ({ navigation, route }) => {
             <CustomText
               label="Event Detail"
               fontFamily={SFCompact.semiBold}
+              fontWeight={Platform.OS == "ios" ? "500" : "300"}
               fontSize={15}
-              fontWeight={"500"}
             />
             <View style={{ marginVertical: 10 }}>
               <CustomText
                 label={eventDetail.event_description}
                 fontFamily={SFCompact.light}
+                fontWeight={Platform.OS == "ios" ? "300" : "300"}
                 fontSize={15}
               />
             </View>
@@ -450,7 +451,10 @@ const DetailsScreen = ({ navigation, route }) => {
                 fontFamily={SFCompact.light}
                 fontSize={13}
                 textAlign="center"
-                alignSelf="center"
+                alignSelf="left"
+                fontWeight={Platform.OS == "ios" ? "300" : "300"}
+                marginLeft={5}
+                marginTop={5}
               />
             </View>
             <View style={{ marginVertical: 10 }}>
@@ -469,13 +473,15 @@ const DetailsScreen = ({ navigation, route }) => {
                 margin={20}
                 fontFamily={SFCompact.semiBold}
                 onPress={onPress}
+                fontWeight={Platform.OS == "ios" ? "600" : "300"}
               />
               {eventDetail.ticket_link === "" && (
                 <View style={styles.bottomView}>
                   <CustomText
                     label={"Tickets available at the door".toLocaleUpperCase()}
                     color={colors.black}
-                    fontFamily={SFCompact.light}
+                    fontFamily={SFCompact.semiBold}
+                    fontWeight={Platform.OS == "ios" ? "600" : "300"}
                     fontSize={12}
                     textAlign="center"
                     alignSelf="center"

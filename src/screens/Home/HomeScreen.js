@@ -213,12 +213,11 @@ const HomeScreen = ({ navigation }) => {
                   },
                   3000
                 );
-                console.log("Animation completed.");
               } catch (error) {
                 console.error("Error during animation:", error);
               }
             }
-          }, 300);
+          }, 500);
 
           // Set userLocation state here
           setUserLocation(position?.coords);
@@ -753,7 +752,8 @@ const HomeScreen = ({ navigation }) => {
               fontSize={17}
               alignSelf="center"
               textAlign="center"
-              fontFamily={SFCompact.regular}
+              fontFamily={SFCompact.semiBold}
+              fontWeight={Platform.OS == "ios" ? "600" : "300"}
             />
           </View>
           <View style={{ marginVertical: 10 }}>
@@ -890,14 +890,8 @@ const HomeScreen = ({ navigation }) => {
                 },
               ]}
               initialRegion={{
-                latitude:
-                  !userlocation && userlocation?.latitude
-                    ? userlocation.latitude
-                    : 32.7157,
-                longitude:
-                  !userlocation && userlocation?.longitude
-                    ? userlocation.longitude
-                    : 117.1611,
+                latitude: 32.7157, // Latitude of San Diego
+                longitude: -117.1611, // Longitude of San Diego
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
@@ -979,7 +973,7 @@ const HomeScreen = ({ navigation }) => {
                     alignSelf="center"
                     textAlign="center"
                     fontFamily={SFCompact.semiBold}
-                    fontWeight={Platform.OS == "ios" ? "700" : "300"}
+                    fontWeight={Platform.OS == "ios" ? "600" : "300"}
                   />
                 </View>
 

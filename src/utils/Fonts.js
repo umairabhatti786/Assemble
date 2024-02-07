@@ -1,8 +1,8 @@
 export const SFCompact = {
-  normal: 'SF-Compact',
-  light: 'SF-Compact-Display-Light',
-  regular: 'SF-Compact-Display-Regular',
-  medium: 'SF-Compact-Display-Medium',
-  semiBold: 'SF-Compact-Display-Semibold',
-  bold: 'SF-Compact-Display-Bold',
+  normal: "SF-Compact",
+  light: "SF-Compact-Text-Light",
+  regular: "SF-Compact-Text-Regular",
+  medium: "SF-Compact-Text-Medium",
+  semiBold: "SF-Compact-Text-Semibold",
+  bold: "SF-Compact-Text-Bold",
 };

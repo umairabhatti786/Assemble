@@ -38,9 +38,9 @@ const LocationCard = ({ item }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          marginHorizontal: 10,
-          // backgroundColor: colors.red,
+          backgroundColor: colors.white,
           width: "100%",
+          marginHorizontal: 10,
         }}
       >
         <View
@@ -50,12 +50,9 @@ const LocationCard = ({ item }) => {
             alignItems: "center",
           }}
         >
-          <View style={{width:20}}>
           <LocationIcon style={{ height: 22, width: 22 }} />
 
-
-          </View>
-          <View style={{ marginLeft: 20,}}>
+          <View style={{ marginLeft: 20 }}>
             <CustomText
               label={
                 item.event_location?.venue_name
@@ -63,9 +60,9 @@ const LocationCard = ({ item }) => {
                   : ""
               }
               color={"#120D26"}
-              fontFamily={SFCompact.medium}
+              fontFamily={SFCompact.regular}
+              fontWeight={Platform.OS == "ios" ? "400" : "300"}
               fontSize={16}
-              fontWeight={"500"}
             />
             <View
               style={{
@@ -75,15 +72,14 @@ const LocationCard = ({ item }) => {
                 // backgroundColor:"red"
               }}
             >
-              <View style={{width:"30%"}}>
+              <View>
                 <CustomText
                   label={item.event_location?.neighborhood}
                   color={"#1C1916"}
                   numberOfLines={1}
-              
-                  fontFamily={SFCompact.light}
+                  fontFamily={SFCompact.medium}
+                  fontWeight={Platform.OS == "ios" ? "500" : "300"}
                   fontSize={13}
-                  fontWeight={Platform.OS == "ios" ? "400" : "300"}
                 />
               </View>
               <View

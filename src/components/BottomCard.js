@@ -61,13 +61,13 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
           )}
         </View>
         <View style={styles.centerContainer}>
-          <Text style={{...styles.name,fontWeight:"700"}}>{truncateText(item.event_title, 10)}</Text>
+          <Text style={{ ...styles.name, fontWeight: "700" }}>
+            {truncateText(item.event_title, 10)}
+          </Text>
 
           <View style={styles.eventContainer}>
             <View>
-              <Text
-
-               style={{...styles.eventName,}}>
+              <Text style={{ ...styles.eventName }}>
                 {truncateText(item.event_location?.neighborhood, 3)}
               </Text>
             </View>
@@ -90,7 +90,9 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
                   imageStyle={{ borderRadius: 50 }}
                 >
                   <View style={{ padding: 5 }}>
-                    <Text style={{...styles.tagName,fontWeight:"700"}}>{tag}</Text>
+                    <Text style={{ ...styles.tagName, fontWeight: "700" }}>
+                      {tag}
+                    </Text>
                   </View>
                 </ImageBackground>
               ))}
@@ -201,9 +203,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
 
     color: colors.black,
-    fontFamily: SFCompact.regular,
+
     top: -3,
     textAlign: "center",
+    fontFamily: SFCompact.semiBold,
+    fontWeight: Platform.OS == "ios" ? "600" : "300",
   },
   heartContainer: {
     width: "10%",

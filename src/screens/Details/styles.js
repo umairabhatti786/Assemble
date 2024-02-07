@@ -66,17 +66,16 @@ export const styles = ScaledSheet.create({
     // width: 55,
     justifyContent: "center",
     alignItems: "center",
-    padding: 2,
+    alignSelf: "center",
   },
   tagName: {
-    fontSize: 11,
-    fontFamily: SFCompact.bold,
-    fontWeight:"700",
-
-
+    fontSize: 13,
+    fontFamily: SFCompact.semiBold,
+    fontWeight: Platform.OS == "ios" ? "600" : "300",
     color: colors.black,
-    top: Platform.OS == "ios" ? 0 : -3,
     textAlign: "center",
+    // top: Platform.OS == "ios" ? 0 : -3,
+    alignSelf: "center",
   },
   scroll: {
     flex: 1,

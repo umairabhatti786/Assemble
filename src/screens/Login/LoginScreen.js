@@ -214,10 +214,10 @@ const LoginScreen = ({ navigation }) => {
                         color={"#B2B2B2"}
                         fontSize={12}
                         alignSelf="center"
-                        fontWeight="600"
                         textAlign="center"
                         label="Continue with Google"
-                        fontFamily={SFCompact.regular}
+                        fontFamily={SFCompact.semiBold}
+                        fontWeight={Platform.OS == "ios" ? "600" : "300"}
                       />
                     </View>
                   </View>
@@ -236,10 +236,10 @@ const LoginScreen = ({ navigation }) => {
                           color={"#B2B2B2"}
                           fontSize={12}
                           alignSelf="center"
-                          fontWeight="600"
+                          fontWeight={Platform.OS == "ios" ? "600" : "300"}
                           textAlign="center"
                           label="Continue with Apple"
-                          fontFamily={SFCompact.regular}
+                          fontFamily={SFCompact.semiBold}
                         />
                       </View>
                     </View>

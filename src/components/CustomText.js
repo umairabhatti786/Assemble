@@ -42,6 +42,7 @@ function CustomText(props) {
             textDecorationLine: props.textDecorationLine,
             paddingHorizontal: props.paddingHorizontal,
             fontFamily: props.fontFamily,
+            letterSpacing:props.letterSpacing
             // textShadowColor: 'rgba(0, 0, 0, 0.25)',
             // textShadowOffset: {width: 2, height: 2},
             // textShadowRadius: 3,

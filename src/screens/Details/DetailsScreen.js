@@ -408,10 +408,10 @@ const DetailsScreen = ({ navigation, route }) => {
             <View style={styles.eventHeader}>
               <CustomText
                 label={eventDetail.event_title}
-                fontSize={15}
+                fontSize={16}
                 color={colors.black}
                 fontFamily={SFCompact.semiBold}
-                fontWeight={Platform.OS == "ios" ? "600" : "300"}
+                fontWeight={Platform.OS == "ios" ? "700" : "300"}
               />
             </View>
             <View style={styles.cardsContainer}>
@@ -425,7 +425,7 @@ const DetailsScreen = ({ navigation, route }) => {
             <CustomText
               label="Event Detail"
               fontFamily={SFCompact.semiBold}
-              fontWeight={Platform.OS == "ios" ? "500" : "300"}
+              fontWeight={Platform.OS == "ios" ? "600" : "300"}
               fontSize={15}
             />
             <View style={{ marginVertical: 10 }}>
@@ -433,7 +433,7 @@ const DetailsScreen = ({ navigation, route }) => {
                 label={eventDetail.event_description}
                 fontFamily={SFCompact.light}
                 fontWeight={Platform.OS == "ios" ? "300" : "300"}
-                fontSize={15}
+                fontSize={13}
               />
             </View>
             <View style={styles.mapContainer}>
@@ -449,7 +449,7 @@ const DetailsScreen = ({ navigation, route }) => {
                 label={eventDetail?.realAddress ? eventDetail?.realAddress : ""}
                 color="#1C1916"
                 fontFamily={SFCompact.light}
-                fontSize={13}
+                fontSize={12}
                 textAlign="center"
                 alignSelf="left"
                 fontWeight={Platform.OS == "ios" ? "300" : "300"}
@@ -465,15 +465,16 @@ const DetailsScreen = ({ navigation, route }) => {
                     : "GET TICKETS"
                 }
                 color={colors.white}
-                fontSize={17}
+                fontSize={18}
                 height={65}
                 width={"100%"}
                 backgroundColor={"#080808"}
                 borderRadius={100}
+                letterSpacing={2}
                 margin={20}
                 fontFamily={SFCompact.semiBold}
                 onPress={onPress}
-                fontWeight={Platform.OS == "ios" ? "600" : "300"}
+                fontWeight={Platform.OS == "ios" ? "700" : "300"}
               />
               {eventDetail.ticket_link === "" && (
                 <View style={styles.bottomView}>

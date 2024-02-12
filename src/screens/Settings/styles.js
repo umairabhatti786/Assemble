@@ -93,11 +93,11 @@ export const styles = ScaledSheet.create({
     marginTop: Platform.OS=="ios"? 60:10
   },
   iconContainer: {
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF90",
     padding: 5,
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
   },
-  icon: { height: 30, width: 30 },
+  icon: { height: 25, width: 25 },
 });

@@ -71,7 +71,7 @@ export const styles = ScaledSheet.create({
   tagName: {
     fontSize: 13,
     fontFamily: SFCompact.semiBold,
-    fontWeight: Platform.OS == "ios" ? "600" : "300",
+    fontWeight: Platform.OS == "ios" ? "700" : "300",
     color: colors.black,
     textAlign: "center",
     // top: Platform.OS == "ios" ? 0 : -3,

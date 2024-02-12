@@ -175,8 +175,8 @@ const SettingsScreen = ({ navigation }) => {
                 <CustomText
                   label="Settings"
                   color={colors.black}
-                  fontSize={24}
-                  fontWeight={"bold"}
+                  fontSize={22}
+                  fontWeight={"600"}
                 />
               </View>
               <View
@@ -193,10 +193,20 @@ const SettingsScreen = ({ navigation }) => {
                     fontSize={17}
                     height={65}
                     width={"70%"}
-                    fontWeight={"600"}
+                    fontWeight={"700"}
                     backgroundColor={colors.white}
                     borderRadius={100}
                     margin={20}
+                    style={{
+                      elevation: 5,
+                      shadowColor: "#A7573480",
+                     shadowOffset: { width: 3, height: 5 },
+                     shadowOpacity:  0.3,
+                     shadowRadius: 5,
+
+                    }}
+                    letterSpacing={1}
+
                     fontFamily={SFCompact.semiBold}
                     onPress={onDeleteAccount}
                   />
@@ -208,9 +218,19 @@ const SettingsScreen = ({ navigation }) => {
                     fontSize={17}
                     height={65}
                     width={"70%"}
-                    fontWeight={"600"}
+                    fontWeight={"700"}
                     backgroundColor={colors.white}
                     borderRadius={100}
+                    letterSpacing={1}
+                    style={{
+                      elevation: 5,
+                      shadowColor: "#A7573480",
+                     shadowOffset: { width: 3, height: 5 },
+                     shadowOpacity:  0.3,
+                     shadowRadius: 5,
+
+                    }}
+
                     margin={20}
                     fontFamily={SFCompact.semiBold}
                     onPress={openEmailApp}
@@ -223,10 +243,19 @@ const SettingsScreen = ({ navigation }) => {
                     fontSize={17}
                     height={65}
                     width={"70%"}
-                    fontWeight={"600"}
+                  letterSpacing={1}
+                    fontWeight={"700"}
                     backgroundColor={colors.white}
                     borderRadius={100}
                     margin={20}
+                    style={{
+                      elevation: 5,
+                      shadowColor: "#A7573480",
+                     shadowOffset: { width: 3, height: 5 },
+                     shadowOpacity:  0.3,
+                     shadowRadius: 5,
+
+                    }}
                     fontFamily={SFCompact.semiBold}
                     onPress={logout}
                   />

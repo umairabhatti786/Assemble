@@ -122,6 +122,11 @@ const HomeScreen = ({ navigation }) => {
       handleGetLocation();
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    dynamicLinks().onLink(handleDynamicLink);
+  }, [dynamicLinks]);
+
   useEffect(() => {
     checkDynamicLink();
   }, []);
@@ -134,14 +139,15 @@ const HomeScreen = ({ navigation }) => {
           const id = link?.url?.split("=").pop();
           navigation.navigate("Details", { eventId: id });
         } else {
-          setLoading(false);
+
+          setTimeout(() => {
+            setLoading(false);
+
+            
+          }, 1000);
         }
       });
   };
-
-  useEffect(() => {
-    dynamicLinks().onLink(handleDynamicLink);
-  }, [dynamicLinks]);
 
   const handleDynamicLink = async (link) => {
     if (link?.url) {
@@ -149,7 +155,9 @@ const HomeScreen = ({ navigation }) => {
       if (id) {
         navigation.navigate("Details", { eventId: id });
       } else {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       }
     }
   };
@@ -651,6 +659,10 @@ const HomeScreen = ({ navigation }) => {
             });
           }
         });
+        setTimeout(() => {
+          setLoading(false);
+
+        }, 2000);
 
         setEvents(eventSections);
       } else {
@@ -980,6 +992,7 @@ const HomeScreen = ({ navigation }) => {
                 {eventss.length > 0 ? (
                   <SectionList
                     sections={events}
+                    scrollEnabled={false}
                     keyExtractor={(item, index) => `${item?._id}_${index}`}
                     renderItem={renderItem}
                     renderSectionHeader={renderSectionHeader}

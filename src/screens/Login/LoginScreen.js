@@ -190,9 +190,11 @@ const LoginScreen = ({ navigation }) => {
                     fontSize={12}
                     alignSelf="center"
                     textAlign="center"
+                    
+                    
                     label="Login or signup"
                     fontFamily={SFCompact.semiBold}
-                    fontWeight={Platform.OS == "ios" ? "600" : "300"}
+                    fontWeight={Platform.OS == "ios" ? "700" : "300"}
                   />
                 </View>
               </ImageBackground>
@@ -212,7 +214,7 @@ const LoginScreen = ({ navigation }) => {
                     <View>
                       <CustomText
                         color={"#B2B2B2"}
-                        fontSize={12}
+                        fontSize={13}
                         alignSelf="center"
                         textAlign="center"
                         label="Continue with Google"
@@ -234,7 +236,7 @@ const LoginScreen = ({ navigation }) => {
                       <View>
                         <CustomText
                           color={"#B2B2B2"}
-                          fontSize={12}
+                          fontSize={13}
                           alignSelf="center"
                           fontWeight={Platform.OS == "ios" ? "600" : "300"}
                           textAlign="center"

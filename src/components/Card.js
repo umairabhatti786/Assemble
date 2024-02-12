@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
 
     color: colors.black,
     fontFamily: SFCompact.semiBold,
-    fontWeight: Platform.OS == "ios" ? "600" : "300",
+    fontWeight: Platform.OS == "ios" ? "700" : "300",
     top: Platform.OS == "ios" ? 0 : -3,
     textAlign: "center",
   },

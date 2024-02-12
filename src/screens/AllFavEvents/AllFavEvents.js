@@ -123,10 +123,24 @@ const AllFavEvents = ({ navigation }) => {
       return text;
     }
   }
+//   <CustomText
+//   label={section.title}
+//   color={colors.black}
+//   fontSize={14}
+//   fontWeight={Platform.OS == "ios" ? "600" : "300"}
+//   fontFamily={SFCompact.semiBold}
+// />
 
   const renderSectionHeader = ({ section }) => (
     <View style={{ padding: 10 }}>
-      <CustomText label={section.title} color={colors.black} fontSize={16} />
+      <CustomText
+        label={section.title}
+        color={colors.black}
+        fontSize={14}
+        fontWeight={Platform.OS == "ios" ? "600" : "300"}
+        fontFamily={SFCompact.semiBold}
+    
+        />
     </View>
   );
   const renderItem = ({ section, item }) => (
@@ -148,7 +162,7 @@ const AllFavEvents = ({ navigation }) => {
         <View style={styles.textContainer}>
           <CustomText
             color={colors.black}
-            fontSize={16}
+            fontSize={15}
             alignSelf="center"
             fontWeight={"700"}
             textAlign="center"

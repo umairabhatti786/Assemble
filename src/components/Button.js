@@ -25,6 +25,8 @@ export const Button = ({
 
   marginVertical,
   fontFamily,
+  letterSpacing,
+  style
 }) => {
   // console.log(borderColor)
 
@@ -34,6 +36,8 @@ export const Button = ({
       onPressIn={onPressIn}
       onPress={onPress}
       style={{
+        ...style,
+
         marginBottom: marginBottom,
         marginHorizontal: marginHorizontal,
         marginVertical: marginVertical,
@@ -58,6 +62,7 @@ export const Button = ({
           fontSize: fontSize,
           textAlign: "center",
           fontWeight: fontWeight,
+          letterSpacing:letterSpacing,
           fontFamily: fontFamily,
         }}
       >

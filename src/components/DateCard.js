@@ -6,7 +6,7 @@ import { CalanderIcon, ForwardIcon } from "../assets/SVG/svg";
 import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
 import RNCalendarEvents from "react-native-calendar-events";
-const DateCard = ({ item }) => {
+const DateCard = ({ item, eventShareLink }) => {
   // const formatDate = (dateString) => {
   //   const eventDateParts = dateString.split("-");
   //   const day = parseInt(eventDateParts[0], 10);
@@ -50,17 +50,33 @@ const DateCard = ({ item }) => {
 
   const addEventToCalendar = async () => {
     const formattedDateTime = convertToISOString(item.realDate);
-    console.log(formattedDateTime);
 
     try {
       const hasPermission = await requestCalendarPermission();
 
       if (hasPermission) {
         try {
-          const eventId = await RNCalendarEvents.saveEvent(item.event_name, {
-            startDate: formattedDateTime,
-            endDate: formattedDateTime,
-          });
+          const latLng = `${item.event_location?.latitude},${item.event_location?.longitude}`;
+          const options = {
+            title: item.event_title,
+            startDate: formattedDateTime, // Start date of the event
+            endDate: formattedDateTime, // End date of the event
+            location: item.realAddress, // Location of the event
+            description: `Event Time: ${item.event_time}\n${item.event_description}`, // Description of the event including time
+            url: eventShareLink, // Link to the event page
+
+            notes: `Event Time: ${item.event_time}\n${item.event_description}`, // Description of the event including time
+          };
+
+          const eventId = await RNCalendarEvents.saveEvent(
+            options.title,
+            options,
+            { description: options.description }
+          );
+          // const eventId = await RNCalendarEvents.saveEvent(item.event_name, {
+          //   startDate: formattedDateTime,
+          //   endDate: formattedDateTime,
+          // });
 
           Alert.alert(
             "Event Added",

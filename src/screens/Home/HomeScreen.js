@@ -59,7 +59,7 @@ const HomeScreen = ({ navigation }) => {
   const [userScroll, setUserScroll] = useState(true);
   const [userlocation, setUserLocation] = useState(false);
   const [locationDetails, setLocationDetails] = useState(null);
-  console.log("isFocused", isFocused);
+
   useFocusEffect(
     React.useCallback(() => {
       fetchAllEvents();
@@ -139,11 +139,8 @@ const HomeScreen = ({ navigation }) => {
           const id = link?.url?.split("=").pop();
           navigation.navigate("Details", { eventId: id });
         } else {
-
           setTimeout(() => {
             setLoading(false);
-
-            
           }, 1000);
         }
       });
@@ -579,6 +576,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const onNavigateToFav = () => {
+    // setHideModelize(true);
     navigation.navigate("AllFavEvents");
   };
   const formatEventDate = (date) => {
@@ -591,7 +589,6 @@ const HomeScreen = ({ navigation }) => {
       let response = await Get_All_Events();
 
       if (Array.isArray(response.events) && response.events.length > 0) {
-        setEventss(response.events);
         const modifiedEvents = response.events.map((event) => {
           event.event_title = truncateText(event.event_title, 3);
           event.event_location.neighborhood = truncateText(
@@ -661,11 +658,12 @@ const HomeScreen = ({ navigation }) => {
         });
         setTimeout(() => {
           setLoading(false);
-
+          setEventss(response.events);
         }, 2000);
 
         setEvents(eventSections);
       } else {
+        setEventss(null);
         setEvents(null);
       }
     } catch (error) {
@@ -883,6 +881,89 @@ const HomeScreen = ({ navigation }) => {
     }, 5000);
     // Set back to true after scrolling
   };
+  const ListEmptyComponent = () => {
+    return (
+      <>
+        <View
+          style={{
+            backgroundColor: colors.white,
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginVertical: 10,
+          }}
+        >
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CustomText
+              label={"No Events found"}
+              color={colors.black}
+              fontSize={16}
+            />
+          </View>
+        </View>
+        <ImageBackground
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          source={images.background}
+        >
+          <View
+            style={{
+              backgroundColor: colors.white,
+              height: 300,
+              width: 370,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 10,
+              marginVertical: 20,
+            }}
+          >
+            <View style={{ marginVertical: 10 }}>
+              <CustomText
+                label={"Don't see the event you're \nlooking for? "}
+                color={colors.black}
+                fontSize={17}
+                alignSelf="center"
+                textAlign="center"
+                fontFamily={SFCompact.regular}
+              />
+            </View>
+            <View style={{ marginVertical: 10 }}>
+              <CustomText
+                label={"Send it our way and we will \nadd to  the list"}
+                color={colors.black}
+                fontSize={13}
+                alignSelf="center"
+                textAlign="center"
+                fontFamily={SFCompact.light}
+              />
+            </View>
+            <>
+              <Button
+                text={"SUBMIT EVENT"}
+                color={colors.white}
+                fontSize={14}
+                height={65}
+                width={"50%"}
+                backgroundColor={colors.black}
+                borderRadius={100}
+                margin={20}
+                fontFamily={SFCompact.regular}
+                onPress={openExternalLink}
+              />
+            </>
+          </View>
+        </ImageBackground>
+      </>
+    );
+  };
   return (
     <>
       {loading ? (
@@ -989,98 +1070,20 @@ const HomeScreen = ({ navigation }) => {
                   />
                 </View>
 
-                {eventss.length > 0 ? (
-                  <SectionList
-                    sections={events}
-                    scrollEnabled={false}
-                    keyExtractor={(item, index) => `${item?._id}_${index}`}
-                    renderItem={renderItem}
-                    renderSectionHeader={renderSectionHeader}
-                    ListFooterComponent={loading ? null : footerComponent}
-                  />
-                ) : (
-                  <>
-                    <View
-                      style={{
-                        backgroundColor: colors.white,
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginVertical: 10,
-                      }}
-                    >
-                      <View
-                        style={{
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <CustomText
-                          label={"No Events found"}
-                          color={colors.black}
-                          fontSize={16}
-                        />
-                      </View>
-                    </View>
-                    <ImageBackground
-                      style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                      source={images.background}
-                    >
-                      <View
-                        style={{
-                          backgroundColor: colors.white,
-                          height: 300,
-                          width: 370,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: 10,
-                          marginVertical: 20,
-                        }}
-                      >
-                        <View style={{ marginVertical: 10 }}>
-                          <CustomText
-                            label={"Don't see the event you're \nlooking for? "}
-                            color={colors.black}
-                            fontSize={17}
-                            alignSelf="center"
-                            textAlign="center"
-                            fontFamily={SFCompact.regular}
-                          />
-                        </View>
-                        <View style={{ marginVertical: 10 }}>
-                          <CustomText
-                            label={
-                              "Send it our way and we will \nadd to  the list"
-                            }
-                            color={colors.black}
-                            fontSize={13}
-                            alignSelf="center"
-                            textAlign="center"
-                            fontFamily={SFCompact.light}
-                          />
-                        </View>
-                        <>
-                          <Button
-                            text={"SUBMIT EVENT"}
-                            color={colors.white}
-                            fontSize={14}
-                            height={65}
-                            width={"50%"}
-                            backgroundColor={colors.black}
-                            borderRadius={100}
-                            margin={20}
-                            fontFamily={SFCompact.regular}
-                            onPress={openExternalLink}
-                          />
-                        </>
-                      </View>
-                    </ImageBackground>
-                  </>
-                )}
+                <SectionList
+                  sections={events}
+                  scrollEnabled={false}
+                  keyExtractor={(item, index) => `${item?._id}_${index}`}
+                  renderItem={renderItem}
+                  renderSectionHeader={renderSectionHeader}
+                  ListFooterComponent={loading ? null : footerComponent}
+                  ListEmptyComponent={
+                    !loading &&
+                    Array.isArray(events) &&
+                    events.length < 0 &&
+                    ListEmptyComponent
+                  }
+                />
               </Modalize>
               //  </View>
               // </Animated.View>

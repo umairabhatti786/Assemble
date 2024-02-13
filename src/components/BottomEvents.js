@@ -1,4 +1,10 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect } from "react";
 import { LocateIcon, OptionsIcon } from "../assets/SVG/svg";
 import sizeHelper from "../assets/helpers/sizeHelper";
@@ -18,17 +24,13 @@ const BottomEvents = ({
   return (
     <View style={styles.bottomView}>
       <View style={styles.bottomContnet}>
-        <View style={styles.iconsContainer}>
-          <OptionsIcon
-            onPress={() => {
-              modalizeRef.current?.open();
-              setHideModelize(false);
-            }}
-            style={styles.bottomIcon}
-            fill={"transparent"}
-          />
+        <View pointerEvents="none" style={styles.iconsContainer}>
+          <OptionsIcon style={styles.bottomIcon} fill={"transparent"} />
         </View>
-        <View
+        <TouchableOpacity
+          onPress={() => {
+            requestLocationPermission();
+          }}
           style={{
             backgroundColor: "#f5f0f0",
             padding: 5,
@@ -39,26 +41,18 @@ const BottomEvents = ({
             width: 40,
           }}
         >
-          <LocateIcon
-            onPress={() => {
-              requestLocationPermission();
-            }}
-            style={{ height: 20, width: 20 }}
-          />
-        </View>
+          <LocateIcon style={{ height: 20, width: 20 }} />
+        </TouchableOpacity>
       </View>
       <View style={styles.bottomContnet}>
-        <View style={styles.iconsContainer}>
-          <OptionsIcon
-            onPress={() => {
-              modalizeRef.current?.open();
-              setHideModelize(false);
-            }}
-            style={styles.bottomIcon}
-            fill={"transparent"}
-          />
+        <View pointerEvents="none" style={styles.iconsContainer}>
+          <OptionsIcon style={styles.bottomIcon} fill={"transparent"} />
         </View>
-        <View
+        <TouchableOpacity
+          onPress={() => {
+            modalizeRef.current?.open();
+            setHideModelize(false);
+          }}
           style={{
             backgroundColor: "#f5f0f0",
             padding: 5,
@@ -69,15 +63,8 @@ const BottomEvents = ({
             width: 40,
           }}
         >
-          <OptionsIcon
-            onPress={() => {
-              modalizeRef.current?.open();
-              setHideModelize(false);
-            }}
-            style={styles.bottomIcon}
-            fill={colors.black}
-          />
-        </View>
+          <OptionsIcon style={styles.bottomIcon} fill={colors.black} />
+        </TouchableOpacity>
       </View>
 
       <View>

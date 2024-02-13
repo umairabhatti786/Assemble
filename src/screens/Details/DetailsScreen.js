@@ -47,6 +47,7 @@ const DetailsScreen = ({ navigation, route }) => {
   const eventID = route.params?.eventId;
 
   const [eventDetail, setEventDetails] = useState({});
+  const [eventShareLink, setShareEventLink] = useState("");
 
   const [loading, setLoading] = useState(false);
   const handleGoBack = () => {
@@ -61,7 +62,6 @@ const DetailsScreen = ({ navigation, route }) => {
 
           android: {
             packageName: "com.assemble",
-            // fallbackUrl:
           },
           ios: {
             bundleId: "com.assemble.assemble",
@@ -87,10 +87,10 @@ const DetailsScreen = ({ navigation, route }) => {
   };
   const onShare = async () => {
     try {
-      const link = await generateLink(eventDetail);
-      console.log(link);
+      // const link = await generateLink(eventDetail);
+      // console.log(link);
       const result = await Share.share({
-        message: link,
+        message: eventShareLink,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -155,10 +155,16 @@ const DetailsScreen = ({ navigation, route }) => {
         const options = { weekday: "short", month: "short", day: "numeric" };
         response.event.event_date = eventDate.toLocaleString("en-US", options);
 
-        setTimeout(() => {
+        setTimeout(async () => {
           setEventDetails(response.event);
           setLoading(false);
           console.log("running stop");
+          try {
+            const link = await generateLink(eventDetail);
+            setShareEventLink(link);
+          } catch (error) {
+            console.log(error);
+          }
         }, 200);
       }
     } catch (error) {
@@ -166,6 +172,8 @@ const DetailsScreen = ({ navigation, route }) => {
       console.error(error);
     }
   };
+  console.log(eventShareLink);
+
   function truncateText(text, maxWords) {
     const words = text.split(" ");
 
@@ -415,7 +423,7 @@ const DetailsScreen = ({ navigation, route }) => {
               />
             </View>
             <View style={styles.cardsContainer}>
-              <DateCard item={eventDetail} />
+              <DateCard item={eventDetail} eventShareLink={eventShareLink} />
               <View style={styles.divider} />
               <LocationCard item={eventDetail} />
             </View>

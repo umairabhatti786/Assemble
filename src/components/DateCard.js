@@ -1,4 +1,11 @@
-import { View, Text, Platform, Alert, Linking } from "react-native";
+import {
+  View,
+  Text,
+  Platform,
+  Alert,
+  Linking,
+  PermissionsAndroid,
+} from "react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { colors } from "../utils/colors";
@@ -6,6 +13,7 @@ import { CalanderIcon, ForwardIcon } from "../assets/SVG/svg";
 import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
 import RNCalendarEvents from "react-native-calendar-events";
+import * as AddCalendarEvent from "react-native-add-calendar-event";
 const DateCard = ({ item, eventShareLink }) => {
   // const formatDate = (dateString) => {
   //   const eventDateParts = dateString.split("-");
@@ -21,6 +29,80 @@ const DateCard = ({ item, eventShareLink }) => {
 
   //   return formattedDate;
   // };
+  const addEventToCalendar = () => {
+    if (Platform.OS === "ios") {
+      addEventToCalendarIOS();
+    } else {
+      addToAndroidCal();
+    }
+  };
+  const addToAndroidCal = async () => {
+    const formattedDateTime = convertToISOString(item.realDate);
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_CALENDAR,
+        {
+          title: "Calendar Permission",
+          message: "This app needs calendar access to add events",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
+        }
+      );
+
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const calendarEvent = {
+          title: item.event_title,
+          startDate: formattedDateTime, // Start date of the event
+          endDate: formattedDateTime, // End date of the event
+          location: item.realAddress, // Location of the event
+          description: `Event Time: ${item.event_time}\n${item.event_description}`, // Description of the event including time
+          url: eventShareLink, // Link to the event page
+
+          notes: `Event Time: ${item.event_time}\n${item.event_description}`, // Description of the event including time
+        };
+
+        await AddCalendarEvent.presentEventCreatingDialog(calendarEvent)
+          .then((eventInfo) => {
+            console.warn(JSON.stringify(eventInfo));
+          })
+          .catch((error) => {
+            Alert.alert("error", error);
+          });
+      } else {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_CALENDAR,
+          {
+            title: "Calendar Permission",
+            message: "This app needs calendar access to add events",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK",
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          const calendarEvent = {
+            title: item.event_title,
+            startDate: formattedDateTime, // Start date of the event
+            endDate: formattedDateTime, // End date of the event
+            location: item.realAddress, // Location of the event
+            description: `Event Time: ${item.event_time}\n${item.event_description}`, // Description of the event including time
+            url: eventShareLink, // Link to the event page
+
+            notes: `Event Time: ${item.event_time}\n${item.event_description}`, // Description of the event including time
+          };
+
+          await AddCalendarEvent.presentEventCreatingDialog(calendarEvent)
+            .then((eventInfo) => {
+              console.warn(JSON.stringify(eventInfo));
+            })
+            .catch((error) => {
+              Alert.alert("error", error);
+            });
+        }
+      }
+    } catch (error) {
+      console.warn("Error adding event to calendar:", error);
+    }
+  };
 
   const requestCalendarPermission = async () => {
     try {
@@ -48,7 +130,7 @@ const DateCard = ({ item, eventShareLink }) => {
     return formattedDate;
   };
 
-  const addEventToCalendar = async () => {
+  const addEventToCalendarIOS = async () => {
     const formattedDateTime = convertToISOString(item.realDate);
 
     try {
@@ -56,7 +138,6 @@ const DateCard = ({ item, eventShareLink }) => {
 
       if (hasPermission) {
         try {
-          const latLng = `${item.event_location?.latitude},${item.event_location?.longitude}`;
           const options = {
             title: item.event_title,
             startDate: formattedDateTime, // Start date of the event
@@ -85,10 +166,7 @@ const DateCard = ({ item, eventShareLink }) => {
               {
                 text: "OK",
                 onPress: () => {
-                  const calendarAppUrl =
-                    Platform.OS === "ios"
-                      ? "calshow:"
-                      : "content://com.android.calendar/time/";
+                  const calendarAppUrl = "calshow:";
 
                   Linking.openURL(calendarAppUrl);
                 },

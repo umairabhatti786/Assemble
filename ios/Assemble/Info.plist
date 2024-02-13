@@ -66,7 +66,8 @@
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>YOUR TEXT</string>
 	<key>NSCalendarsUsageDescription</key>
-	<string>This app requires access to the calendar</string>
+	<string>Are you sure you want to allow this app to use Calendar?</string>
+	 <key>NSContactsUsageDescription</key>
 	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
 	<string>YOUR TEXT</string>
 	<key>NSCameraUsageDescription</key>

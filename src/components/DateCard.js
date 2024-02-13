@@ -14,7 +14,18 @@ import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
 import RNCalendarEvents from "react-native-calendar-events";
 import * as AddCalendarEvent from "react-native-add-calendar-event";
+import moment from "moment";
 const DateCard = ({ item, eventShareLink }) => {
+  const utcDateToString = (momentInUTC) => {
+    // Ensure that momentInUTC is a Moment.js object
+    const momentDate = moment.utc(momentInUTC);
+
+    // Use Moment.js to format the date in ISO 8601 format
+    const formattedDate = momentDate.toISOString();
+
+    return formattedDate;
+  };
+  const TIME_NOW_IN_UTC = moment.utc();
   // const formatDate = (dateString) => {
   //   const eventDateParts = dateString.split("-");
   //   const day = parseInt(eventDateParts[0], 10);
@@ -29,6 +40,7 @@ const DateCard = ({ item, eventShareLink }) => {
 
   //   return formattedDate;
   // };
+
   const addEventToCalendar = () => {
     if (Platform.OS === "ios") {
       addEventToCalendarIOS();

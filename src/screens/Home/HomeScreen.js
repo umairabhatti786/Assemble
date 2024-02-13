@@ -188,7 +188,8 @@ const HomeScreen = ({ navigation }) => {
 
   const handleGetLocation = async () => {
     try {
-      const apiKey = "AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk";
+      // const apiKey = "AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk";
+      const apiKey = "AIzaSyB-KsaN0xavVz_goI6TJ-rTd43B8Oz4glc";
 
       let response = await getLocationPermissions();
 
@@ -657,11 +658,10 @@ const HomeScreen = ({ navigation }) => {
           }
         });
         setTimeout(() => {
-          setLoading(false);
+          setEvents(eventSections);
           setEventss(response.events);
+          setLoading(false);
         }, 2000);
-
-        setEvents(eventSections);
       } else {
         setEventss(null);
         setEvents(null);
@@ -997,8 +997,8 @@ const HomeScreen = ({ navigation }) => {
                   }}
                 >
                   <FastImage
-                    source={images.location}
-                    style={{ height: 80, width: 50 }}
+                    source={images.userLocationIcon}
+                    style={{ height: 40, width: 40 }}
                     resizeMode={FastImage.resizeMode.contain}
                   />
                 </Marker>

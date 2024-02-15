@@ -54,10 +54,12 @@ const DetailsScreen = ({ navigation, route }) => {
     navigation.goBack();
   };
   const generateLink = async (eventDetail) => {
+    console.log("eventShareLink",eventID)
+
     try {
       var link = await dynamicLinks().buildShortLink(
         {
-          link: `https://assemble.page.link/jfVL?id=${eventDetail?._id}`,
+          link: `https://assemble.page.link/jfVL?id=${eventID}`,
           domainUriPrefix: "https://assemble.page.link",
 
           android: {

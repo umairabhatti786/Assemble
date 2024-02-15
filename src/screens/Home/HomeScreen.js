@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   PanResponder,
   PermissionsAndroid,
+  ActivityIndicator,
 } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
@@ -65,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
       fetchAllEvents();
     }, [])
   );
-
+console.log("locationDetails",locationDetails)
   const requestLocationPermission = async () => {
     try {
       let response = await getLocationPermissions();
@@ -188,8 +189,8 @@ const HomeScreen = ({ navigation }) => {
 
   const handleGetLocation = async () => {
     try {
-      // const apiKey = "AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk";
-      const apiKey = "AIzaSyB-KsaN0xavVz_goI6TJ-rTd43B8Oz4glc";
+      const apiKey = "AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk";
+      // const apiKey = "AIzaSyB-KsaN0xavVz_goI6TJ-rTd43B8Oz4glc";
 
       let response = await getLocationPermissions();
 
@@ -209,6 +210,7 @@ const HomeScreen = ({ navigation }) => {
           setTimeout(() => {
             if (position) {
               try {
+
                 // Access map object from mapRef.current and animate to region
                 mapRef.current.animateToRegion(
                   {
@@ -217,7 +219,7 @@ const HomeScreen = ({ navigation }) => {
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   },
-                  3000
+                  1000
                 );
               } catch (error) {
                 console.error("Error during animation:", error);
@@ -886,11 +888,11 @@ const HomeScreen = ({ navigation }) => {
       <>
         <View
           style={{
-            backgroundColor: colors.white,
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
             marginVertical: 10,
+            height:sizeHelper.calHp(500),
           }}
         >
           <View
@@ -899,68 +901,11 @@ const HomeScreen = ({ navigation }) => {
               alignItems: "center",
             }}
           >
-            <CustomText
-              label={"No Events found"}
-              color={colors.black}
-              fontSize={16}
-            />
+            
+        <ActivityIndicator size="large" color={"black"} />
           </View>
         </View>
-        <ImageBackground
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          source={images.background}
-        >
-          <View
-            style={{
-              backgroundColor: colors.white,
-              height: 300,
-              width: 370,
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 10,
-              marginVertical: 20,
-            }}
-          >
-            <View style={{ marginVertical: 10 }}>
-              <CustomText
-                label={"Don't see the event you're \nlooking for? "}
-                color={colors.black}
-                fontSize={17}
-                alignSelf="center"
-                textAlign="center"
-                fontFamily={SFCompact.regular}
-              />
-            </View>
-            <View style={{ marginVertical: 10 }}>
-              <CustomText
-                label={"Send it our way and we will \nadd to  the list"}
-                color={colors.black}
-                fontSize={13}
-                alignSelf="center"
-                textAlign="center"
-                fontFamily={SFCompact.light}
-              />
-            </View>
-            <>
-              <Button
-                text={"SUBMIT EVENT"}
-                color={colors.white}
-                fontSize={14}
-                height={65}
-                width={"50%"}
-                backgroundColor={colors.black}
-                borderRadius={100}
-                margin={20}
-                fontFamily={SFCompact.regular}
-                onPress={openExternalLink}
-              />
-            </>
-          </View>
-        </ImageBackground>
+       
       </>
     );
   };
@@ -1077,12 +1022,7 @@ const HomeScreen = ({ navigation }) => {
                   renderItem={renderItem}
                   renderSectionHeader={renderSectionHeader}
                   ListFooterComponent={loading ? null : footerComponent}
-                  ListEmptyComponent={
-                    !loading &&
-                    Array.isArray(events) &&
-                    events.length < 0 &&
-                    ListEmptyComponent
-                  }
+                  ListEmptyComponent={ListEmptyComponent}
                 />
               </Modalize>
               //  </View>

@@ -66,7 +66,6 @@ const HomeScreen = ({ navigation }) => {
       fetchAllEvents();
     }, [])
   );
-console.log("locationDetails",locationDetails)
   const requestLocationPermission = async () => {
     try {
       let response = await getLocationPermissions();
@@ -188,6 +187,28 @@ console.log("locationDetails",locationDetails)
   // ).current;
 
   const handleGetLocation = async () => {
+    const userLocationAsync = await AsyncStorage.getItem("USER_LOCATION_ASYNC");
+    const parserLocation = JSON.parse(userLocationAsync);
+
+    if (parserLocation) {
+      setUserLocation(parserLocation);
+      const lat = parserLocation.latitude;
+      const long = parserLocation.longitude;
+      try {
+        // Access map object from mapRef.current and animate to region
+        mapRef.current.animateToRegion(
+          {
+            lat,
+            long,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          },
+          1000
+        );
+      } catch (error) {
+        console.error("Error during animation:", error);
+      }
+    }
     try {
       const apiKey = "AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk";
       // const apiKey = "AIzaSyB-KsaN0xavVz_goI6TJ-rTd43B8Oz4glc";
@@ -207,10 +228,17 @@ console.log("locationDetails",locationDetails)
           const latitude = position?.coords?.latitude;
           const longitude = position?.coords?.longitude;
           console.log("check=====>", position, latitude, longitude);
+          const userLatLong = {
+            latitude: latitude,
+            longitude: longitude,
+          };
+          await AsyncStorage.setItem(
+            "USER_LOCATION_ASYNC",
+            JSON.stringify(userLatLong)
+          );
           setTimeout(() => {
             if (position) {
               try {
-
                 // Access map object from mapRef.current and animate to region
                 mapRef.current.animateToRegion(
                   {
@@ -892,7 +920,7 @@ console.log("locationDetails",locationDetails)
             justifyContent: "center",
             alignItems: "center",
             marginVertical: 10,
-            height:sizeHelper.calHp(500),
+            height: sizeHelper.calHp(500),
           }}
         >
           <View
@@ -901,11 +929,9 @@ console.log("locationDetails",locationDetails)
               alignItems: "center",
             }}
           >
-            
-        <ActivityIndicator size="large" color={"black"} />
+            <ActivityIndicator size="large" color={"black"} />
           </View>
         </View>
-       
       </>
     );
   };

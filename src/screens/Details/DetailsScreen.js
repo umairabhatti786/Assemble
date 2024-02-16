@@ -12,6 +12,8 @@ import {
   Linking,
   Platform,
 } from "react-native";
+import * as AddCalendarEvent from "react-native-add-calendar-event";
+import moment from "moment";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
 import RNCalendarEvents from "react-native-calendar-events";
 import React, { useEffect, useRef, useState } from "react";
@@ -54,7 +56,7 @@ const DetailsScreen = ({ navigation, route }) => {
     navigation.goBack();
   };
   const generateLink = async (eventDetail) => {
-    console.log("eventShareLink",eventID)
+    console.log("eventShareLink", eventID);
 
     try {
       var link = await dynamicLinks().buildShortLink(
@@ -174,7 +176,6 @@ const DetailsScreen = ({ navigation, route }) => {
       console.error(error);
     }
   };
-  console.log(eventShareLink);
 
   function truncateText(text, maxWords) {
     const words = text.split(" ");
@@ -201,49 +202,137 @@ const DetailsScreen = ({ navigation, route }) => {
       return false;
     }
   };
-  const addEventToCalendar = async () => {
+
+  const addEventToCalendar = () => {
+    if (Platform.OS === "ios") {
+      addEventToCalendarIOS();
+    } else {
+      addToAndroidCal();
+    }
+  };
+  const addToAndroidCal = async () => {
+    const formattedDateTime = convertToISOString(eventDetail.realDate);
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_CALENDAR,
+        {
+          title: "Calendar Permission",
+          message: "This app needs calendar access to add events",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const calendarEvent = {
+          title: item.event_title,
+          startDate: formattedDateTime,
+          endDate: formattedDateTime,
+          location: item.realAddress,
+          description: `Event Time: ${item.event_time}\n${item.event_description}`,
+          url: eventShareLink,
+          notes: `Event Time: ${item.event_time}\n${item.event_description}`,
+        };
+        await AddCalendarEvent.presentEventCreatingDialog(calendarEvent)
+          .then((eventInfo) => {
+            console.warn(JSON.stringify(eventInfo));
+          })
+          .catch((error) => {
+            Alert.alert("error", error);
+          });
+      } else {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_CALENDAR,
+          {
+            title: "Calendar Permission",
+            message: "This app needs calendar access to add events",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK",
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          const calendarEvent = {
+            title: eventDetail.event_title,
+            startDate: formattedDateTime,
+            endDate: formattedDateTime,
+            location: eventDetail.realAddress,
+            description: `Event Time: ${eventDetail.event_time}\n${eventDetail.event_description}`,
+            url: eventShareLink,
+            notes: `Event Time: ${eventDetail.event_time}\n${eventDetail.event_description}`,
+          };
+
+          await AddCalendarEvent.presentEventCreatingDialog(calendarEvent)
+            .then((eventInfo) => {
+              console.warn(JSON.stringify(eventInfo));
+            })
+            .catch((error) => {
+              Alert.alert("error", error);
+            });
+        }
+      }
+    } catch (error) {
+      console.warn("Error adding event to calendar:", error);
+    }
+  };
+
+  const convertToISOString = (inputDate) => {
+    const [day, month, year] = inputDate.split("-");
+    const paddedMonth = month.padStart(2, "0");
+    const paddedDay = day.padStart(2, "0");
+
+    const formattedDate = `${year}-${paddedMonth}-${paddedDay}T09:00:00.000Z`;
+
+    return formattedDate;
+  };
+
+  const addEventToCalendarIOS = async () => {
+    const formattedDateTime = convertToISOString(eventDetail.realDate);
+
     try {
       const hasPermission = await requestCalendarPermission();
 
       if (hasPermission) {
-        // const startDate = new Date();
-        // const endDate = (new Date() + 7);
+        try {
+          const options = {
+            title: eventDetail.event_title,
+            startDate: formattedDateTime, // Start date of the event
+            endDate: formattedDateTime, // End date of the event
+            location: eventDetail.realAddress, // Location of the event
+            description: `Event Time: ${eventDetail.event_time}\n${eventDetail.event_description}`, // Description of the event including time
+            url: eventShareLink, // Link to the event page
 
-        // console.log("startDate",startDate)
-        //         console.log("startDate",startDate)
+            notes: `Event Time: ${eventDetail.event_time}\n${eventDetail.event_description}`, // Description of the event including time
+          };
 
-        // endDate.setDate(endDate.getDate() + 7);
-        const eventId = await RNCalendarEvents.saveEvent("New Event", {
-          startDate: "2024-01-05T09:00:00.000Z",
-          endDate: "2024-01-08T09:00:00.000Z",
+          const eventId = await RNCalendarEvents.saveEvent(
+            options.title,
+            options,
+            { description: options.description }
+          );
+          // const eventId = await RNCalendarEvents.saveEvent(item.event_name, {
+          //   startDate: formattedDateTime,
+          //   endDate: formattedDateTime,
+          // });
 
-          // recurrenceRule: {
-          //   frequency: "weekly",
-          //   occurrence: 52,
-          //   interval: 2,
-          //   endDate: "2024-01-08T09:00:00.000Z",
-          // },
-        });
-        Alert.alert(
-          "Event Added",
-          "The event has been added to your calendar. To view the event, open your calendar app.",
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                const calendarAppUrl =
-                  Platform.OS === "ios"
-                    ? "calshow:"
-                    : "content://com.android.calendar/time/";
+          Alert.alert(
+            "Event Added",
+            "The event has been added to your calendar. To view the event, open your calendar app.",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  const calendarAppUrl = "calshow:";
 
-                Linking.openURL(calendarAppUrl);
+                  Linking.openURL(calendarAppUrl);
+                },
               },
-            },
-          ],
-          { cancelable: false }
-        );
+            ],
+            { cancelable: false }
+          );
 
-        console.log("Event added successfully. Event ID:", eventId);
+          console.log("Event added successfully. Event ID:", eventId);
+        } catch (error) {
+          console.error("Error parsing or formatting dates:", error);
+        }
       } else {
         console.log("Calendar permission not granted");
       }

@@ -20,9 +20,10 @@ const BottomEvents = ({
   selectedEventIndex,
   getItemLayout,
   requestLocationPermission,
+  hideModelize,
 }) => {
   return (
-    <View style={styles.bottomView}>
+    <View style={[styles.bottomView]}>
       <View style={styles.bottomContnet}>
         <View pointerEvents="none" style={styles.iconsContainer}>
           <OptionsIcon style={styles.bottomIcon} fill={"transparent"} />
@@ -85,7 +86,9 @@ const BottomEvents = ({
   );
 };
 const styles = StyleSheet.create({
-  bottomView: { flex: 1, justifyContent: "flex-end" },
+  bottomView: {
+    justifyContent: "flex-end",
+  },
   bottomContnet: {
     flexDirection: "row",
     marginHorizontal: 10,

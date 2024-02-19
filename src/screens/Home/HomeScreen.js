@@ -158,39 +158,11 @@ const HomeScreen = ({ navigation }) => {
       }
     }
   };
-  // const pan = useRef(new Animated.ValueXY()).current;
-
-  // const panResponder = useRef(
-  //   PanResponder.create({
-  //     onMoveShouldSetPanResponder: (e, gestureState) => {
-  //       // Allow pan responder to handle the gesture if it's a vertical drag
-  //       return Math.abs(gestureState.dy) > 5;
-  //     },
-  //     onPanResponderMove: (_, gestureState) => {
-  //       // Check the gesture direction and adjust modal height accordingly
-  //       if (gestureState.dy < 0) {
-  //         // User is dragging up
-  //         setModalHeight(sizeHelper.screentHeight);
-  //       } else {
-  //         // User is dragging down
-  //         setModalHeight(sizeHelper.screenWidth);
-  //       }
-  //     },
-  //     onPanResponderRelease: () => {
-  //       // Reset pan position
-  //       Animated.spring(pan, {
-  //         toValue: 0,
-  //         useNativeDriver: false,
-  //       }).start();
-  //     },
-  //   })
-  // ).current;
-
   const handleGetLocation = async () => {
     const userLocationAsync = await AsyncStorage.getItem("USER_LOCATION_ASYNC");
     const parserLocation = JSON.parse(userLocationAsync);
 
-    if (parserLocation) {
+    if (parserLocation !== null) {
       setUserLocation(parserLocation);
     }
     try {
@@ -237,7 +209,7 @@ const HomeScreen = ({ navigation }) => {
                 console.error("Error during animation:", error);
               }
             }
-          }, 500);
+          }, 1000);
 
           // Set userLocation state here
           setUserLocation(position?.coords);
@@ -355,7 +327,6 @@ const HomeScreen = ({ navigation }) => {
       console.error(error.message);
     }
   };
-
   const getLocationPermissions = async () => {
     try {
       const permissionResult = await request(
@@ -371,7 +342,6 @@ const HomeScreen = ({ navigation }) => {
       return false;
     }
   };
-
   const onAddFav = async (item) => {
     try {
       const token = await AsyncStorage.getItem("@token");
@@ -580,7 +550,6 @@ const HomeScreen = ({ navigation }) => {
       console.error(error);
     }
   };
-
   const getItemLayout = (data, index) => ({
     length: 100, // Assuming item height is 100, adjust accordingly
     offset: 100 * index,
@@ -589,7 +558,6 @@ const HomeScreen = ({ navigation }) => {
   const onHandlePress = () => {
     navigation.navigate("Settings");
   };
-
   const onNavigateToFav = () => {
     // setHideModelize(true);
     navigation.navigate("AllFavEvents");
@@ -730,7 +698,6 @@ const HomeScreen = ({ navigation }) => {
       </View>
     );
   };
-
   const renderSectionHeader = ({ section }) => (
     <View style={{ padding: 10 }}>
       <CustomText
@@ -808,7 +775,6 @@ const HomeScreen = ({ navigation }) => {
       </ImageBackground>
     );
   };
-
   const CustomMarkerComponent = React.memo(({ event, index }) => (
     <TouchableOpacity
       activeOpacity={0.6}
@@ -837,8 +803,6 @@ const HomeScreen = ({ navigation }) => {
   ));
 
   const updateMapCenter = (index) => {
-    // Update the map center based on the latitude and longitude of the selected event
-
     try {
       const selectedEvent = eventss[index];
       if (selectedEvent && selectedEvent.event_location) {
@@ -854,6 +818,7 @@ const HomeScreen = ({ navigation }) => {
           3000
         );
       }
+      setSelectedEventIndex(index);
     } catch (error) {
       console.log("updateMapCenter", error);
     }
@@ -870,7 +835,6 @@ const HomeScreen = ({ navigation }) => {
       setSelectedEventIndex(current);
     }
   };
-
   const onPressMarker = (event, index) => {
     try {
       setHideModelize(true);
@@ -881,7 +845,6 @@ const HomeScreen = ({ navigation }) => {
       console.log(error);
     }
   };
-
   const scrollToIndex = (index) => {
     setUserScroll(false);
     flatListRef.current?.scrollToIndex({
@@ -913,7 +876,7 @@ const HomeScreen = ({ navigation }) => {
               alignItems: "center",
             }}
           >
-            <ActivityIndicator size="large" color={"black"} />
+            <ActivityIndicator size="small" color={"black"} />
           </View>
         </View>
       </>
@@ -938,17 +901,19 @@ const HomeScreen = ({ navigation }) => {
                 },
               ]}
               initialRegion={{
-                latitude: userlocation ? userlocation.latitude : 32.7157, // Latitude of San Diego
-                longitude: userlocation ? userlocation.longitude : -117.1611, // Longitude of San Diego
+                latitude:
+                  userlocation !== null ? userlocation.latitude : 32.7157, // Latitude of San Diego
+                longitude:
+                  userlocation !== null ? userlocation.longitude : -117.1611, // Longitude of San Diego
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
             >
-              {!loading && userlocation !== false && (
+              {!loading && userlocation !== false && userlocation !== null && (
                 <Marker
                   coordinate={{
-                    latitude: userlocation?.latitude,
-                    longitude: userlocation?.longitude,
+                    latitude: userlocation !== null && userlocation?.latitude,
+                    longitude: userlocation !== null && userlocation?.longitude,
                   }}
                 >
                   <FastImage
@@ -975,25 +940,6 @@ const HomeScreen = ({ navigation }) => {
                 ))}
             </MapView>
             {!hideModelize && (
-              // <Animated.View
-              //   style={{
-              //     flex: 1,
-              //     justifyContent: "center",
-              //     alignItems: "center",
-              //     transform: [{ translateY: pan.y }],
-              //     top: "20%",
-              //   }}
-              //   {...panResponder.panHandlers}
-              // >
-              //   <View
-              //     style={{
-              //       backgroundColor: "white",
-              //       padding: 16,
-              //       borderRadius: 8,
-              //       width: "100%",
-              //       height: modalHeight,
-              //     }}
-              //   >
               <Modalize
                 modalStyle={{
                   backgroundColor: "#FFFFFF",
@@ -1035,12 +981,11 @@ const HomeScreen = ({ navigation }) => {
                   ListEmptyComponent={ListEmptyComponent}
                 />
               </Modalize>
-              //  </View>
-              // </Animated.View>
             )}
 
             {hideModelize && (
               <BottomEvents
+                hideModelize={hideModelize}
                 modalizeRef={modalizeRef}
                 setHideModelize={setHideModelize}
                 flatListRef={flatListRef}

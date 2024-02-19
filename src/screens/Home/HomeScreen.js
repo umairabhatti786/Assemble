@@ -192,22 +192,6 @@ const HomeScreen = ({ navigation }) => {
 
     if (parserLocation) {
       setUserLocation(parserLocation);
-      const lat = parserLocation.latitude;
-      const long = parserLocation.longitude;
-      try {
-        // Access map object from mapRef.current and animate to region
-        mapRef.current.animateToRegion(
-          {
-            lat,
-            long,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          },
-          1000
-        );
-      } catch (error) {
-        console.error("Error during animation:", error);
-      }
     }
     try {
       const apiKey = "AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk";
@@ -954,8 +938,8 @@ const HomeScreen = ({ navigation }) => {
                 },
               ]}
               initialRegion={{
-                latitude: 32.7157, // Latitude of San Diego
-                longitude: -117.1611, // Longitude of San Diego
+                latitude: userlocation ? userlocation.latitude : 32.7157, // Latitude of San Diego
+                longitude: userlocation ? userlocation.longitude : -117.1611, // Longitude of San Diego
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}

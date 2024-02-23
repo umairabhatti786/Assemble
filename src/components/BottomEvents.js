@@ -21,6 +21,7 @@ const BottomEvents = ({
   getItemLayout,
   requestLocationPermission,
   hideModelize,
+  setSelectedEventIndex,
 }) => {
   return (
     <View style={[styles.bottomView]}>
@@ -53,6 +54,7 @@ const BottomEvents = ({
           onPress={() => {
             modalizeRef.current?.open();
             setHideModelize(false);
+            setSelectedEventIndex(0);
           }}
           style={{
             backgroundColor: "#f5f0f0",

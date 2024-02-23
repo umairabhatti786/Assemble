@@ -551,8 +551,8 @@ const HomeScreen = ({ navigation }) => {
     }
   };
   const getItemLayout = (data, index) => ({
-    length: 100, // Assuming item height is 100, adjust accordingly
-    offset: 100 * index,
+    length: 500,
+    offset: 500 * index,
     index,
   });
   const onHandlePress = () => {
@@ -803,6 +803,7 @@ const HomeScreen = ({ navigation }) => {
   ));
 
   const updateMapCenter = (index) => {
+    console.log("index", index); //12
     try {
       const selectedEvent = eventss[index];
       if (selectedEvent && selectedEvent.event_location) {
@@ -825,12 +826,13 @@ const HomeScreen = ({ navigation }) => {
   };
   const onScroll = (event) => {
     if (hideModelize && userScroll) {
-      let width = sizeHelper.screenWidth > 450 ? 550 : 380;
+      const width = sizeHelper.screenWidth > 450 ? 550 : 400;
       const xPos =
         event.nativeEvent?.contentOffset?.x < 0
           ? 0
           : event.nativeEvent?.contentOffset?.x;
       const current = Math.floor(xPos / width);
+
       updateMapCenter(current);
       setSelectedEventIndex(current);
     }
@@ -846,18 +848,26 @@ const HomeScreen = ({ navigation }) => {
     }
   };
   const scrollToIndex = (index) => {
+    console.log("Scrolling to index:", index);
+    console.log("Total number of items:", eventss.length);
+    console.log("Item at index:", eventss[index]);
+
     setUserScroll(false);
-    flatListRef.current?.scrollToIndex({
-      index,
-      animated: false,
-    });
-    updateMapCenter(index);
-    setSelectedEventIndex(index);
-    setTimeout(() => {
-      setUserScroll(true);
-    }, 5000);
-    // Set back to true after scrolling
+    try {
+      flatListRef.current?.scrollToIndex({
+        index,
+        animated: true,
+      });
+      updateMapCenter(index);
+      setSelectedEventIndex(index);
+      setTimeout(() => {
+        setUserScroll(true);
+      }, 10000);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   const ListEmptyComponent = () => {
     return (
       <>
@@ -995,6 +1005,7 @@ const HomeScreen = ({ navigation }) => {
                 selectedEventIndex={selectedEventIndex}
                 getItemLayout={getItemLayout}
                 requestLocationPermission={requestLocationPermission}
+                setSelectedEventIndex={setSelectedEventIndex}
               />
             )}
           </View>

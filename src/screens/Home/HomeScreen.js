@@ -13,6 +13,7 @@ import {
   PanResponder,
   PermissionsAndroid,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
@@ -46,6 +47,8 @@ import BottomEvents from "../../components/BottomEvents";
 import Toast from "react-native-root-toast";
 import Geocoder from "react-native-geocoding";
 Geocoder.init("AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk");
+const windowWidth = Dimensions.get("screen").width;
+
 const HomeScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
   const mapRef = useRef(null);
@@ -551,8 +554,8 @@ const HomeScreen = ({ navigation }) => {
     }
   };
   const getItemLayout = (data, index) => ({
-    length: 500,
-    offset: 500 * index,
+    length: windowWidth,
+    offset: windowWidth * index,
     index,
   });
   const onHandlePress = () => {

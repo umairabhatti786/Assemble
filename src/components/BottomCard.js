@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { ImageBackground } from "react-native";
 import { colors } from "../utils/colors";
 import { images } from "../assets/images";
@@ -12,6 +12,8 @@ import CustomText from "./CustomText";
 import { SFCompact } from "../utils/Fonts";
 import sizeHelper from "../assets/helpers/sizeHelper";
 import FastImage from "react-native-fast-image";
+const windowWidth = Dimensions.get("screen").width;
+
 const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
   const formatDate = (dateString) => {
     const eventDateParts = dateString.split("-");
@@ -117,10 +119,10 @@ const BottomCard = React.memo(({ item, navigation, onAddFav }) => {
 });
 const styles = StyleSheet.create({
   cardMain: {
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     alignContent: "center",
     justifyContent: "center",
-    width: sizeHelper.screenWidth > 450 ? 550 : 400,
+    width: windowWidth,
     marginBottom: 30,
     padding: 7,
   },

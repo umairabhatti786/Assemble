@@ -162,13 +162,15 @@ const HomeScreen = ({ navigation }) => {
     }
   };
   const handleGetLocation = async () => {
-    const userLocationAsync = await AsyncStorage.getItem("USER_LOCATION_ASYNC");
-    const parserLocation = JSON.parse(userLocationAsync);
-
-    if (parserLocation !== null) {
-      setUserLocation(parserLocation);
-    }
     try {
+      const userLocationAsync = await AsyncStorage.getItem(
+        "USER_LOCATION_ASYNC"
+      );
+      const parserLocation = JSON.parse(userLocationAsync);
+
+      if (parserLocation !== null) {
+        setUserLocation(parserLocation);
+      }
       const apiKey = "AIzaSyDXoHO79vxypTv8xL4V10cf5kFpIYDO9Rk";
       // const apiKey = "AIzaSyB-KsaN0xavVz_goI6TJ-rTd43B8Oz4glc";
 
@@ -602,7 +604,7 @@ const HomeScreen = ({ navigation }) => {
           if (eventDateParts.length === 3) {
             // Assuming the format is DD-MM-YYYY
             const day = parseInt(eventDateParts[0], 10);
-            const month = parseInt(eventDateParts[1], 10) - 1; // Month is zero-based
+            const month = parseInt(eventDateParts[1], 10) - 1;
             const year = parseInt(eventDateParts[2], 10);
 
             let eventDate = new Date(year, month, day);
@@ -650,10 +652,10 @@ const HomeScreen = ({ navigation }) => {
       } else {
         setEventss(null);
         setEvents(null);
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
-    } finally {
       setLoading(false);
     }
   };
@@ -673,11 +675,7 @@ const HomeScreen = ({ navigation }) => {
   const Header = () => {
     return (
       <View style={styles.headerContainer}>
-        <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={onHandlePress}
-          style={styles.iconContainer}
-        >
+        <TouchableOpacity onPress={onHandlePress} style={styles.iconContainer}>
           <ProfileIcon style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.textContainer}>
@@ -780,19 +778,18 @@ const HomeScreen = ({ navigation }) => {
   };
   const CustomMarkerComponent = React.memo(({ event, index }) => (
     <TouchableOpacity
-      activeOpacity={0.6}
       style={{
         justifyContent: "center",
         alignItems: "center",
         height: 100,
         width: 100,
-        zIndex: 999999,
+        zIndex: 9999999999,
       }}
     >
       {index === selectedEventIndex && selectedEventIndex !== 0 ? (
         <FastImage
           source={images.blackLocation} // Use the black location image
-          style={{ height: 60, width: 60 }}
+          style={{ height: 60, width: 60, zIndex: 9999999999 }}
           resizeMode="contain"
         />
       ) : (
@@ -806,7 +803,6 @@ const HomeScreen = ({ navigation }) => {
   ));
 
   const updateMapCenter = (index) => {
-    console.log("index", index); //12
     try {
       const selectedEvent = eventss[index];
       if (selectedEvent && selectedEvent.event_location) {
@@ -851,10 +847,6 @@ const HomeScreen = ({ navigation }) => {
     }
   };
   const scrollToIndex = (index) => {
-    console.log("Scrolling to index:", index);
-    console.log("Total number of items:", eventss.length);
-    console.log("Item at index:", eventss[index]);
-
     setUserScroll(false);
     try {
       flatListRef.current?.scrollToIndex({
@@ -895,6 +887,20 @@ const HomeScreen = ({ navigation }) => {
       </>
     );
   };
+  const initialRegion =
+    userlocation !== false
+      ? {
+          latitude: userlocation.latitude,
+          longitude: userlocation.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }
+      : {
+          latitude: 32.7157, // Latitude of San Diego
+          longitude: -117.1611, // Longitude of San Diego
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        };
   return (
     <>
       {loading ? (
@@ -913,20 +919,17 @@ const HomeScreen = ({ navigation }) => {
                   width: "100%",
                 },
               ]}
-              initialRegion={{
-                latitude:
-                  userlocation !== null ? userlocation.latitude : 32.7157, // Latitude of San Diego
-                longitude:
-                  userlocation !== null ? userlocation.longitude : -117.1611, // Longitude of San Diego
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
+              initialRegion={initialRegion}
             >
-              {!loading && userlocation !== false && userlocation !== null && (
+              {userlocation !== false && (
                 <Marker
                   coordinate={{
-                    latitude: userlocation !== null && userlocation?.latitude,
-                    longitude: userlocation !== null && userlocation?.longitude,
+                    latitude:
+                      userlocation !== false ? userlocation.latitude : 32.7157,
+                    longitude:
+                      userlocation !== false
+                        ? userlocation.longitude
+                        : -117.1611,
                   }}
                 >
                   <FastImage
@@ -944,8 +947,8 @@ const HomeScreen = ({ navigation }) => {
                     onPress={() => onPressMarker(event, index)}
                     key={event._id}
                     coordinate={{
-                      latitude: event.event_location.latitude,
-                      longitude: event.event_location.longitude,
+                      latitude: event.event_location.latitude || 0, // Default to 0 if latitude is null
+                      longitude: event.event_location.longitude || 0, // Default to 0 if longitude is null
                     }}
                   >
                     <CustomMarkerComponent event={event} index={index} />

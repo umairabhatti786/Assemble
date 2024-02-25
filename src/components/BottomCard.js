@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import { ImageBackground } from "react-native";
 import { colors } from "../utils/colors";
 import { images } from "../assets/images";
@@ -196,7 +203,7 @@ const styles = StyleSheet.create({
   },
   tagBody: {
     marginHorizontal: 10,
-    height: 25,
+    height: Platform.OS === "ios" ? 28 : 30,
     // width: 55,
     justifyContent: "center",
     alignItems: "center",
@@ -206,7 +213,7 @@ const styles = StyleSheet.create({
 
     color: colors.black,
 
-    top: -3,
+    top: Platform.OS == "ios" ? 0 : -1,
     textAlign: "center",
     fontFamily: SFCompact.semiBold,
     fontWeight: Platform.OS == "ios" ? "600" : "300",

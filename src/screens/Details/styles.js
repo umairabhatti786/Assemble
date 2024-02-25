@@ -74,7 +74,7 @@ export const styles = ScaledSheet.create({
     fontWeight: Platform.OS == "ios" ? "700" : "300",
     color: colors.black,
     textAlign: "center",
-    // top: Platform.OS == "ios" ? 0 : -3,
+    top: Platform.OS == "ios" ? 0 : -3,
     alignSelf: "center",
   },
   scroll: {

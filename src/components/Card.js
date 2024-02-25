@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   },
   tagBody: {
     marginHorizontal: 3,
-    height: 28,
+    height: Platform.OS === "ios" ? 28 : 30,
     // width: 55,
     justifyContent: "center",
     alignItems: "center",

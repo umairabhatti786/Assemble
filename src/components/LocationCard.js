@@ -60,7 +60,7 @@ const LocationCard = ({ item }) => {
                   : ""
               }
               color={"#120D26"}
-              fontFamily={SFCompact.regular}
+              fontFamily={SFCompact.semiBold}
               fontWeight={Platform.OS == "ios" ? "500" : "300"}
               fontSize={15}
             />
@@ -69,7 +69,7 @@ const LocationCard = ({ item }) => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop:5
+                marginTop: 5,
                 // backgroundColor:"red"
               }}
             >
@@ -78,7 +78,7 @@ const LocationCard = ({ item }) => {
                   label={item.event_location?.neighborhood}
                   color={"#1C1916"}
                   numberOfLines={1}
-                  fontFamily={SFCompact.medium}
+                  fontFamily={SFCompact.semiBold}
                   fontWeight={Platform.OS == "ios" ? "600" : "300"}
                   fontSize={13}
                 />
@@ -93,7 +93,7 @@ const LocationCard = ({ item }) => {
                   marginHorizontal: 10,
                 }}
               />
-              <View >
+              <View>
                 <CustomText
                   label={
                     item.event_location?.address
@@ -102,11 +102,9 @@ const LocationCard = ({ item }) => {
                   }
                   color={"#1C1916"}
                   numberOfLines={1}
-                  textStyle={{width:150}}
+                  textStyle={{ width: 150 }}
                   fontWeight={Platform.OS == "ios" ? "300" : "300"}
-
                   fontFamily={SFCompact.regular}
-                  
                   fontSize={13}
                 />
               </View>

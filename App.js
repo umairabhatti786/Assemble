@@ -1,8 +1,8 @@
 import "react-native-gesture-handler";
-// import { enableLatestRenderer } from "react-native-maps";
-// enableLatestRenderer();
-import { View, Text, LogBox, TouchableOpacity, Image } from "react-native";
-import React, { useEffect, useState } from "react";
+import { enableLatestRenderer } from "react-native-maps";
+enableLatestRenderer();
+import { LogBox } from "react-native";
+import React from "react";
 import { Provider } from "react-redux";
 
 import store from "./src/redux/store";
@@ -18,7 +18,7 @@ const firebaseConfig = {
   storageBucket: "",
   messagingSenderId: "",
   appId: "1:153444834280:android:66c86f0de261842fa3625d",
-  // databaseURL: '',
+  databaseURL: null,
 };
 firebase.initializeApp(firebaseConfig);
 const App = () => {

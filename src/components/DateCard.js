@@ -216,7 +216,7 @@ const DateCard = ({ item, eventShareLink }) => {
               label={item.event_date + " at " + item.event_time}
               color={"#1C1916"}
               fontSize={14}
-              fontFamily={SFCompact.regular}
+              fontFamily={SFCompact.semiBold}
               fontWeight={Platform.OS == "ios" ? "600" : "300"}
             />
             {/* <CustomText

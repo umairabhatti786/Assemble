@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "153444834280-eeo0kj3jha5cja7lnffce3gc1d1sqg9h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.assemble",
+            "certificate_hash": "ac7d66dfd17ef98737e216025bd8e7190bbd9225"
+          }
+        },
+        {
           "client_id": "153444834280-be509i52m49jlt7l0ds0ic9ucbg5lh0l.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -31,10 +39,11 @@
               "client_type": 3
             },
             {
-              "client_id": "153444834280-lfs7alll1ltv8ehhr4j7d9uv9c509to1.apps.googleusercontent.com",
+              "client_id": "153444834280-3f4rrg7cfktqo0935nuimku8dnqpt5o3.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "assemble"
+                "bundle_id": "assemble",
+                "app_store_id": "123456789"
               }
             }
           ]

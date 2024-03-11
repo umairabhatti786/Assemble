@@ -549,8 +549,7 @@ const DetailsScreen = ({ navigation, route }) => {
                 color="#1C1916"
                 fontFamily={SFCompact.light}
                 fontSize={12}
-                textAlign="center"
-                alignSelf="left"
+                textAlign="left"
                 fontWeight={Platform.OS == "ios" ? "300" : "300"}
                 marginLeft={5}
                 marginTop={5}

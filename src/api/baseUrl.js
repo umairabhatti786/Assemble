@@ -1,3 +1,3 @@
-const URL = "https://assemble-backend.onrender.com/api/";
+const URL = "http://www.api.assemble.fun/api/";
 
 export default URL;

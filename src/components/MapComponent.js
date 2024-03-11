@@ -21,7 +21,7 @@ const MapComponent = ({ latitude, longitude, address }) => {
     // Update the map center based on the latitude and longitude of the selected event
 
     try {
-      mapRef.current.animateToRegion(
+      mapRef?.current?.animateToRegion(
         {
           latitude,
           longitude,

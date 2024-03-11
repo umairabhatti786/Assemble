@@ -358,7 +358,6 @@ const DetailsScreen = ({ navigation, route }) => {
           <CustomText
             color={"transparent"}
             fontSize={16}
-            alignSelf="center"
             textAlign="center"
             label="assemble"
           />

@@ -1,3 +1,3 @@
-const URL = "http://www.api.assemble.fun/api/";
+const URL = "https://www.api.assemble.social/api/";
 
 export default URL;

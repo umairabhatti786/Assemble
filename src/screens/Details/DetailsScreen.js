@@ -407,7 +407,7 @@ const DetailsScreen = ({ navigation, route }) => {
 
       if (eventDetail.favEvent.isFav === false) {
         try {
-          const url = `https://assemble-backend.onrender.com/api/events/addfavorite/${eventDetail._id}`;
+          const url = `https://www.api.assemble.social/api/events/addfavorite/${eventDetail._id}`;
           const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -429,7 +429,7 @@ const DetailsScreen = ({ navigation, route }) => {
         }
       } else {
         try {
-          const url = `https://assemble-backend.onrender.com/api/events/removefavorite/${eventDetail._id}`;
+          const url = `https://www.api.assemble.social/api/events/removefavorite/${eventDetail._id}`;
           const response = await fetch(url, {
             method: "POST",
             headers: {
